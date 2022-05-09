@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Change Marker</title>
+        <link rel="stylesheet" href="/public/css/close.css">
+        <script>
+            function copyCode() {
+                var codeNum = document.getElementById('code_number');
+                codeNum.select();
+                document.execCommand("Copy");
+            }
+        </script>
+    </head>
+    <body>
+        <p>Thank You for completing our request!</p>
+        <p>Please submit the code below to Amazon Turk.</p>
+        <div class="code_container">
+            <input id="code_number" value="<%= code %>" readonly>
+            <button class="button-28" role="button" onclick="copyCode()">Copy</button>
+        </div>
+    </body>
+</html>

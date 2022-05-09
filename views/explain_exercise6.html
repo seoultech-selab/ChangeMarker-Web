@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Change Marker</title>
+        <link rel="stylesheet" href="/public/css/tutorialExam.css">
+        <link rel="stylesheet" href="/public/css/contextMenu.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github.min.css">
+	    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+	    <script>hljs.initHighlightingOnLoad();</script>
+        <script src="//cdn.jsdelivr.net/npm/highlightjs-line-numbers.js@2.8.0/dist/highlightjs-line-numbers.min.js"></script>
+        <script>hljs.initLineNumbersOnLoad();</script>
+        <script src="/public/js/explain_exercise6.js"></script>
+        <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+    </head>
+    <body onload="init();">
+        <div class="container">
+        <section id="section">
+            <div id="left">
+                <pre><code class="java" id="inner_left">import java.util.Map;
+
+<sapn class="code_delete">  private BlockServiceHandler mWorkerServiceHandler = null;</sapn></code></pre>
+            </div>
+
+            <div class="d1" id="hr1"></div>
+
+            <div id="right">
+                <pre><code class="java" id="inner_right">import java.util.Map;
+
+<span class="code_insert">  private BlockWorkerClientServiceHandler mWorkerServiceHandler = null;</span></code></pre>
+            </div>
+        </section>
+        <div class="section_container">
+            <div class="d2" id="hr2">
+                Edit Script
+            </div>
+            <form action="/" method="post">
+                <input id="checkButton" type="button" value="Check!" onclick="checkExam();"/>
+            </form>
+        </div>
+        <footer id="footer">
+            <table id="edit_scripts" onchange="checkExam();">
+                <tr>
+                    <th id="es_type">Type</th>
+                    <th id="es_old">Old Code</th>
+                    <th id="es_old_line">Line#</th>
+                    <th id="es_new">New Code</th>
+                    <th id="es_new_line">Line#</th>
+                    <th id="es_opt">Option</th>
+                </tr>
+            </table>
+        </footer>
+        </div>
+    </body>
+</html>
