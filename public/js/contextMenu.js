@@ -139,7 +139,6 @@ function getSelectResult() {
   return selectResult;
 }
 
-
 function dragSelect() {
   var result = new Object();
   var selectionText = "";
@@ -154,7 +153,7 @@ function dragSelect() {
   } else if (document.selection) {
     selectionText = document.selection.createRange().text;
   }
-  
+
   if (document.getSelection().anchorNode.parentElement.attributes.length == 2 && !(document.getSelection().anchorNode.parentElement.attributes[1].value.includes('#'))) {
     startNum = document.getSelection().anchorNode.parentElement.attributes[1].value;
   } else if (document.getSelection().anchorNode.parentElement.firstChild.parentNode.offsetParent.attributes.length == 2 && !(document.getSelection().anchorNode.parentElement.firstChild.parentNode.offsetParent.attributes[1].value.includes('#'))) {

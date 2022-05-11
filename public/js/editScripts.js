@@ -1,3 +1,106 @@
+var storedSelectionLeft = new Object();
+storedSelectionLeft.len = 0;
+
+function storeSelectionLeft() {
+  var result = new Object();
+  var selectionText = "";
+  var startNum = "";
+  var endNum = "";
+  var selectionNumber = "";
+  var startPos = 0;
+
+  if (document.getSelection) {
+    selectionText = document.getSelection();
+    startPos = selectionText.getRangeAt(0).startOffset;
+  } else if (document.selection) {
+    selectionText = document.selection.createRange().text;
+  }
+
+  if (document.getSelection().anchorNode.parentElement.attributes.length == 2 && !(document.getSelection().anchorNode.parentElement.attributes[1].value.includes('#'))) {
+    startNum = document.getSelection().anchorNode.parentElement.attributes[1].value;
+  } else if (document.getSelection().anchorNode.parentElement.firstChild.parentNode.offsetParent.attributes.length == 2 && !(document.getSelection().anchorNode.parentElement.firstChild.parentNode.offsetParent.attributes[1].value.includes('#'))) {
+    startNum = document.getSelection().anchorNode.parentElement.firstChild.parentNode.offsetParent.attributes[1].value;
+  }
+
+  if (document.getSelection().focusNode.parentElement.attributes.length == 2 && !(document.getSelection().focusNode.parentElement.attributes[1].value.includes('#'))) {
+    endNum = document.getSelection().focusNode.parentElement.attributes[1].value;
+  } else if (document.getSelection().focusNode.parentElement.firstChild.parentNode.offsetParent.attributes.length == 2 && !(document.getSelection().focusNode.parentElement.firstChild.parentNode.offsetParent.attributes[1].value.includes('#'))) {
+    endNum = document.getSelection().focusNode.parentElement.firstChild.parentNode.offsetParent.attributes[1].value;
+  }
+
+  startNum *= 1;
+  endNum *= 1;
+
+  if (startNum == 0) {
+    selectionNumber = endNum;
+  } else if (endNum == 0) {
+    selectionNumber = startNum;
+  } else {
+    selectionNumber = (startNum < endNum) ? startNum : endNum;
+  }
+
+  result.text = selectionText.toString();
+  result.lineNum = selectionNumber;
+  result.startPos = startPos;
+  result.len = result.text.length;
+
+  storedSelectionLeft = result;
+}
+
+var storedSelectionRight = new Object();
+storedSelectionRight.len = 0;
+
+function storeSelectionRight() {
+  var result = new Object();
+  var selectionText = "";
+  var startNum = "";
+  var endNum = "";
+  var selectionNumber = "";
+  var startPos = 0;
+
+  if (document.getSelection) {
+    selectionText = document.getSelection();
+    startPos = selectionText.getRangeAt(0).startOffset;
+  } else if (document.selection) {
+    selectionText = document.selection.createRange().text;
+  }
+
+  if (document.getSelection().anchorNode.parentElement.attributes.length == 2 && !(document.getSelection().anchorNode.parentElement.attributes[1].value.includes('#'))) {
+    startNum = document.getSelection().anchorNode.parentElement.attributes[1].value;
+  } else if (document.getSelection().anchorNode.parentElement.firstChild.parentNode.offsetParent.attributes.length == 2 && !(document.getSelection().anchorNode.parentElement.firstChild.parentNode.offsetParent.attributes[1].value.includes('#'))) {
+    startNum = document.getSelection().anchorNode.parentElement.firstChild.parentNode.offsetParent.attributes[1].value;
+  }
+
+  if (document.getSelection().focusNode.parentElement.attributes.length == 2 && !(document.getSelection().focusNode.parentElement.attributes[1].value.includes('#'))) {
+    endNum = document.getSelection().focusNode.parentElement.attributes[1].value;
+  } else if (document.getSelection().focusNode.parentElement.firstChild.parentNode.offsetParent.attributes.length == 2 && !(document.getSelection().focusNode.parentElement.firstChild.parentNode.offsetParent.attributes[1].value.includes('#'))) {
+    endNum = document.getSelection().focusNode.parentElement.firstChild.parentNode.offsetParent.attributes[1].value;
+  }
+
+  startNum *= 1;
+  endNum *= 1;
+
+  if (startNum == 0) {
+    selectionNumber = endNum;
+  } else if (endNum == 0) {
+    selectionNumber = startNum;
+  } else {
+    selectionNumber = (startNum < endNum) ? startNum : endNum;
+  }
+
+  result.text = selectionText.toString();
+  result.lineNum = selectionNumber;
+  result.startPos = startPos;
+  result.len = result.text.length;
+
+  storedSelectionRight = result;
+}
+
+
+
+
+
+
 var check = 0;
 var tmpStartPos = 0;
 var tmpLen = 0;
@@ -64,6 +167,8 @@ function GenDelete() {
     scriptJSON.change_id = document.getElementById("current").value;
 
     oneScriptSubmit(scriptJSON);
+
+    storedSelectionLeft.len = 0;
 }
 
 function GenInsert() {
@@ -106,255 +211,232 @@ function GenInsert() {
     scriptJSON.change_id = document.getElementById("current").value;
 
     oneScriptSubmit(scriptJSON);
+
+    storedSelectionRight.len = 0;
 }
 
 function GenMoveLeft() {
     if (getSelectResult().len == 0) {
-        alert("Please select texts.");
+        alert("Please select texts on the left side.");
+        return;
+    } else if (storedSelectionRight.len == 0) {
+        alert("Please select texts on the right side.");
         return;
     }
-    if (check == 0) {
-        var table = document.getElementById("edit_scripts");
-        var newRow = table.insertRow();
-        var selectResult = getSelectResult();
-        newRow.id = selectResult.len + "/";
 
-        var newATag = document.createElement('a');
-        newATag.href = "javascript:void(0)";
-        newATag.text = "Delete";
-        newATag.className = "del_btn";
-        newATag.onclick = function() {deleteRow(this, 1);};
+    var table = document.getElementById("edit_scripts");
+    var newRow = table.insertRow();
+    var selectResult = getSelectResult();
+    newRow.id = selectResult.len + "/" + storedSelectionRight.len;
 
-
-        var newCell1 = newRow.insertCell(0);
-        var newCell2 = newRow.insertCell(1);
-        var newCell3 = newRow.insertCell(2);
-        var newCell4 = newRow.insertCell(3);
-        var newCell5 = newRow.insertCell(4);
-        var newCell6 = newRow.insertCell(5);
-
-        newCell1.innerText = 'Move';
-        newCell2.innerText = selectResult.text;
-        newCell3.innerText = selectResult.lineNum;
-        newCell6.appendChild(newATag);
-        tmpStartPos = selectResult.startPos;
-        tmpLen = selectResult.len;
-        check = 2;
-    } else if (check == 1) {
-        var selectResult = getSelectResult();
-        var table = document.getElementById("edit_scripts");
-        var trs = table.children[0].children;
-        var tr = trs[trs.length - 1];
-        var tds = tr.children;
-
-        tr.id = selectResult.len + tr.id;
-
-        tds[1].innerText = selectResult.text;
-        tds[2].innerText = selectResult.lineNum;
-        check = 0;
+    var newATag = document.createElement('a');
+    newATag.href = "javascript:void(0)";
+    newATag.text = "Delete";
+    newATag.className = "del_btn";
+    newATag.onclick = function() {deleteRow(this, 1);};
 
 
-        var scriptJSON = new Object();
-        scriptJSON.user_code = document.getElementById("userCode").value;
-        scriptJSON.type = "Move";
-        scriptJSON.old_code = selectResult.text;
-        scriptJSON.line_number_old = selectResult.lineNum;
-        scriptJSON.start_pos_old = selectResult.startPos;
-        scriptJSON.length_old = selectResult.len;
-        scriptJSON.new_code = tds[3].innerText;
-        scriptJSON.line_number_new = tds[4].innerText;
-        scriptJSON.start_pos_new = tmpStartPos;
-        scriptJSON.length_new = tmpLen;
-        scriptJSON.change_id = document.getElementById("current").value;
+    var newCell1 = newRow.insertCell(0);
+    var newCell2 = newRow.insertCell(1);
+    var newCell3 = newRow.insertCell(2);
+    var newCell4 = newRow.insertCell(3);
+    var newCell5 = newRow.insertCell(4);
+    var newCell6 = newRow.insertCell(5);
 
-        oneScriptSubmit(scriptJSON);
-    }
+    newCell1.innerText = 'Move';
+    newCell2.innerText = selectResult.text;
+    newCell3.innerText = selectResult.lineNum;
+    newCell4.innerText = storedSelectionRight.text;
+    newCell5.innerText = storedSelectionRight.lineNum;
+    newCell6.appendChild(newATag);
+
+    check = 0;
+
+    var scriptJSON = new Object();
+    scriptJSON.user_code = document.getElementById("userCode").value;
+    scriptJSON.type = "Move";
+    scriptJSON.old_code = selectResult.text;
+    scriptJSON.line_number_old = selectResult.lineNum;
+    scriptJSON.start_pos_old = selectResult.startPos;
+    scriptJSON.length_old = selectResult.len;
+    scriptJSON.new_code = storedSelectionRight.text;
+    scriptJSON.line_number_new = storedSelectionRight.lineNum;
+    scriptJSON.start_pos_new = storedSelectionRight.startPos;
+    scriptJSON.length_new = storedSelectionRight.len;
+    scriptJSON.change_id = document.getElementById("current").value;
+
+    oneScriptSubmit(scriptJSON);
+
+    storedSelectionLeft.len = 0;
+    storedSelectionRight.len = 0;
 }
 
 function GenMoveRight() {
     if (getSelectResult().len == 0) {
-        alert("Please select texts.");
+        alert("Please select texts on the right side.");
+        return;
+    } else if (storedSelectionLeft.len == 0) {
+        alert("Please select texts on the left side.");
         return;
     }
-    if (check == 0) {
-        var table = document.getElementById("edit_scripts");
-        var newRow = table.insertRow();
-        var selectResult = getSelectResult();
-        newRow.id = "/" + selectResult.len;
 
-        var newATag = document.createElement('a');
-        newATag.href = "javascript:void(0)";
-        newATag.text = "Delete";
-        newATag.className = "del_btn";
-        newATag.onclick = function() {deleteRow(this, 1);};
+    var table = document.getElementById("edit_scripts");
+    var newRow = table.insertRow();
+    var selectResult = getSelectResult();
+    newRow.id = storedSelectionLeft.len + "/" + selectResult.len;
 
-
-        var newCell1 = newRow.insertCell(0);
-        var newCell2 = newRow.insertCell(1);
-        var newCell3 = newRow.insertCell(2);
-        var newCell4 = newRow.insertCell(3);
-        var newCell5 = newRow.insertCell(4);
-        var newCell6 = newRow.insertCell(5);
-
-        newCell1.innerText = 'Move';
-        newCell4.innerText = selectResult.text;
-        newCell5.innerText = selectResult.lineNum;
-        newCell6.appendChild(newATag);
-        tmpStartPos = selectResult.startPos;
-        tmpLen = selectResult.len;
-        check = 1;
-    } else if (check == 2) {
-        var selectResult = getSelectResult();
-        var table = document.getElementById("edit_scripts");
-        var trs = table.children[0].children;
-        var tr = trs[trs.length - 1];
-        var tds = tr.children;
-        tr.id = tr.id + selectResult.len;
-
-        tds[3].innerText = selectResult.text;
-        tds[4].innerText = selectResult.lineNum;
-        check = 0;
+    var newATag = document.createElement('a');
+    newATag.href = "javascript:void(0)";
+    newATag.text = "Delete";
+    newATag.className = "del_btn";
+    newATag.onclick = function() {deleteRow(this, 1);};
 
 
-        var scriptJSON = new Object();
-        scriptJSON.user_code = document.getElementById("userCode").value;
-        scriptJSON.type = "Move";
-        scriptJSON.old_code = tds[1].innerText;
-        scriptJSON.line_number_old = tds[2].innerText;
-        scriptJSON.start_pos_old = tmpStartPos;
-        scriptJSON.length_old = tmpLen;
-        scriptJSON.new_code = selectResult.text;
-        scriptJSON.line_number_new = selectResult.lineNum;
-        scriptJSON.start_pos_new = selectResult.startPos;
-        scriptJSON.length_new = selectResult.len;
-        scriptJSON.change_id = document.getElementById("current").value;
+    var newCell1 = newRow.insertCell(0);
+    var newCell2 = newRow.insertCell(1);
+    var newCell3 = newRow.insertCell(2);
+    var newCell4 = newRow.insertCell(3);
+    var newCell5 = newRow.insertCell(4);
+    var newCell6 = newRow.insertCell(5);
 
-        oneScriptSubmit(scriptJSON);
-    }
+    newCell1.innerText = 'Move';
+    newCell2.innerText = storedSelectionLeft.text;
+    newCell3.innerText = storedSelectionLeft.lineNum;
+    newCell4.innerText = selectResult.text;
+    newCell5.innerText = selectResult.lineNum;
+    newCell6.appendChild(newATag);
+
+    check = 0;
+
+    var scriptJSON = new Object();
+    scriptJSON.user_code = document.getElementById("userCode").value;
+    scriptJSON.type = "Move";
+    scriptJSON.old_code = storedSelectionLeft.text;
+    scriptJSON.line_number_old = storedSelectionLeft.lineNum;
+    scriptJSON.start_pos_old = storedSelectionLeft.startPos;
+    scriptJSON.length_old = storedSelectionLeft.len;
+    scriptJSON.new_code = selectResult.text;
+    scriptJSON.line_number_new = selectResult.lineNum;
+    scriptJSON.start_pos_new = selectResult.startPos;
+    scriptJSON.length_new = selectResult.len;
+    scriptJSON.change_id = document.getElementById("current").value;
+
+    oneScriptSubmit(scriptJSON);
+
+    storedSelectionLeft.len = 0;
+    storedSelectionRight.len = 0;
 }
 
 function GenUpdateLeft() {
     if (getSelectResult().len == 0) {
-        alert("Please select texts.");
+        alert("Please select texts on the left side.");
+        return;
+    } else if (storedSelectionRight.len == 0) {
+        alert("Please select texts on the right side.");
         return;
     }
-    if (check == 0) {
-        var table = document.getElementById("edit_scripts");
-        var newRow = table.insertRow();
-        var selectResult = getSelectResult();
-        newRow.id = selectResult.len +  "/";
+    
+    var table = document.getElementById("edit_scripts");
+    var newRow = table.insertRow();
+    var selectResult = getSelectResult();
+    newRow.id = selectResult.len +  "/" + storedSelectionRight.len;
 
-        var newATag = document.createElement('a');
-        newATag.href = "javascript:void(0)";
-        newATag.text = "Delete";
-        newATag.className = "del_btn";
-        newATag.onclick = function() {deleteRow(this, 1);};
-
-
-        var newCell1 = newRow.insertCell(0);
-        var newCell2 = newRow.insertCell(1);
-        var newCell3 = newRow.insertCell(2);
-        var newCell4 = newRow.insertCell(3);
-        var newCell5 = newRow.insertCell(4);
-        var newCell6 = newRow.insertCell(5);
-
-        newCell1.innerText = 'Update';
-        newCell2.innerText = selectResult.text;
-        newCell3.innerText = selectResult.lineNum;
-        newCell6.appendChild(newATag);
-        tmpStartPos = selectResult.startPos;
-        tmpLen = selectResult.len;
-        check = 4;
-    } else if (check == 3) {
-        var selectResult = getSelectResult();
-        var table = document.getElementById("edit_scripts");
-        var trs = table.children[0].children;
-        var tr = trs[trs.length - 1];
-        var tds = tr.children;
-        tr.id = selectResult.len + tr.id;
-
-        tds[1].innerText = selectResult.text;
-        tds[2].innerText = selectResult.lineNum;
-        check = 0;
+    var newATag = document.createElement('a');
+    newATag.href = "javascript:void(0)";
+    newATag.text = "Delete";
+    newATag.className = "del_btn";
+    newATag.onclick = function() {deleteRow(this, 1);};
 
 
-        var scriptJSON = new Object();
-        scriptJSON.user_code = document.getElementById("userCode").value;
-        scriptJSON.type = "Update";
-        scriptJSON.old_code = selectResult.text;
-        scriptJSON.line_number_old = selectResult.lineNum;
-        scriptJSON.start_pos_old = selectResult.startPos;
-        scriptJSON.length_old = selectResult.len;
-        scriptJSON.new_code = tds[3].innerText;
-        scriptJSON.line_number_new = tds[4].innerText;
-        scriptJSON.start_pos_new = tmpStartPos;
-        scriptJSON.length_new = tmpLen;
-        scriptJSON.change_id = document.getElementById("current").value;
+    var newCell1 = newRow.insertCell(0);
+    var newCell2 = newRow.insertCell(1);
+    var newCell3 = newRow.insertCell(2);
+    var newCell4 = newRow.insertCell(3);
+    var newCell5 = newRow.insertCell(4);
+    var newCell6 = newRow.insertCell(5);
 
-        oneScriptSubmit(scriptJSON);
-    }
+    newCell1.innerText = 'Update';
+    newCell2.innerText = selectResult.text;
+    newCell3.innerText = selectResult.lineNum;
+    newCell4.innerText = storedSelectionRight.text;
+    newCell5.innerText = storedSelectionRight.lineNum;
+    newCell6.appendChild(newATag);
+
+    check = 0;
+
+    var scriptJSON = new Object();
+    scriptJSON.user_code = document.getElementById("userCode").value;
+    scriptJSON.type = "Update";
+    scriptJSON.old_code = selectResult.text;
+    scriptJSON.line_number_old = selectResult.lineNum;
+    scriptJSON.start_pos_old = selectResult.startPos;
+    scriptJSON.length_old = selectResult.len;
+    scriptJSON.new_code = storedSelectionRight.text;
+    scriptJSON.line_number_new = storedSelectionRight.lineNum;
+    scriptJSON.start_pos_new = storedSelectionRight.startPos;
+    scriptJSON.length_new = storedSelectionRight.len;
+    scriptJSON.change_id = document.getElementById("current").value;
+
+    oneScriptSubmit(scriptJSON);
+
+    storedSelectionLeft.len = 0;
+    storedSelectionRight.len = 0;
 }
 
 function GenUpdateRight() {
     if (getSelectResult().len == 0) {
-        alert("Please select texts.");
+        alert("Please select texts on the right side.");
+        return;
+    } else if (storedSelectionLeft.len == 0) {
+        alert("Please select texts on the left side.");
         return;
     }
-    if (check == 0) {
-        var table = document.getElementById("edit_scripts");
-        var newRow = table.insertRow();
-        var selectResult = getSelectResult();
-        newRow.id =  "/" + selectResult.len;
 
-        var newATag = document.createElement('a');
-        newATag.href = "javascript:void(0)";
-        newATag.text = "Delete";
-        newATag.className = "del_btn";
-        newATag.onclick = function() {deleteRow(this, 1);};
+    var table = document.getElementById("edit_scripts");
+    var newRow = table.insertRow();
+    var selectResult = getSelectResult();
+    newRow.id =  storedSelectionLeft.len + "/" + selectResult.len;
 
-
-        var newCell1 = newRow.insertCell(0);
-        var newCell2 = newRow.insertCell(1);
-        var newCell3 = newRow.insertCell(2);
-        var newCell4 = newRow.insertCell(3);
-        var newCell5 = newRow.insertCell(4);
-        var newCell6 = newRow.insertCell(5);
-
-        newCell1.innerText = 'Update';
-        newCell4.innerText = selectResult.text;
-        newCell5.innerText = selectResult.lineNum;
-        newCell6.appendChild(newATag);
-        tmpStartPos = selectResult.startPos;
-        tmpLen = selectResult.len;
-        check = 3;
-    } else if (check == 4) {
-        var selectResult = getSelectResult();
-        var table = document.getElementById("edit_scripts");
-        var trs = table.children[0].children;
-        var tr = trs[trs.length - 1];
-        var tds = tr.children;
-        tr.id = tr.id + selectResult.len;
-
-        tds[3].innerText = selectResult.text;
-        tds[4].innerText = selectResult.lineNum;
-        check = 0;
+    var newATag = document.createElement('a');
+    newATag.href = "javascript:void(0)";
+    newATag.text = "Delete";
+    newATag.className = "del_btn";
+    newATag.onclick = function() {deleteRow(this, 1);};
 
 
-        var scriptJSON = new Object();
-        scriptJSON.user_code = document.getElementById("userCode").value;
-        scriptJSON.type = "Update";
-        scriptJSON.old_code = tds[1].innerText;
-        scriptJSON.line_number_old = tds[2].innerText;
-        scriptJSON.start_pos_old = tmpStartPos;
-        scriptJSON.length_old = tmpLen;
-        scriptJSON.new_code = selectResult.text;
-        scriptJSON.line_number_new = selectResult.lineNum;
-        scriptJSON.start_pos_new = selectResult.startPos;
-        scriptJSON.length_new = selectResult.len;
-        scriptJSON.change_id = document.getElementById("current").value;
+    var newCell1 = newRow.insertCell(0);
+    var newCell2 = newRow.insertCell(1);
+    var newCell3 = newRow.insertCell(2);
+    var newCell4 = newRow.insertCell(3);
+    var newCell5 = newRow.insertCell(4);
+    var newCell6 = newRow.insertCell(5);
 
-        oneScriptSubmit(scriptJSON);
-    }
+    newCell1.innerText = 'Update';
+    newCell2.innerText = storedSelectionLeft.text;
+    newCell3.innerText = storedSelectionLeft.lineNum;
+    newCell4.innerText = selectResult.text;
+    newCell5.innerText = selectResult.lineNum;
+    newCell6.appendChild(newATag);
+
+    check = 0;
+
+    var scriptJSON = new Object();
+    scriptJSON.user_code = document.getElementById("userCode").value;
+    scriptJSON.type = "Update";
+    scriptJSON.old_code = storedSelectionLeft.text;
+    scriptJSON.line_number_old = storedSelectionLeft.lineNum;
+    scriptJSON.start_pos_old = storedSelectionLeft.startPos;
+    scriptJSON.length_old = storedSelectionLeft.len;
+    scriptJSON.new_code = selectResult.text;
+    scriptJSON.line_number_new = selectResult.lineNum;
+    scriptJSON.start_pos_new = selectResult.startPos;
+    scriptJSON.length_new = selectResult.len;
+    scriptJSON.change_id = document.getElementById("current").value;
+
+    oneScriptSubmit(scriptJSON);
+
+    storedSelectionLeft.len = 0;
+    storedSelectionRight.len = 0;
 }
 
 async function deleteRow(element, e) {
