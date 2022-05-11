@@ -1,0 +1,9 @@
+# DB properties
+/db
+
+*.txt
+*.log
+
+/changes
+
+/node_modules
