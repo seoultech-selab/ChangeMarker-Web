@@ -1,3 +1,8 @@
+html, body {
+    font-family: Franklin Gothic, Charcoal, sans-serif;
+    font-weight: 90;
+    font-size: 22px;
+}
 div {
     line-height: 30px;
 }
@@ -5,9 +10,47 @@ div {
 img {
     width: 100%;
     max-width: 1000px;
-    border: 1px solid #a4a4a4;
+    border: 5px solid #F6F6F6;
+    border-radius: 7px;
+    -moz-border-radius: 7px;
+    -khtml-border-radius: 7px;
+    -webkit-border-radius: 7px;
+}
+
+h1 {
+    color: #00ADB5;
 }
 
 .example_img {
     border: 0px;
+}
+
+.contents {
+    text-align: center;
+}
+
+.image_container {
+    color: #8f8f8f;
+    text-align: center;
+}
+
+.emphasize {
+    color: #f19292;
+    font-weight: bold;
+}
+
+.delete_exam {
+    background-color: #ffebe9;
+}
+
+.insert_exam {
+    background-color: #e6ffec;
+}
+
+.file_green_exam {
+    background-color: #0dff47;
+}
+
+.file_red_exam {
+    background-color: #fd6a78;
 }

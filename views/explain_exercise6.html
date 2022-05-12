@@ -17,26 +17,169 @@
         <div class="container">
         <section id="section">
             <div id="left">
-                <pre><code class="java" id="inner_left">import java.util.Map;
+                <pre><code class="java" id="inner_left">package org.elasticsearch.search.fetch;
 
-<sapn class="code_delete">  private BlockServiceHandler mWorkerServiceHandler = null;</sapn></code></pre>
+import org.apache.lucene.search.Scorer;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+
+import static java.util.Collections.unmodifiableMap;
+
+public class FetchPhase implements SearchPhase {
+
+    private final FetchSubPhase[] fetchSubPhases;
+
+    @Override
+    public Map parseElements() {
+        Map parseElements = new HashMap();
+        for (FetchSubPhase fetchSubPhase : fetchSubPhases) {
+            parseElements.putAll(fetchSubPhase.parseElements());
+        }
+        return unmodifiableMap(parseElements);
+    }
+    
+
+    private InternalSearchHit getInternalNestedIdentity() {
+        int currentParent = nestedSubDocId;
+        ObjectMapper nestedParentObjectMapper;
+        ObjectMapper current = nestedObjectMapper;
+        String originalName = nestedObjectMapper.name();
+<span class="code_delete">        private BlockServiceHandler mWorkerServiceHandler = null;</span>
+        InternalSearchHit.InternalNestedIdentity nestedIdentity = null;
+        do {
+            Query parentFilter;
+            if (nestedParentObjectMapper != null) {
+                if (nestedParentObjectMapper.nested().isNested() == false) {
+                    current = nestedParentObjectMapper;
+                    continue;
+                }
+                parentFilter = nestedParentObjectMapper.nestedTypeFilter();
+            } else {
+                parentFilter = Queries.newNonNestedFilter();
+            }
+
+            Query childFilter = nestedObjectMapper.nestedTypeFilter();
+            if (childFilter == null) {
+                current = nestedParentObjectMapper;
+                continue;
+            }
+            Scorer childScorer = childWeight.scorer(subReaderContext);
+            if (childScorer == null) {
+                current = nestedParentObjectMapper;
+                continue;
+            }
+            DocIdSetIterator childIter = childScorer.iterator();
+
+            int offset = 0;
+            int nextParent = parentBits.nextSetBit(currentParent);
+            currentParent = nextParent;
+            current = nestedObjectMapper = nestedParentObjectMapper;
+            int currentPrefix = current == null ? 0 : current.name().length() + 1;
+            if (current != null) {
+                originalName = current.name();
+            }
+        } while (current != null);
+        return nestedIdentity;
+    }
+
+    private void loadStoredFields(SearchContext searchContext) {
+        fieldVisitor.reset();
+        try {
+            readerContext.reader().document(docId, fieldVisitor);
+        } catch (IOException e) {
+            throw new FetchPhaseExecutionException(searchContext, e);
+        }
+    }
+}</code></pre>
             </div>
 
-            <div class="d1" id="hr1"></div>
+            <div class="d1" id="hr1">
+                <input type="button" class="move_inner" id="#1" value="1" onclick="move_inner()">
+            </div>
 
             <div id="right">
-                <pre><code class="java" id="inner_right">import java.util.Map;
+                <pre><code class="java" id="inner_right">package org.elasticsearch.search.fetch;
 
-<span class="code_insert">  private BlockWorkerClientServiceHandler mWorkerServiceHandler = null;</span></code></pre>
+import org.apache.lucene.search.Scorer;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+
+import static java.util.Collections.unmodifiableMap;
+
+public class FetchPhase implements SearchPhase {
+
+    private final FetchSubPhase[] fetchSubPhases;
+
+    @Override
+    public Map parseElements() {
+        Map parseElements = new HashMap();
+        for (FetchSubPhase fetchSubPhase : fetchSubPhases) {
+            parseElements.putAll(fetchSubPhase.parseElements());
+        }
+        return unmodifiableMap(parseElements);
+    }
+    
+
+    private InternalSearchHit getInternalNestedIdentity() {
+        int currentParent = nestedSubDocId;
+        ObjectMapper nestedParentObjectMapper;
+        ObjectMapper current = nestedObjectMapper;
+        String originalName = nestedObjectMapper.name();
+<span class="code_insert">        private BlockWorkerClientServiceHandler mWorkerServiceHandler = null;</span>
+        InternalSearchHit.InternalNestedIdentity nestedIdentity = null;
+        do {
+            Query parentFilter;
+            if (nestedParentObjectMapper != null) {
+                if (nestedParentObjectMapper.nested().isNested() == false) {
+                    current = nestedParentObjectMapper;
+                    continue;
+                }
+                parentFilter = nestedParentObjectMapper.nestedTypeFilter();
+            } else {
+                parentFilter = Queries.newNonNestedFilter();
+            }
+
+            Query childFilter = nestedObjectMapper.nestedTypeFilter();
+            if (childFilter == null) {
+                current = nestedParentObjectMapper;
+                continue;
+            }
+            Scorer childScorer = childWeight.scorer(subReaderContext);
+            if (childScorer == null) {
+                current = nestedParentObjectMapper;
+                continue;
+            }
+            DocIdSetIterator childIter = childScorer.iterator();
+
+            int offset = 0;
+            int nextParent = parentBits.nextSetBit(currentParent);
+            currentParent = nextParent;
+            current = nestedObjectMapper = nestedParentObjectMapper;
+            int currentPrefix = current == null ? 0 : current.name().length() + 1;
+            if (current != null) {
+                originalName = current.name();
+            }
+        } while (current != null);
+        return nestedIdentity;
+    }
+
+    private void loadStoredFields(SearchContext searchContext) {
+        fieldVisitor.reset();
+        try {
+            readerContext.reader().document(docId, fieldVisitor);
+        } catch (IOException e) {
+            throw new FetchPhaseExecutionException(searchContext, e);
+        }
+    }
+}</code></pre>
             </div>
         </section>
         <div class="section_container">
             <div class="d2" id="hr2">
                 Edit Script
             </div>
-            <form action="/" method="post">
-                <input id="checkButton" type="button" value="Check!" onclick="checkExam();"/>
-            </form>
         </div>
         <footer id="footer">
             <table id="edit_scripts" onchange="checkExam();">

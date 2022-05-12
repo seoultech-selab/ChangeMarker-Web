@@ -2,6 +2,13 @@ function prevExplain() {
     var currentPage = Number(document.getElementById('current_page').innerHTML);
     var explainWindow = document.getElementById('explain_window');
     var exerciseWindow = document.getElementById('exercise_window');
+    var checkExercise = Number(document.getElementById('checkExercise').value);
+    
+    if (checkExercise + 1 >= currentPage) {
+        var nextButton = document.getElementById('next_button');
+        nextButton.style.color = "#393E46";
+        nextButton.disabled = false;
+    }
 
     if (currentPage == 1) {
         alert("This is the first page.");
@@ -9,8 +16,8 @@ function prevExplain() {
     }
     explainWindow.src = "/views/explain" + (currentPage - 1) + ".html";
     if ((currentPage - 1) >= 3 && (currentPage - 1) <= 6) {
-        explainWindow.style.height = "50%";
-        exerciseWindow.style.height = "49%";
+        explainWindow.style.height = "39%";
+        exerciseWindow.style.height = "60%";
         exerciseWindow.style.display = "block";
         exerciseWindow.src = "/views/explain_exercise" + (currentPage - 1) + ".html";
     }
@@ -25,9 +32,10 @@ function nextExplain() {
     var checkExercise = Number(document.getElementById('checkExercise').value);
     var currentPage = Number(document.getElementById('current_page').innerHTML);
 
-    if (checkExercise < currentPage) {
-        alert('Please click the "Check!" button and confirm the codes.');
-        return;
+    if (checkExercise <= currentPage) {
+        var nextButton = document.getElementById('next_button');
+        nextButton.style.color = "#d7d7d8";
+        nextButton.disabled = true;
     }
 
     var totalPage = Number(document.getElementById('total_page').innerHTML);
@@ -41,8 +49,8 @@ function nextExplain() {
     }
     explainWindow.src = "/views/explain" + newPageNum + ".html";
     if (newPageNum >= 3 && newPageNum <= 6) {
-        explainWindow.style.height = "50%";
-        exerciseWindow.style.height = "49%";
+        explainWindow.style.height = "39%";
+        exerciseWindow.style.height = "60%";
         exerciseWindow.style.display = "block";
         exerciseWindow.src = "/views/explain_exercise" + newPageNum + ".html";
     }

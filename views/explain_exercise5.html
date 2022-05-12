@@ -17,18 +17,104 @@
         <div class="container">
         <section id="section">
             <div id="left">
-                <pre><code class="java" id="inner_left">if (address == null) {
-  output.writeUTF(getHostName());
-<sapn class="code_delete">  address = socketAddress.getAddress();</sapn>
+                <pre><code class="java" id="inner_left">package org.elasticsearch.common.settings.loader;
+
+import org.apache.lucene.util.IOUtils;
+import org.elasticsearch.common.io.FastStringReader;
+import org.elasticsearch.common.io.stream.BytesStreamInput;
+
+import java.io.IOException;
+import java.util.Map;
+import java.util.Properties;
+
+import static com.google.common.collect.Maps.newHashMap;
+
+public class PropertiesSettingsLoader implements SettingsLoader {
+
+    @Override
+    public Map<String, String> load(String source) throws IOException {
+        Properties props = new Properties();
+        FastStringReader reader = new FastStringReader(source);
+        try {
+            props.load(reader);
+            Map<String, String> result = newHashMap();
+            for (Map.Entry entry : props.entrySet()) {
+                result.put((String) entry.getKey(), (String) entry.getValue());
+            }
+            return result;
+        } finally {
+            IOUtils.closeWhileHandlingException(reader);
+        }
+    }
+
+    @Override
+    public Map<String, String> load(byte[] source) throws IOException {
+<span class="code_delete">        Properties props = new Properties();</span>
+        BytesStreamInput stream = new BytesStreamInput(source);
+        try {
+            props.load(stream);
+            Map<String, String> result = newHashMap();
+            for (Map.Entry entry : props.entrySet()) {
+                result.put((String) entry.getKey(), (String) entry.getValue());
+            }
+            return result;
+        } finally {
+            IOUtils.closeWhileHandlingException(stream);
+        }
+    }
 }</code></pre>
             </div>
 
-            <div class="d1" id="hr1"></div>
+            <div class="d1" id="hr1">
+                <input type="button" class="move_inner" id="#1" value="1" onclick="move_inner()">
+            </div>
 
             <div id="right">
-                <pre><code class="java" id="inner_right"><span class="code_insert">address = socketAddress.getAddress();</span>
-if (address == null) {
-  output.writeUTF(getHostName());
+                <pre><code class="java" id="inner_right">package org.elasticsearch.common.settings.loader;
+
+import org.apache.lucene.util.IOUtils;
+import org.elasticsearch.common.io.FastStringReader;
+import org.elasticsearch.common.io.stream.BytesStreamInput;
+
+import java.io.IOException;
+import java.util.Map;
+import java.util.Properties;
+
+import static com.google.common.collect.Maps.newHashMap;
+
+public class PropertiesSettingsLoader implements SettingsLoader {
+
+    @Override
+    public Map<String, String> load(String source) throws IOException {
+        Properties props = new Properties();
+        FastStringReader reader = new FastStringReader(source);
+        try {
+            props.load(reader);
+            Map<String, String> result = newHashMap();
+            for (Map.Entry entry : props.entrySet()) {
+                result.put((String) entry.getKey(), (String) entry.getValue());
+            }
+            return result;
+        } finally {
+            IOUtils.closeWhileHandlingException(reader);
+        }
+    }
+
+    @Override
+    public Map<String, String> load(byte[] source) throws IOException {
+        BytesStreamInput stream = new BytesStreamInput(source);
+        try {
+<span class="code_insert">            Properties props = new Properties();</span>
+            props.load(stream);
+            Map<String, String> result = newHashMap();
+            for (Map.Entry entry : props.entrySet()) {
+                result.put((String) entry.getKey(), (String) entry.getValue());
+            }
+            return result;
+        } finally {
+            IOUtils.closeWhileHandlingException(stream);
+        }
+    }
 }</code></pre>
             </div>
         </section>
@@ -36,9 +122,6 @@ if (address == null) {
             <div class="d2" id="hr2">
                 Edit Script
             </div>
-            <form action="/" method="post">
-                <input id="checkButton" type="button" value="Check!" onclick="checkExam();"/>
-            </form>
         </div>
         <footer id="footer">
             <table id="edit_scripts" onchange="checkExam();">

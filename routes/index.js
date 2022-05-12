@@ -27,6 +27,7 @@ router.use('/public', express.static(path.join(__dirname, '../public')));
 router.use('/views', express.static(path.join(__dirname, '../views')));
 
 router.get('/', tutorial);
+router.get('/v2', tutorial);
 router.post('/', main);
 
 const submit = require('./submitRoute');

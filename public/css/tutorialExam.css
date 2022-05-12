@@ -10,7 +10,7 @@ section {
     border-bottom: 1px solid #cfcfcf;
     padding-left: 20px;
     padding-right: 20px;
-    height: 85%;
+    height: calc(70% - 20px);
     width: calc(100% - 40px);
     display: flex;
     justify-content: center;
@@ -18,7 +18,7 @@ section {
 footer {
     overflow-y: auto;
     vertical-align: bottom;
-    height: 70%;
+    height: calc(30% - 20px);
 }
 pre, code {
     width: max-content;
@@ -59,7 +59,7 @@ footer table {
 }
 
 .container {
-    height: 70%
+    height: 100%
 }
 
 .blank {
