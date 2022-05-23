@@ -108,12 +108,7 @@ function GenInsert() {
   var newRow = table.insertRow();
   newRow.id = "/" + selectResult.len + ":/" + selectResult.startPos;
 
-  var newATag = document.createElement('a');
-  newATag.href = "javascript:void(0)";
-  newATag.text = "Insert";
-  newATag.className = "del_btn";
-  newATag.onclick = function() {deleteRow(this, 0);};
-
+  var newATag = createDeleteButton(0);
 
   var newCell1 = newRow.insertCell(0);
   var newCell2 = newRow.insertCell(1);
@@ -137,6 +132,14 @@ function GenInsert() {
   nextButton.disabled = false;
 }
 
+function createDeleteButton(delType) {
+  var newATag = document.createElement('a');
+  newATag.href = "javascript:void(0)";
+  newATag.text = "Delete";
+  newATag.className = "del_btn";
+  newATag.onclick = function () { deleteRow(this, delType); };
+  return newATag;
+}
 
 async function deleteRow(element, e) {
     var table = document.getElementById("edit_scripts");
@@ -150,14 +153,6 @@ async function deleteRow(element, e) {
     }
     table.deleteRow(rowNum);
 }
-
-
-
-
-
-
-
-
 
 var selectResult = new Object();
 

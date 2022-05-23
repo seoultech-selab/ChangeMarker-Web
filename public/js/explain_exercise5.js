@@ -176,11 +176,6 @@ async function GenController(e) {
 
 var hintCnt = 0;
 
-
-
-
-
-
 function GenMoveLeft() {
   var selectResult = getSelectResult();
   if (getSelectResult().len == 0) {
@@ -255,12 +250,7 @@ function GenMoveLeft() {
   var selectResult = getSelectResult();
   newRow.id = storedSelectionRight.len + "/" + selectResult.len;
 
-  var newATag = document.createElement('a');
-  newATag.href = "javascript:void(0)";
-  newATag.text = "Delete";
-  newATag.className = "del_btn";
-  newATag.onclick = function() {deleteRow(this, 1);};
-
+  var newATag = createDeleteButton(1);
 
   var newCell1 = newRow.insertCell(0);
   var newCell2 = newRow.insertCell(1);
@@ -358,12 +348,7 @@ function GenMoveRight() {
   var selectResult = getSelectResult();
   newRow.id = storedSelectionLeft.len + "/" + selectResult.len;
 
-  var newATag = document.createElement('a');
-  newATag.href = "javascript:void(0)";
-  newATag.text = "Delete";
-  newATag.className = "del_btn";
-  newATag.onclick = function() {deleteRow(this, 1);};
-
+  var newATag = createDeleteButton(1);
 
   var newCell1 = newRow.insertCell(0);
   var newCell2 = newRow.insertCell(1);
@@ -387,8 +372,14 @@ function GenMoveRight() {
   nextButton.disabled = false;
 }
 
-
-
+function createDeleteButton(delType) {
+  var newATag = document.createElement('a');
+  newATag.href = "javascript:void(0)";
+  newATag.text = "Delete";
+  newATag.className = "del_btn";
+  newATag.onclick = function () { deleteRow(this, delType); };
+  return newATag;
+}
 
 async function deleteRow(element, e) {
     var table = document.getElementById("edit_scripts");
@@ -402,14 +393,6 @@ async function deleteRow(element, e) {
     }
     table.deleteRow(rowNum);
 }
-
-
-
-
-
-
-
-
 
 var selectResult = new Object();
 
