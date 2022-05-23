@@ -1,5 +1,5 @@
 # DB properties
-/db
+/db/db_info.js
 
 *.txt
 *.log
