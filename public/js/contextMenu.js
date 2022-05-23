@@ -1,4 +1,4 @@
-var leftSel = new Selection();
+var leftSel = new Object();
 
 // Context Menu List 렌더링
 function renderContextMenuList( list ){

@@ -4,12 +4,7 @@ class Selection {
   startPos = -1;
   len = 0;
 
-  constructor(text, lineNum) {
-    this.text = text;
-    this.lineNum = lineNum;
-  }
-
-  constructor(text, lineNum, startPos, len) {
+  constructor(text, lineNum, startPos = -1, len = 0) {
     this.text = text;
     this.lineNum = lineNum;
     this.startPos = startPos;
@@ -147,7 +142,7 @@ function addEditOp(opType, newRow, leftSel, rightSel, delType) {
   var scriptJSON = new Object();
   
   cellOpType.innerText = opType;
-  if(!leftSel) {
+  if(leftSel) {
     cellOldCode.innerText = leftSel.text;
     cellOldLine.innerText = leftSel.lineNum;  
     scriptJSON.old_code = leftSel.text;
@@ -155,7 +150,7 @@ function addEditOp(opType, newRow, leftSel, rightSel, delType) {
     scriptJSON.start_pos_old = leftSel.startPos;
     scriptJSON.length_old = leftSel.len;  
   }
-  if(!rightSel) {
+  if(rightSel) {
     cellNewCode.innerText = rightSel.text;
     cellNewLine.innerText = rightSel.lineNum;
     scriptJSON.new_code = rightSel.text;
