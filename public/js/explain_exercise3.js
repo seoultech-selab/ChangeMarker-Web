@@ -153,14 +153,6 @@ async function deleteRow(element, e) {
     table.deleteRow(rowNum);
 }
 
-
-
-
-
-
-
-
-
 var selectResult = new Object();
 
 // Context Menu List 렌더링
@@ -240,6 +232,7 @@ function handleCreateContextMenu_left(event){
   // Body에 Context Menu를 추가.
   document.body.appendChild( ctxMenu );
 }
+
 function handleCreateContextMenu_right(event){
   // 기본 Context Menu가 나오지 않게 차단
   event.preventDefault();
@@ -296,12 +289,24 @@ function handleClearContextMenu(event){
   if( ctxMenu ){
     ctxMenu.remove();
   }
+  var selected = document.getSelection().getRangeAt(0);
+  if(selected.toString().length > 0) {
+    highlightSelection(selected);
+  }
+}
+
+function highlightSelection(selected) {
+  var old = selected.cloneContents();
+  var span = document.createElement('span');
+  span.style.backgroundColor = '#0FF0F0';
+  span.appendChild(old);
+  selected.deleteContents();
+  selected.insertNode(span);
 }
 
 function getSelectResult() {
   return selectResult;
 }
-
 
 function dragSelect() {
   var result = new Object();
@@ -355,9 +360,6 @@ function dragSelect() {
   selectResult = result;
 }
 
-
-
-
 function move_inner() {
   var left = document.getElementById("left");
   var right = document.getElementById("right")
@@ -366,10 +368,10 @@ function move_inner() {
   right.scrollTo(0, 130);
 }
 
-
-
 function init() {
-    document.getElementById('left').addEventListener('contextmenu', handleCreateContextMenu_left, false);
-    document.getElementById('right').addEventListener('contextmenu', handleCreateContextMenu_right, false);
-    document.addEventListener('click', handleClearContextMenu, false);
+    var left = document.getElementById('left');
+    var right = document.getElementById('right');
+    left.addEventListener('contextmenu', handleCreateContextMenu_left, false);    
+    right.addEventListener('contextmenu', handleCreateContextMenu_right, false);
+    document.addEventListener('click', handleClearContextMenu, false);    
 }
