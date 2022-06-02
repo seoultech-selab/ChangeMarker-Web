@@ -1,4 +1,4 @@
-var selectResult = new Object();
+let leftSel = new Object();
 
 // Context Menu List 렌더링
 function renderContextMenuList( list ){
@@ -136,16 +136,17 @@ function handleClearContextMenu(event){
 }
 
 function getSelectResult() {
-  return selectResult;
+  return leftSel;
 }
 
+
 function dragSelect() {
-  var result = new Object();
-  var selectionText = "";
-  var startNum = "";
-  var endNum = "";
-  var selectionNumber = "";
-  var startPos = 0;
+  let result = new Object();
+  let selectionText = "";
+  let startNum = "";
+  let endNum = "";
+  let selectionNumber = "";
+  let startPos = 0;
 
   if (document.getSelection) {
     selectionText = document.getSelection();
@@ -153,7 +154,7 @@ function dragSelect() {
   } else if (document.selection) {
     selectionText = document.selection.createRange().text;
   }
-
+  
   if (document.getSelection().anchorNode.parentElement.attributes.length == 2 && !(document.getSelection().anchorNode.parentElement.attributes[1].value.includes('#'))) {
     startNum = document.getSelection().anchorNode.parentElement.attributes[1].value;
   } else if (document.getSelection().anchorNode.parentElement.firstChild.parentNode.offsetParent.attributes.length == 2 && !(document.getSelection().anchorNode.parentElement.firstChild.parentNode.offsetParent.attributes[1].value.includes('#'))) {
@@ -182,5 +183,5 @@ function dragSelect() {
   result.startPos = startPos;
   result.len = result.text.length;
 
-  selectResult = result;
+  leftSel = result;
 }

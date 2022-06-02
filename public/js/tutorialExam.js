@@ -5,7 +5,7 @@ async function tutorialCheckAjax(lhs, rhs) {
       data: {lhs : lhs, rhs : rhs},
       dataType: 'json',
       success: function(res) {
-        var checkButton = document.getElementById('checkButton');
+        let checkButton = document.getElementById('checkButton');
 
         if (res.diffCnt == 0) {
           checkButton.value = "Go Next!";
@@ -13,28 +13,25 @@ async function tutorialCheckAjax(lhs, rhs) {
           checkButton.onclick = "";
           checkButton.type = "submit";
 
-          var parentWindow = window.parent.document;
-          var checkExercise = parentWindow.getElementById('checkExercise');
+          let parentWindow = window.parent.document;
+          let checkExercise = parentWindow.getElementById('checkExercise');
           checkExercise.value = String(Number(checkExercise.value) + 1);
           console.log(checkExercise.value);
-          // var startButton = parent.getElementById('start_button');
-          // startButton.style.color = "#000";
-          // startButton.disabled = false;
         }
         else {
           checkButton.style.backgroundColor = "#fd6a78";
           popup = window.open("tutorialPopup.html", "childForm", "width=800, height=300");
           setTimeout(() => {
-            var lhsCodeTag = document.createElement('code');
+            let lhsCodeTag = document.createElement('code');
             lhsCodeTag.innerHTML = res.lhsTemplate;
             lhsCodeTag.className = "java";
-            var rhsCodeTag = document.createElement('code');
+            let rhsCodeTag = document.createElement('code');
             rhsCodeTag.innerHTML = res.rhsTemplate;
             rhsCodeTag.className = "java";
   
-            var lhsPreTag = popup.document.getElementById('inner_left');
+            let lhsPreTag = popup.document.getElementById('inner_left');
             lhsPreTag.appendChild(lhsCodeTag);
-            var rhsPreTag = popup.document.getElementById('inner_right');
+            let rhsPreTag = popup.document.getElementById('inner_right');
             rhsPreTag.appendChild(rhsCodeTag);
           },500);
 
@@ -43,9 +40,9 @@ async function tutorialCheckAjax(lhs, rhs) {
   });
 }
 
-var check = 0;
-var tmpStartPos = 0;
-var tmpLen = 0;
+let check = 0;
+let tmpStartPos = 0;
+let tmpLen = 0;
 async function GenController(e) {
     if (e == 1 && check == 0) {
         GenDelete();
@@ -75,42 +72,30 @@ function GenDelete() {
         alert("Please select texts.");
         return;
     }
-    var table = document.getElementById("edit_scripts");
-    var newRow = table.insertRow();
-    var selectResult = getSelectResult();
+    let table = document.getElementById("edit_scripts");
+    let newRow = table.insertRow();
+    let selectResult = getSelectResult();
     newRow.id = selectResult.len + "/:" + selectResult.startPos + "/";
-    var newATag = document.createElement('a');
+    let newATag = document.createElement('a');
     newATag.href = "javascript:void(0)";
     newATag.text = "Delete";
     newATag.className = "del_btn";
     newATag.onclick = function() {deleteRow(this, 0);};
 
 
-    var newCell1 = newRow.insertCell(0);
-    var newCell2 = newRow.insertCell(1);
-    var newCell3 = newRow.insertCell(2);
-    var newCell4 = newRow.insertCell(3);
-    var newCell5 = newRow.insertCell(4);
-    var newCell6 = newRow.insertCell(5);
+    let newCell1 = newRow.insertCell(0);
+    let newCell2 = newRow.insertCell(1);
+    let newCell3 = newRow.insertCell(2);
+    let newCell4 = newRow.insertCell(3);
+    let newCell5 = newRow.insertCell(4);
+    let newCell6 = newRow.insertCell(5);
 
     newCell1.innerText = 'Delete';
-    var preTag = document.createElement('pre');
+    let preTag = document.createElement('pre');
     preTag.innerHTML = selectResult.text;
     newCell2.appendChild(preTag);
     newCell3.innerText = selectResult.lineNum;
     newCell6.appendChild(newATag);
-
-
-    // var scriptJSON = new Object();
-    // scriptJSON.user_code = document.getElementById("userCode").value;
-    // scriptJSON.type = "Delete";
-    // scriptJSON.old_code = selectResult.text;
-    // scriptJSON.line_number_old = selectResult.lineNum;
-    // scriptJSON.start_pos_old = selectResult.startPos;
-    // scriptJSON.length_old = selectResult.len;
-    // scriptJSON.change_id = document.getElementById("current").value;
-
-    // oneScriptSubmit(scriptJSON);
 }
 
 function GenInsert() {
@@ -118,43 +103,31 @@ function GenInsert() {
         alert("Please select texts.");
         return;
     }
-    var table = document.getElementById("edit_scripts");
-    var newRow = table.insertRow();
-    var selectResult = getSelectResult();
+    let table = document.getElementById("edit_scripts");
+    let newRow = table.insertRow();
+    let selectResult = getSelectResult();
     newRow.id = "/" + selectResult.len + ":/" + selectResult.startPos;
 
-    var newATag = document.createElement('a');
+    let newATag = document.createElement('a');
     newATag.href = "javascript:void(0)";
     newATag.text = "Delete";
     newATag.className = "del_btn";
     newATag.onclick = function() {deleteRow(this, 0);};
 
 
-    var newCell1 = newRow.insertCell(0);
-    var newCell2 = newRow.insertCell(1);
-    var newCell3 = newRow.insertCell(2);
-    var newCell4 = newRow.insertCell(3);
-    var newCell5 = newRow.insertCell(4);
-    var newCell6 = newRow.insertCell(5);
+    let newCell1 = newRow.insertCell(0);
+    let newCell2 = newRow.insertCell(1);
+    let newCell3 = newRow.insertCell(2);
+    let newCell4 = newRow.insertCell(3);
+    let newCell5 = newRow.insertCell(4);
+    let newCell6 = newRow.insertCell(5);
 
     newCell1.innerText = 'Insert';
-    var preTag = document.createElement('pre');
+    let preTag = document.createElement('pre');
     preTag.innerHTML = selectResult.text;
     newCell4.appendChild(preTag);
     newCell5.innerText = selectResult.lineNum;
     newCell6.appendChild(newATag);
-
-
-    // var scriptJSON = new Object();
-    // scriptJSON.user_code = document.getElementById("userCode").value;
-    // scriptJSON.type = "Insert";
-    // scriptJSON.new_code = selectResult.text;
-    // scriptJSON.line_number_new = selectResult.lineNum;
-    // scriptJSON.start_pos_new = selectResult.startPos;
-    // scriptJSON.length_new = selectResult.len;
-    // scriptJSON.change_id = document.getElementById("current").value;
-
-    // oneScriptSubmit(scriptJSON);
 }
 
 function GenMoveLeft() {
@@ -163,27 +136,27 @@ function GenMoveLeft() {
         return;
     }
     if (check == 0) {
-        var table = document.getElementById("edit_scripts");
-        var newRow = table.insertRow();
-        var selectResult = getSelectResult();
+        let table = document.getElementById("edit_scripts");
+        let newRow = table.insertRow();
+        let selectResult = getSelectResult();
         newRow.id = selectResult.len + "/:" + selectResult.startPos + "/";
 
-        var newATag = document.createElement('a');
+        let newATag = document.createElement('a');
         newATag.href = "javascript:void(0)";
         newATag.text = "Delete";
         newATag.className = "del_btn";
         newATag.onclick = function() {deleteRow(this, 1);};
 
 
-        var newCell1 = newRow.insertCell(0);
-        var newCell2 = newRow.insertCell(1);
-        var newCell3 = newRow.insertCell(2);
-        var newCell4 = newRow.insertCell(3);
-        var newCell5 = newRow.insertCell(4);
-        var newCell6 = newRow.insertCell(5);
+        let newCell1 = newRow.insertCell(0);
+        let newCell2 = newRow.insertCell(1);
+        let newCell3 = newRow.insertCell(2);
+        let newCell4 = newRow.insertCell(3);
+        let newCell5 = newRow.insertCell(4);
+        let newCell6 = newRow.insertCell(5);
 
         newCell1.innerText = 'Move';
-        var preTag = document.createElement('pre');
+        let preTag = document.createElement('pre');
         preTag.innerHTML = selectResult.text;
         newCell2.appendChild(preTag);
         newCell3.innerText = selectResult.lineNum;
@@ -192,37 +165,20 @@ function GenMoveLeft() {
         tmpLen = selectResult.len;
         check = 2;
     } else if (check == 1) {
-        var selectResult = getSelectResult();
-        var table = document.getElementById("edit_scripts");
-        var trs = table.children[0].children;
-        var tr = trs[trs.length - 1];
-        var tds = tr.children;
+        let selectResult = getSelectResult();
+        let table = document.getElementById("edit_scripts");
+        let trs = table.children[0].children;
+        let tr = trs[trs.length - 1];
+        let tds = tr.children;
 
-        var trIds = tr.id.split(":");
+        let trIds = tr.id.split(":");
         tr.id = selectResult.len + trIds[0] + ":" + selectResult.startPos + trIds[1];
       
-        var preTag = document.createElement('pre');
+        let preTag = document.createElement('pre');
         preTag.innerHTML = selectResult.text;
         tds[1].appendChild(preTag);
-        // tds[1].innerText = selectResult.text;
         tds[2].innerText = selectResult.lineNum;
         check = 0;
-
-
-        // var scriptJSON = new Object();
-        // scriptJSON.user_code = document.getElementById("userCode").value;
-        // scriptJSON.type = "Move";
-        // scriptJSON.old_code = selectResult.text;
-        // scriptJSON.line_number_old = selectResult.lineNum;
-        // scriptJSON.start_pos_old = selectResult.startPos;
-        // scriptJSON.length_old = selectResult.len;
-        // scriptJSON.new_code = tds[3].innerText;
-        // scriptJSON.line_number_new = tds[4].innerText;
-        // scriptJSON.start_pos_new = tmpStartPos;
-        // scriptJSON.length_new = tmpLen;
-        // scriptJSON.change_id = document.getElementById("current").value;
-
-        // oneScriptSubmit(scriptJSON);
     }
 }
 
@@ -232,28 +188,27 @@ function GenMoveRight() {
         return;
     }
     if (check == 0) {
-        var table = document.getElementById("edit_scripts");
-        var newRow = table.insertRow();
-        var selectResult = getSelectResult();
+        let table = document.getElementById("edit_scripts");
+        let newRow = table.insertRow();
+        let selectResult = getSelectResult();
         newRow.id = "/" + selectResult.len + ":/" + selectResult.startPos;
 
-        var newATag = document.createElement('a');
+        let newATag = document.createElement('a');
         newATag.href = "javascript:void(0)";
         newATag.text = "Delete";
         newATag.className = "del_btn";
         newATag.onclick = function() {deleteRow(this, 1);};
 
 
-        var newCell1 = newRow.insertCell(0);
-        var newCell2 = newRow.insertCell(1);
-        var newCell3 = newRow.insertCell(2);
-        var newCell4 = newRow.insertCell(3);
-        var newCell5 = newRow.insertCell(4);
-        var newCell6 = newRow.insertCell(5);
+        let newCell1 = newRow.insertCell(0);
+        let newCell2 = newRow.insertCell(1);
+        let newCell3 = newRow.insertCell(2);
+        let newCell4 = newRow.insertCell(3);
+        let newCell5 = newRow.insertCell(4);
+        let newCell6 = newRow.insertCell(5);
 
         newCell1.innerText = 'Move';
-        // newCell4.innerText = selectResult.text;
-        var preTag = document.createElement('pre');
+        let preTag = document.createElement('pre');
         preTag.innerHTML = selectResult.text;
         newCell4.appendChild(preTag);
         newCell5.innerText = selectResult.lineNum;
@@ -262,37 +217,20 @@ function GenMoveRight() {
         tmpLen = selectResult.len;
         check = 1;
     } else if (check == 2) {
-        var selectResult = getSelectResult();
-        var table = document.getElementById("edit_scripts");
-        var trs = table.children[0].children;
-        var tr = trs[trs.length - 1];
-        var tds = tr.children;
+        let selectResult = getSelectResult();
+        let table = document.getElementById("edit_scripts");
+        let trs = table.children[0].children;
+        let tr = trs[trs.length - 1];
+        let tds = tr.children;
         
-        var trIds = tr.id.split(":");
+        let trIds = tr.id.split(":");
         tr.id = trIds[0] + selectResult.len + ":" + trIds[1] + selectResult.startPos;
 
-        // tds[3].innerText = selectResult.text;
-        var preTag = document.createElement('pre');
+        let preTag = document.createElement('pre');
         preTag.innerHTML = selectResult.text;
         tds[3].appendChild(preTag);
         tds[4].innerText = selectResult.lineNum;
         check = 0;
-
-
-        // var scriptJSON = new Object();
-        // scriptJSON.user_code = document.getElementById("userCode").value;
-        // scriptJSON.type = "Move";
-        // scriptJSON.old_code = tds[1].innerText;
-        // scriptJSON.line_number_old = tds[2].innerText;
-        // scriptJSON.start_pos_old = tmpStartPos;
-        // scriptJSON.length_old = tmpLen;
-        // scriptJSON.new_code = selectResult.text;
-        // scriptJSON.line_number_new = selectResult.lineNum;
-        // scriptJSON.start_pos_new = selectResult.startPos;
-        // scriptJSON.length_new = selectResult.len;
-        // scriptJSON.change_id = document.getElementById("current").value;
-
-        // oneScriptSubmit(scriptJSON);
     }
 }
 
@@ -302,28 +240,27 @@ function GenUpdateLeft() {
         return;
     }
     if (check == 0) {
-        var table = document.getElementById("edit_scripts");
-        var newRow = table.insertRow();
-        var selectResult = getSelectResult();
+        let table = document.getElementById("edit_scripts");
+        let newRow = table.insertRow();
+        let selectResult = getSelectResult();
         newRow.id = selectResult.len +  "/:" + selectResult.startPos + "/";
 
-        var newATag = document.createElement('a');
+        let newATag = document.createElement('a');
         newATag.href = "javascript:void(0)";
         newATag.text = "Delete";
         newATag.className = "del_btn";
         newATag.onclick = function() {deleteRow(this, 1);};
 
 
-        var newCell1 = newRow.insertCell(0);
-        var newCell2 = newRow.insertCell(1);
-        var newCell3 = newRow.insertCell(2);
-        var newCell4 = newRow.insertCell(3);
-        var newCell5 = newRow.insertCell(4);
-        var newCell6 = newRow.insertCell(5);
+        let newCell1 = newRow.insertCell(0);
+        let newCell2 = newRow.insertCell(1);
+        let newCell3 = newRow.insertCell(2);
+        let newCell4 = newRow.insertCell(3);
+        let newCell5 = newRow.insertCell(4);
+        let newCell6 = newRow.insertCell(5);
 
         newCell1.innerText = 'Update';
-        // newCell2.innerText = selectResult.text;
-        var preTag = document.createElement('pre');
+        let preTag = document.createElement('pre');
         preTag.innerHTML = selectResult.text;
         newCell2.appendChild(preTag);
         newCell3.innerText = selectResult.lineNum;
@@ -332,37 +269,20 @@ function GenUpdateLeft() {
         tmpLen = selectResult.len;
         check = 4;
     } else if (check == 3) {
-        var selectResult = getSelectResult();
-        var table = document.getElementById("edit_scripts");
-        var trs = table.children[0].children;
-        var tr = trs[trs.length - 1];
-        var tds = tr.children;
+        let selectResult = getSelectResult();
+        let table = document.getElementById("edit_scripts");
+        let trs = table.children[0].children;
+        let tr = trs[trs.length - 1];
+        let tds = tr.children;
 
-        var trIds = tr.id.split(":");
+        let trIds = tr.id.split(":");
         tr.id = selectResult.len + trIds[0] + ":" + selectResult.startPos + trIds[1];
 
-        // tds[1].innerText = selectResult.text;
-        var preTag = document.createElement('pre');
+        let preTag = document.createElement('pre');
         preTag.innerHTML = selectResult.text;
         tds[1].appendChild(preTag);
         tds[2].innerText = selectResult.lineNum;
         check = 0;
-
-
-        // var scriptJSON = new Object();
-        // scriptJSON.user_code = document.getElementById("userCode").value;
-        // scriptJSON.type = "Update";
-        // scriptJSON.old_code = selectResult.text;
-        // scriptJSON.line_number_old = selectResult.lineNum;
-        // scriptJSON.start_pos_old = selectResult.startPos;
-        // scriptJSON.length_old = selectResult.len;
-        // scriptJSON.new_code = tds[3].innerText;
-        // scriptJSON.line_number_new = tds[4].innerText;
-        // scriptJSON.start_pos_new = tmpStartPos;
-        // scriptJSON.length_new = tmpLen;
-        // scriptJSON.change_id = document.getElementById("current").value;
-
-        // oneScriptSubmit(scriptJSON);
     }
 }
 
@@ -372,28 +292,27 @@ function GenUpdateRight() {
         return;
     }
     if (check == 0) {
-        var table = document.getElementById("edit_scripts");
-        var newRow = table.insertRow();
-        var selectResult = getSelectResult();
+        let table = document.getElementById("edit_scripts");
+        let newRow = table.insertRow();
+        let selectResult = getSelectResult();
         newRow.id =  "/" + selectResult.len + ":/" + selectResult.startPos;
 
-        var newATag = document.createElement('a');
+        let newATag = document.createElement('a');
         newATag.href = "javascript:void(0)";
         newATag.text = "Delete";
         newATag.className = "del_btn";
         newATag.onclick = function() {deleteRow(this, 1);};
 
 
-        var newCell1 = newRow.insertCell(0);
-        var newCell2 = newRow.insertCell(1);
-        var newCell3 = newRow.insertCell(2);
-        var newCell4 = newRow.insertCell(3);
-        var newCell5 = newRow.insertCell(4);
-        var newCell6 = newRow.insertCell(5);
+        let newCell1 = newRow.insertCell(0);
+        let newCell2 = newRow.insertCell(1);
+        let newCell3 = newRow.insertCell(2);
+        let newCell4 = newRow.insertCell(3);
+        let newCell5 = newRow.insertCell(4);
+        let newCell6 = newRow.insertCell(5);
 
         newCell1.innerText = 'Update';
-        // newCell4.innerText = selectResult.text;
-        var preTag = document.createElement('pre');
+        let preTag = document.createElement('pre');
         preTag.innerHTML = selectResult.text;
         newCell4.appendChild(preTag);
         newCell5.innerText = selectResult.lineNum;
@@ -402,61 +321,29 @@ function GenUpdateRight() {
         tmpLen = selectResult.len;
         check = 3;
     } else if (check == 4) {
-        var selectResult = getSelectResult();
-        var table = document.getElementById("edit_scripts");
-        var trs = table.children[0].children;
-        var tr = trs[trs.length - 1];
-        var tds = tr.children;
+        let selectResult = getSelectResult();
+        let table = document.getElementById("edit_scripts");
+        let trs = table.children[0].children;
+        let tr = trs[trs.length - 1];
+        let tds = tr.children;
 
-        var trIds = tr.id.split(":");
+        let trIds = tr.id.split(":");
         tr.id = trIds[0] + selectResult.len + ":" + trIds[1] + selectResult.startPos;
 
-        // tds[3].innerText = selectResult.text;
-        var preTag = document.createElement('pre');
+        let preTag = document.createElement('pre');
         preTag.innerHTML = selectResult.text;
         tds[3].appendChild(preTag);
         tds[4].innerText = selectResult.lineNum;
         check = 0;
-
-
-        // var scriptJSON = new Object();
-        // scriptJSON.user_code = document.getElementById("userCode").value;
-        // scriptJSON.type = "Update";
-        // scriptJSON.old_code = tds[1].innerText;
-        // scriptJSON.line_number_old = tds[2].innerText;
-        // scriptJSON.start_pos_old = tmpStartPos;
-        // scriptJSON.length_old = tmpLen;
-        // scriptJSON.new_code = selectResult.text;
-        // scriptJSON.line_number_new = selectResult.lineNum;
-        // scriptJSON.start_pos_new = selectResult.startPos;
-        // scriptJSON.length_new = selectResult.len;
-        // scriptJSON.change_id = document.getElementById("current").value;
-
-        // oneScriptSubmit(scriptJSON);
     }
 }
 
 async function deleteRow(element, e) {
-    var table = document.getElementById("edit_scripts");
-    var trs = table.children[0].children;
-    var lastRow = trs[trs.length - 1];
-    var target = element.parentNode.parentNode;
-    var rowNum = target.rowIndex;
-
-    var tds = trs[rowNum].children;
-
-    var lens = target.id.split('/');
-
-    // var scriptJSON = new Object();
-    // scriptJSON.user_code = document.getElementById("userCode").value;
-    // scriptJSON.type = tds[0].innerText;
-    // scriptJSON.length_old = Number(lens[0]);
-    // scriptJSON.line_number_old = tds[2].innerText;
-    // scriptJSON.length_new = Number(lens[1]);
-    // scriptJSON.line_number_new = tds[4].innerText;
-    // scriptJSON.change_id = document.getElementById("current").value;
-
-    // oneScriptDelete(scriptJSON);
+    let table = document.getElementById("edit_scripts");
+    let trs = table.children[0].children;
+    let lastRow = trs[trs.length - 1];
+    let target = element.parentNode.parentNode;
+    let rowNum = target.rowIndex;
 
     if (e == 1 && lastRow == target) {
         check = 0;
@@ -472,7 +359,7 @@ async function deleteRow(element, e) {
 
 
 
-var selectResult = new Object();
+let selectResult = new Object();
 
 // Context Menu List 렌더링
 function renderContextMenuList( list ){
@@ -615,12 +502,12 @@ function getSelectResult() {
 
 
 function dragSelect() {
-  var result = new Object();
-  var selectionText = "";
-  var startNum = "";
-  var endNum = "";
-  var selectionNumber = "";
-  var startPos = 0;
+  let result = new Object();
+  let selectionText = "";
+  let startNum = "";
+  let endNum = "";
+  let selectionNumber = "";
+  let startPos = 0;
 
   if (document.getSelection) {
     selectionText = document.getSelection();
@@ -666,7 +553,7 @@ function dragSelect() {
 
 
 async function checkExam() {
-  var lhs = `import org.apache.lucene;
+  let lhs = `import org.apache.lucene;
 import java.util.Map;
 import java.io.IOException;
   
@@ -678,7 +565,7 @@ if (address == null) {
 }`;
   lhs = lhs.split('\n');
 
-  var rhs = `import org.apache.lucene;
+  let rhs = `import org.apache.lucene;
 import java.util.scanner;
 import java.io.IOException;
   
@@ -690,20 +577,20 @@ if (address == null) {
 }`;
   rhs = rhs.split('\n');
 
-  var trs = document.getElementById('edit_scripts').children[0].children;
-  var trsLength = trs.length;
+  let trs = document.getElementById('edit_scripts').children[0].children;
+  let trsLength = trs.length;
 
-  var lhsSortedTrs = new Array();
-  var rhsSortedTrs = new Array();
-  for (var i = 1; i < trsLength; i++) {
-    var trIds = trs[i].id.split(':');
-    var codeLengths = trIds[0].split('/').map(x => Number(x));
-    var startPoses = trIds[1].split('/').map(x => Number(x));
+  let lhsSortedTrs = new Array();
+  let rhsSortedTrs = new Array();
+  for (let i = 1; i < trsLength; i++) {
+    let trIds = trs[i].id.split(':');
+    let codeLengths = trIds[0].split('/').map(x => Number(x));
+    let startPoses = trIds[1].split('/').map(x => Number(x));
 
-    var tds = trs[i].children;
+    let tds = trs[i].children;
 
     if (codeLengths[0] != 0) {
-      var tr = new Object();
+      let tr = new Object();
       tr.lhsLength = codeLengths[0];
       tr.lhsStartPos = startPoses[0];
       tr.old_code = tds[1].innerHTML != '' ? tds[1].children[0].innerHTML : '';
@@ -712,7 +599,7 @@ if (address == null) {
     }
 
     if (codeLengths[1] != 0) {
-      var tr = new Object();
+      let tr = new Object();
       tr.rhsLength = codeLengths[1];
       tr.rhsStartPos = startPoses[1];
       tr.new_code = tds[3].innerHTML != '' ? tds[3].children[0].innerHTML : '';
@@ -741,10 +628,10 @@ if (address == null) {
     return 0;
   })
 
-  for (var i = 0; i < lhsSortedTrs.length; i++) {
-    var lhsTrs = lhsSortedTrs[i]
-    var codeLines = lhsTrs.old_code.split('\n')
-    for (var j = 0; j < codeLines.length; j++) {
+  for (let i = 0; i < lhsSortedTrs.length; i++) {
+    let lhsTrs = lhsSortedTrs[i]
+    let codeLines = lhsTrs.old_code.split('\n')
+    for (let j = 0; j < codeLines.length; j++) {
       while (lhsTrs.lhsStartPos < lhs[lhsTrs.line_number_old - 1].length) {
         if (lhs[lhsTrs.line_number_old - 1].substring(lhsTrs.lhsStartPos, lhsTrs.lhsStartPos + codeLines[j].length) == codeLines[j]) {
           lhs[lhsTrs.line_number_old - 1] = lhs[lhsTrs.line_number_old - 1].substring(0, lhsTrs.lhsStartPos) + lhs[lhsTrs.line_number_old - 1].substring(lhsTrs.lhsStartPos + codeLines[j].length, lhs[lhsTrs.line_number_old - 1].length);
@@ -759,10 +646,10 @@ if (address == null) {
     }
   }
 
-  for (var i = 0; i < rhsSortedTrs.length; i++) {
-    var rhsTrs = rhsSortedTrs[i]
-    var codeLines = rhsTrs.new_code.split('\n')
-    for (var j = 0; j < codeLines.length; j++) {
+  for (let i = 0; i < rhsSortedTrs.length; i++) {
+    let rhsTrs = rhsSortedTrs[i]
+    let codeLines = rhsTrs.new_code.split('\n')
+    for (let j = 0; j < codeLines.length; j++) {
       while (rhsTrs.rhsStartPos < rhs[rhsTrs.line_number_new - 1].length) {
         if (rhs[rhsTrs.line_number_new - 1].substring(rhsTrs.rhsStartPos, rhsTrs.rhsStartPos + codeLines[j].length) == codeLines[j]) {
           rhs[rhsTrs.line_number_new - 1] = rhs[rhsTrs.line_number_new - 1].substring(0, rhsTrs.rhsStartPos) + rhs[rhsTrs.line_number_new - 1].substring(rhsTrs.rhsStartPos + codeLines[j].length, rhs[rhsTrs.line_number_new - 1].length);
@@ -776,8 +663,8 @@ if (address == null) {
       }
     }
   }
-  var lhsOneLine = "";
-  for (var i = 0; i < lhs.length - 1; i++) {
+  let lhsOneLine = "";
+  for (let i = 0; i < lhs.length - 1; i++) {
     if (lhs[i].length != 0) {
       lhsOneLine += lhs[i];
       lhsOneLine += "\n";  
@@ -785,8 +672,8 @@ if (address == null) {
   }
   lhsOneLine += lhs[lhs.length - 1];
 
-  var rhsOneLine = "";
-  for (var i = 0; i < rhs.length - 1; i++) {
+  let rhsOneLine = "";
+  for (let i = 0; i < rhs.length - 1; i++) {
     if (rhs[i].length != 0) {
       rhsOneLine += rhs[i];
       rhsOneLine += "\n";

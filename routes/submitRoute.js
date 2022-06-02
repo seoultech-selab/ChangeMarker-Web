@@ -3,7 +3,7 @@ const router = express.Router();
 
 router.use('/', function(req, res, next) {
     const query = "insert into scripts_web (`user_code`,`type`,`old_code`,`line_number_old`,`start_pos_old`,`length_old`,`new_code`,`line_number_new`,`start_pos_new`,`length_new`,`change_id`) values (?);";
-    var values = new Array();
+    let values = new Array();
 
     values.push(req.body.user_code);
     values.push(req.body.type);
@@ -18,9 +18,9 @@ router.use('/', function(req, res, next) {
     values.push(req.body.change_id);
 
     
-    var mysql = require('mysql');
-    var config = require('../db/db_info');
-    var pool = mysql.createPool(config);
+    let mysql = require('mysql');
+    let config = require('../db/db_info');
+    let pool = mysql.createPool(config);
 
     pool.getConnection(function(err, conn) {
         if (!err) {

@@ -1,7 +1,7 @@
 function finishAll() {
-    for (var i = 1; i <= 5; i++) {
-        var buttonId = "file" + i;
-        var rgb = document.getElementById(buttonId).style.backgroundColor;
+    for (let i = 1; i <= 5; i++) {
+        let buttonId = "file" + i;
+        let rgb = document.getElementById(buttonId).style.backgroundColor;
         rgb = rgb.slice(4, -1);
         rgb = rgb.split(', ');
         if (Number(rgb[2]) != 71) {
@@ -10,7 +10,7 @@ function finishAll() {
         }
     }
 
-    var form = document.createElement('form');
+    let form = document.createElement('form');
     document.body.appendChild(form);
     form.method = 'post';
     form.action = '/finish';

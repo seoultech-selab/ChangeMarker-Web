@@ -20,47 +20,47 @@ const fs = require('fs');
 const myers = require('myers-diff');
 const Connection = require('mysql/lib/Connection');
 
-var baseDir = __dirname.slice(0, -7);
-
-let fileList = fs.readFileSync(baseDir + '/change_files.txt', 'utf-8');
-fileList = fileList.split('/');
+let baseDir = __dirname.slice(0, -7);
 
 router.use('/', function(req, res, next) {
+    let fileList = req.session.fileNames;
+    let fileCnt;
+
     if (req.body.fileCnt != undefined) {
-        var fileCnt = Number(req.body.fileCnt);
+        fileCnt = Number(req.body.fileCnt);
         req.session.fileCnt = fileCnt;
     }
     else {
         req.session.fileCnt = 0;
-        var fileCnt = req.session.fileCnt;
+        fileCnt = req.session.fileCnt;
     }
 
     if (req.session.completed == undefined) {
         req.session.completed = [0,0,0,0,0,];
     }
     
-    var fileNum = req.session.codeFiles[fileCnt];
-    var numExt = parseInt(fileNum.slice(6));
+    let fileNum = req.session.codeFiles[fileCnt];
+    let numExt = parseInt(fileNum.slice(6));
     const lhs = fs.readFileSync(baseDir + '/changes/' + fileNum + '/old/' + fileList[numExt],'utf-8');
     let rhs = fs.readFileSync(baseDir + '/changes/' + fileNum + '/new/' + fileList[numExt],'utf-8');
 
     const diff = myers.diff(lhs, rhs);
     
-    var lhsPos = [];
-    var rhsPos = [];
-    for (var i = 0; i < diff.length; i++) {
+    let lhsPos = [];
+    let rhsPos = [];
+    for (let i = 0; i < diff.length; i++) {
         lhsPos.push(diff[i].lhs.pos);
         rhsPos.push(diff[i].rhs.pos);
     }
 
-    var lhsTemplate = ``;
+    let lhsTemplate = ``;
 
-    var cnt = 0;
-    for (var i = 0; i < lhs.length; i++) {
+    let cnt = 0;
+    for (let i = 0; i < lhs.length; i++) {
         if (lhsPos.includes(i)) {
-            var lineCnt = 0;
-            var zeroSpanStart = ``;
-            var noneZeroSpans = ``;
+            let lineCnt = 0;
+            let zeroSpanStart = ``;
+            let noneZeroSpans = ``;
             if ("add" in diff[cnt].lhs) {
                 zeroSpanStart = `<span class="line_add" id="#l${cnt}">`;
                 noneZeroSpans = `<span class="line_add">`;
@@ -77,8 +77,8 @@ router.use('/', function(req, res, next) {
                 lhsTemplate += `</span>`;
             }
 
-            var jCnt = 0;
-            for (var k = 0; k < lineCnt; k++) {
+            let jCnt = 0;
+            for (let k = 0; k < lineCnt; k++) {
                 if (k == 0) {
                     lhsTemplate += zeroSpanStart;
                 }
@@ -106,16 +106,16 @@ router.use('/', function(req, res, next) {
             lhsTemplate += lhs[i];
         }
     }
-    var diffNum = cnt;
+    let diffNum = cnt;
 
-    var rhsTemplate = ``;
+    let rhsTemplate = ``;
 
-    var cnt = 0;
-    for (var i = 0; i < rhs.length; i++) {
+    cnt = 0;
+    for (let i = 0; i < rhs.length; i++) {
         if (rhsPos.includes(i)) {
-            var lineCnt = 0;
-            var zeroSpanStart = ``;
-            var noneZeroSpans = ``;
+            let lineCnt = 0;
+            let zeroSpanStart = ``;
+            let noneZeroSpans = ``;
             if ("add" in diff[cnt].rhs) {
                 zeroSpanStart = `<span class="line_add" id="#r${cnt}">`;
                 noneZeroSpans = `<span class="line_add">`;
@@ -132,8 +132,8 @@ router.use('/', function(req, res, next) {
                 rhsTemplate += `</span>`;
             }
 
-            var jCnt = 0;
-            for (var k = 0; k < lineCnt; k++) {
+            let jCnt = 0;
+            for (let k = 0; k < lineCnt; k++) {
                 if (k == 0) {
                     rhsTemplate += zeroSpanStart;
                 }
@@ -161,9 +161,9 @@ router.use('/', function(req, res, next) {
         }
     }
 
-    var editScriptArray = new Array();
-    for (var i = 0; i < 10; i++) {
-        var editScript = new Object();
+    let editScriptArray = new Array();
+    for (let i = 0; i < 10; i++) {
+        let editScript = new Object();
         editScript.type = "del" + i;
         editScript.oldCode = "a" + i;
         editScript.lineOld = i;
@@ -172,16 +172,16 @@ router.use('/', function(req, res, next) {
         editScriptArray.push(editScript);
     }
     
-    var editScripts = new Object;
+    let editScripts = new Object;
     editScripts.data = editScriptArray;
 
-    var code = req.session.code;
+    let code = req.session.code;
     
-    var mysql = require('mysql');
-    var config = require('../db/db_info');
-    var pool = mysql.createPool(config);
+    let mysql = require('mysql');
+    let config = require('../db/db_info');
+    let pool = mysql.createPool(config);
 
-    var query = "select `type`,`old_code`,`line_number_old`,`length_old`,`new_code`,`line_number_new`,`length_new` from scripts_web where `user_code`='";
+    let query = "select `type`,`old_code`,`line_number_old`,`length_old`,`new_code`,`line_number_new`,`length_new` from scripts_web where `user_code`='";
     query += code;
     query += "' and `change_id`='";
     query += fileNum;
@@ -190,9 +190,9 @@ router.use('/', function(req, res, next) {
     pool.getConnection(function(err, conn) {
         if (!err) {
             conn.query(query, function(err, results, field) {
-                var storedScripts = ``;
-                for (var idx in results) {
-                    var trId = "";
+                let storedScripts = ``;
+                for (let idx in results) {
+                    let trId = "";
                     trId += (results[idx].length_old == null ? "" : results[idx].length_old);
                     trId += "/";
                     trId += (results[idx].length_new == null ? "" : results[idx].length_new);

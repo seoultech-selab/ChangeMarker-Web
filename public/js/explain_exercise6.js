@@ -1,20 +1,20 @@
-var standardHeight = 0;
+let standardHeight = 0;
 
 function setStandardHeight() {
   standardHeight = window.innerHeight;
 }
 
 
-var storedSelectionLeft = new Object();
+let storedSelectionLeft = new Object();
 storedSelectionLeft.len = 0;
 
 function storeSelectionLeft() {
-  var result = new Object();
-  var selectionText = "";
-  var startNum = "";
-  var endNum = "";
-  var selectionNumber = "";
-  var startPos = 0;
+  let result = new Object();
+  let selectionText = "";
+  let startNum = "";
+  let endNum = "";
+  let selectionNumber = "";
+  let startPos = 0;
 
   if (document.getSelection) {
     selectionText = document.getSelection();
@@ -54,16 +54,16 @@ function storeSelectionLeft() {
   storedSelectionLeft = result;
 }
 
-var storedSelectionRight = new Object();
+let storedSelectionRight = new Object();
 storedSelectionRight.len = 0;
 
 function storeSelectionRight() {
-  var result = new Object();
-  var selectionText = "";
-  var startNum = "";
-  var endNum = "";
-  var selectionNumber = "";
-  var startPos = 0;
+  let result = new Object();
+  let selectionText = "";
+  let startNum = "";
+  let endNum = "";
+  let selectionNumber = "";
+  let startPos = 0;
 
   if (document.getSelection) {
     selectionText = document.getSelection();
@@ -103,78 +103,10 @@ function storeSelectionRight() {
   storedSelectionRight = result;
 }
 
+let tmpStartPos = 0;
+let tmpLen = 0;
 
-
-async function tutorialCheckAjax(lhs, rhs) {
-  $.ajax({
-      type: 'post',
-      url: '/tutorialCheck',
-      data: {lhs : lhs, rhs : rhs},
-      dataType: 'json',
-      success: function(res) {
-        var checkButton = document.getElementById('checkButton');
-
-        if (res.diffCnt == 0) {
-          checkButton.value = "Go Next!";
-          checkButton.style.backgroundColor = "#0dff47";
-          checkButton.onclick = "";
-          checkButton.type = "submit";
-
-          var parentWindow = window.parent.document;
-          var checkExercise = parentWindow.getElementById('checkExercise');
-          var currentPageNum = Number(parentWindow.getElementById('current_page').innerText);
-          checkExercise.value = String(currentPageNum);
-        }
-        else {
-          checkButton.style.backgroundColor = "#fd6a78";
-          popup = window.open("tutorialPopup.html", "childForm", "width=800, height=300");
-          setTimeout(() => {
-            var lhsCodeTag = document.createElement('code');
-            lhsCodeTag.innerHTML = res.lhsTemplate;
-            lhsCodeTag.className = "java";
-            var rhsCodeTag = document.createElement('code');
-            rhsCodeTag.innerHTML = res.rhsTemplate;
-            rhsCodeTag.className = "java";
-  
-            var lhsPreTag = popup.document.getElementById('inner_left');
-            lhsPreTag.appendChild(lhsCodeTag);
-            var rhsPreTag = popup.document.getElementById('inner_right');
-            rhsPreTag.appendChild(rhsCodeTag);
-          },500);
-
-        }
-      }
-  });
-}
-
-var check = 0;
-var tmpStartPos = 0;
-var tmpLen = 0;
-async function GenController(e) {
-    if (e == 1 && check == 0) {
-      alert('This example has a only "Update" script!');
-    } else if (e == 2 && check == 0) {
-      alert('This example has a only "Update" script!');
-    } else if (e == 3 && (check == 0 || check == 1)) {
-      alert('This example has a only "Update" script!');
-    } else if (e == 4 && (check == 0 || check == 2)) {
-      alert('This example has a only "Update" script!');
-    } else if (e == 5 && (check == 0 || check == 3)) {
-      GenUpdateLeft();
-    } else if (e == 6 && (check == 0 || check == 4)) {
-      GenUpdateRight();
-    } else if (check == 1) {
-      alert('This example has a only "Update" script!');
-    } else if (check == 2) {
-      alert('This example has a only "Update" script!');
-    } else if (check == 3) {
-      alert('This example has a only "Update" script!');
-    } else if (check == 4) {
-      alert('This example has a only "Update" script!');
-    }
-}
-
-var hintCnt = 0;
+let hintCnt = 0;
 
 
 
@@ -182,7 +114,7 @@ var hintCnt = 0;
 
 
 function GenUpdateLeft() {
-  var selectResult = getSelectResult();
+  let selectResult = getSelectResult();
   if (getSelectResult().len == 0) {
       alert("Please select texts on the left side.");
       return;
@@ -249,24 +181,24 @@ function GenUpdateLeft() {
     alert("Correct!! The next button is activated.");
   }
 
-  var table = document.getElementById("edit_scripts");
-  var newRow = table.insertRow();
-  var selectResult = getSelectResult();
+  let table = document.getElementById("edit_scripts");
+  let newRow = table.insertRow();
+  selectResult = getSelectResult();
   newRow.id = storedSelectionRight.len + "/" + selectResult.len;
 
-  var newATag = document.createElement('a');
+  let newATag = document.createElement('a');
   newATag.href = "javascript:void(0)";
   newATag.text = "Delete";
   newATag.className = "del_btn";
   newATag.onclick = function() {deleteRow(this, 1);};
 
 
-  var newCell1 = newRow.insertCell(0);
-  var newCell2 = newRow.insertCell(1);
-  var newCell3 = newRow.insertCell(2);
-  var newCell4 = newRow.insertCell(3);
-  var newCell5 = newRow.insertCell(4);
-  var newCell6 = newRow.insertCell(5);
+  let newCell1 = newRow.insertCell(0);
+  let newCell2 = newRow.insertCell(1);
+  let newCell3 = newRow.insertCell(2);
+  let newCell4 = newRow.insertCell(3);
+  let newCell5 = newRow.insertCell(4);
+  let newCell6 = newRow.insertCell(5);
 
   newCell1.innerText = 'Update';
   newCell2.innerText = selectResult.text;
@@ -275,16 +207,16 @@ function GenUpdateLeft() {
   newCell5.innerText = storedSelectionRight.lineNum;
   newCell6.appendChild(newATag);
 
-  var checkExercise = window.parent.document.getElementById('checkExercise');
-  var currentPageNum = Number(window.parent.document.getElementById('current_page').innerText);
+  let checkExercise = window.parent.document.getElementById('checkExercise');
+  let currentPageNum = Number(window.parent.document.getElementById('current_page').innerText);
   checkExercise.value = currentPageNum;
-  var nextButton = window.parent.document.getElementById('next_button');
+  let nextButton = window.parent.document.getElementById('next_button');
   nextButton.style.color = "#393E46";
   nextButton.disabled = false;
 }
 
 function GenUpdateRight() {
-  var selectResult = getSelectResult();
+  let selectResult = getSelectResult();
   if (getSelectResult().len == 0) {
       alert("Please select texts on the right side.");
       return;
@@ -352,24 +284,20 @@ function GenUpdateRight() {
     alert("Correct!! The next button is activated.");
   }
 
-  var table = document.getElementById("edit_scripts");
-  var newRow = table.insertRow();
-  var selectResult = getSelectResult();
+  let table = document.getElementById("edit_scripts");
+  let newRow = table.insertRow();
+  selectResult = getSelectResult();
   newRow.id = storedSelectionLeft.len + "/" + selectResult.len;
 
-  var newATag = document.createElement('a');
-  newATag.href = "javascript:void(0)";
-  newATag.text = "Delete";
-  newATag.className = "del_btn";
-  newATag.onclick = function() {deleteRow(this, 1);};
+  let newATag = createDeleteButton(0);
 
 
-  var newCell1 = newRow.insertCell(0);
-  var newCell2 = newRow.insertCell(1);
-  var newCell3 = newRow.insertCell(2);
-  var newCell4 = newRow.insertCell(3);
-  var newCell5 = newRow.insertCell(4);
-  var newCell6 = newRow.insertCell(5);
+  let newCell1 = newRow.insertCell(0);
+  let newCell2 = newRow.insertCell(1);
+  let newCell3 = newRow.insertCell(2);
+  let newCell4 = newRow.insertCell(3);
+  let newCell5 = newRow.insertCell(4);
+  let newCell6 = newRow.insertCell(5);
 
   newCell1.innerText = 'Update';
   newCell2.innerText = storedSelectionLeft.text;
@@ -378,66 +306,17 @@ function GenUpdateRight() {
   newCell5.innerText = selectResult.lineNum;
   newCell6.appendChild(newATag);
 
-  var checkExercise = window.parent.document.getElementById('checkExercise');
-  var currentPageNum = Number(window.parent.document.getElementById('current_page').innerText);
+  let checkExercise = window.parent.document.getElementById('checkExercise');
+  let currentPageNum = Number(window.parent.document.getElementById('current_page').innerText);
   checkExercise.value = currentPageNum;
-  var nextButton = window.parent.document.getElementById('next_button');
+  let nextButton = window.parent.document.getElementById('next_button');
   nextButton.style.color = "#393E46";
   nextButton.disabled = false;
 }
 
 
 
-
-async function deleteRow(element, e) {
-    var table = document.getElementById("edit_scripts");
-    var trs = table.children[0].children;
-    var lastRow = trs[trs.length - 1];
-    var target = element.parentNode.parentNode;
-    var rowNum = target.rowIndex;
-
-    if (e == 1 && lastRow == target) {
-        check = 0;
-    }
-    table.deleteRow(rowNum);
-}
-
-
-
-
-
-
-
-
-
-var selectResult = new Object();
-
-// Context Menu List 렌더링
-function renderContextMenuList( list ){
-  // List Element 생성
-  const ctxMenuList = document.createElement('ul');
-  
-  // List Item 생성
-  list.forEach(function( item ){
-    // Item Element 생성
-    const ctxMenuItem = document.createElement('li');
-    const ctxMenuItem_a = document.createElement('a');
-    const ctxMenuItem_a_text = document.createTextNode(item.label);
-    
-    // 클릭 이벤트 설정
-    if( item.onClick ){
-      ctxMenuItem.addEventListener( 'click', item.onClick, false );
-    }
-
-    // Item 추가
-    ctxMenuItem_a.appendChild( ctxMenuItem_a_text );
-    ctxMenuItem.appendChild( ctxMenuItem_a );
-    ctxMenuList.appendChild( ctxMenuItem );
-  });
-  
-  // List Element 반환
-  return ctxMenuList;
-}
+let selectResult = new Object();
 
 // Context Menu 생성
 function handleCreateContextMenu_left(event){
@@ -463,19 +342,19 @@ function handleCreateContextMenu_left(event){
     {
       label: "Generate Delete",
       onClick: function(){
-        GenController(1);
+        GenController(3, 0);
       }
     },
     {
       label: "Generate Move",
       onClick: function(event){
-        GenController(3);
+        GenController(3, 2);
       }
     },
     {
       label: "Generate Update",
       onClick: function(event){
-        GenController(5);
+        GenController(3, 3, 1);
       }
     }
   ]));
@@ -512,19 +391,19 @@ function handleCreateContextMenu_right(event){
       {
       label: "Generate Insert",
         onClick: function(event){
-          GenController(2);
+          GenController(3, 1);
         }
       },
       {
       label: "Generate Move",
         onClick: function(event){
-          GenController(4);
+          GenController(3, 2);
         }
       },
       {
       label: "Generate Update",
         onClick: function(event){
-          GenController(6);
+          GenController(3, 3);
         }
       }
   ]));
@@ -539,26 +418,18 @@ function handleCreateContextMenu_right(event){
   document.body.appendChild( ctxMenu );
 }
 
-// Context Menu 제거
-function handleClearContextMenu(event){
-  const ctxMenu = document.getElementById('dochi_context_menu');
-  if( ctxMenu ){
-    ctxMenu.remove();
-  }
-}
-
 function getSelectResult() {
   return selectResult;
 }
 
 
 function dragSelect() {
-  var result = new Object();
-  var selectionText = "";
-  var startNum = "";
-  var endNum = "";
-  var selectionNumber = "";
-  var startPos = 0;
+  let result = new Object();
+  let selectionText = "";
+  let startNum = "";
+  let endNum = "";
+  let selectionNumber = "";
+  let startPos = 0;
 
   if (document.getSelection) {
     selectionText = document.getSelection();
@@ -608,8 +479,8 @@ function dragSelect() {
 
 
 function move_inner() {
-  var left = document.getElementById("left");
-  var right = document.getElementById("right")
+  let left = document.getElementById("left");
+  let right = document.getElementById("right")
 
   left.scrollTo(0, 330);
   right.scrollTo(0, 330);
