@@ -1,13 +1,29 @@
-var storedSelectionLeft = new Object();
-storedSelectionLeft.len = 0;
+class Selection {
+  startPos = -1;
+  len = 0;
+
+  constructor(text, lineNum, startPos=-1, len=0) {
+    this.text = text;
+    this.lineNum = lineNum;
+    this.startPos = startPos;
+  }
+
+  update(text, lineNum, startPos, len) {
+    this.text = text;
+    this.lineNum = lineNum;
+    this.startPos = startPos;
+    this.len = len;
+  }
+}
+
+let storedSelectionLeft = new Selection();
 
 function storeSelectionLeft() {
-  var result = new Object();
-  var selectionText = "";
-  var startNum = "";
-  var endNum = "";
-  var selectionNumber = "";
-  var startPos = 0;
+  let selectionText = "";
+  let startNum = "";
+  let endNum = "";
+  let selectionNumber = "";
+  let startPos = 0;
 
   if (document.getSelection) {
     selectionText = document.getSelection();
@@ -30,33 +46,20 @@ function storeSelectionLeft() {
 
   startNum *= 1;
   endNum *= 1;
+  selectionNumber = getSelectionNum(startNum, selectionNumber, endNum);
 
-  if (startNum == 0) {
-    selectionNumber = endNum;
-  } else if (endNum == 0) {
-    selectionNumber = startNum;
-  } else {
-    selectionNumber = (startNum < endNum) ? startNum : endNum;
-  }
-
-  result.text = selectionText.toString();
-  result.lineNum = selectionNumber;
-  result.startPos = startPos;
-  result.len = result.text.length;
-
-  storedSelectionLeft = result;
+  let sText = selectionText.toString();
+  storedSelectionLeft.update(sText, selectionNumber, startPos, sText.length);
 }
 
-var storedSelectionRight = new Object();
-storedSelectionRight.len = 0;
+let storedSelectionRight = new Selection();
 
 function storeSelectionRight() {
-  var result = new Object();
-  var selectionText = "";
-  var startNum = "";
-  var endNum = "";
-  var selectionNumber = "";
-  var startPos = 0;
+  let selectionText = "";
+  let startNum = "";
+  let endNum = "";
+  let selectionNumber = "";
+  let startPos = 0;
 
   if (document.getSelection) {
     selectionText = document.getSelection();
@@ -79,7 +82,13 @@ function storeSelectionRight() {
 
   startNum *= 1;
   endNum *= 1;
+  selectionNumber = getSelectionNum(startNum, selectionNumber, endNum);
 
+  let sText = selectionText.toString();
+  storedSelectionRight.update(sText, selectionNumber, startPos, sText.length);
+}
+
+function getSelectionNum(startNum, selectionNumber, endNum) {
   if (startNum == 0) {
     selectionNumber = endNum;
   } else if (endNum == 0) {
@@ -87,23 +96,13 @@ function storeSelectionRight() {
   } else {
     selectionNumber = (startNum < endNum) ? startNum : endNum;
   }
-
-  result.text = selectionText.toString();
-  result.lineNum = selectionNumber;
-  result.startPos = startPos;
-  result.len = result.text.length;
-
-  storedSelectionRight = result;
+  return selectionNumber;
 }
 
+let check = 0;
+let tmpStartPos = 0;
+let tmpLen = 0;
 
-
-
-
-
-var check = 0;
-var tmpStartPos = 0;
-var tmpLen = 0;
 function GenController(e) {
     if (e == 1 && check == 0) {
         GenDelete();
@@ -128,45 +127,62 @@ function GenController(e) {
     }
 }
 
+function addEditOp(opType, newRow, leftSel, rightSel, delType) {
+  let cellOpType = newRow.insertCell(0);
+  let cellOldCode = newRow.insertCell(1);
+  let cellOldLine = newRow.insertCell(2);
+  let cellNewCode = newRow.insertCell(3);
+  let cellNewLine = newRow.insertCell(4);
+  let cellLink = newRow.insertCell(5);
+  let scriptJSON = new Object();
+  
+  cellOpType.innerText = opType;
+  if(leftSel) {
+    cellOldCode.innerText = leftSel.text;
+    cellOldLine.innerText = leftSel.lineNum;  
+    scriptJSON.old_code = leftSel.text;
+    scriptJSON.line_number_old = leftSel.lineNum;
+    scriptJSON.start_pos_old = leftSel.startPos;
+    scriptJSON.length_old = leftSel.len;  
+  }
+  if(rightSel) {
+    cellNewCode.innerText = rightSel.text;
+    cellNewLine.innerText = rightSel.lineNum;
+    scriptJSON.new_code = rightSel.text;
+    scriptJSON.line_number_new = rightSel.lineNum;
+    scriptJSON.start_pos_new = rightSel.startPos;
+    scriptJSON.length_new = rightSel.len;
+  }
+
+  let newATag = createDeleteButton(delType);
+  cellLink.appendChild(newATag);
+
+  scriptJSON.user_code = document.getElementById("userCode").value;
+  scriptJSON.type = opType;
+  scriptJSON.change_id = document.getElementById("current").value;
+  oneScriptSubmit(scriptJSON);
+}
+
+function createDeleteButton(delType) {
+  let newATag = document.createElement('a');
+  newATag.href = "javascript:void(0)";
+  newATag.text = "Delete";
+  newATag.className = "del_btn";
+  newATag.onclick = function () { deleteRow(this, delType); };
+  return newATag;
+}
+
 function GenDelete() {
     if (getSelectResult().len == 0) {
         alert("Please select texts.");
         return;
     }
-    var table = document.getElementById("edit_scripts");
-    var newRow = table.insertRow();
-    var selectResult = getSelectResult();
+    let table = document.getElementById("edit_scripts");
+    let newRow = table.insertRow();
+    let selectResult = getSelectResult();
     newRow.id = selectResult.len + "/";
-    var newATag = document.createElement('a');
-    newATag.href = "javascript:void(0)";
-    newATag.text = "Delete";
-    newATag.className = "del_btn";
-    newATag.onclick = function() {deleteRow(this, 0);};
 
-
-    var newCell1 = newRow.insertCell(0);
-    var newCell2 = newRow.insertCell(1);
-    var newCell3 = newRow.insertCell(2);
-    var newCell4 = newRow.insertCell(3);
-    var newCell5 = newRow.insertCell(4);
-    var newCell6 = newRow.insertCell(5);
-
-    newCell1.innerText = 'Delete';
-    newCell2.innerText = selectResult.text;
-    newCell3.innerText = selectResult.lineNum;
-    newCell6.appendChild(newATag);
-
-
-    var scriptJSON = new Object();
-    scriptJSON.user_code = document.getElementById("userCode").value;
-    scriptJSON.type = "Delete";
-    scriptJSON.old_code = selectResult.text;
-    scriptJSON.line_number_old = selectResult.lineNum;
-    scriptJSON.start_pos_old = selectResult.startPos;
-    scriptJSON.length_old = selectResult.len;
-    scriptJSON.change_id = document.getElementById("current").value;
-
-    oneScriptSubmit(scriptJSON);
+    addEditOp('Delete', newRow, selectResult, null, 0);
 
     storedSelectionLeft.len = 0;
 }
@@ -176,41 +192,12 @@ function GenInsert() {
         alert("Please select texts.");
         return;
     }
-    var table = document.getElementById("edit_scripts");
-    var newRow = table.insertRow();
-    var selectResult = getSelectResult();
+    let table = document.getElementById("edit_scripts");
+    let newRow = table.insertRow();
+    let selectResult = getSelectResult();
     newRow.id = "/" + selectResult.len;
 
-    var newATag = document.createElement('a');
-    newATag.href = "javascript:void(0)";
-    newATag.text = "Delete";
-    newATag.className = "del_btn";
-    newATag.onclick = function() {deleteRow(this, 0);};
-
-
-    var newCell1 = newRow.insertCell(0);
-    var newCell2 = newRow.insertCell(1);
-    var newCell3 = newRow.insertCell(2);
-    var newCell4 = newRow.insertCell(3);
-    var newCell5 = newRow.insertCell(4);
-    var newCell6 = newRow.insertCell(5);
-
-    newCell1.innerText = 'Insert';
-    newCell4.innerText = selectResult.text;
-    newCell5.innerText = selectResult.lineNum;
-    newCell6.appendChild(newATag);
-
-
-    var scriptJSON = new Object();
-    scriptJSON.user_code = document.getElementById("userCode").value;
-    scriptJSON.type = "Insert";
-    scriptJSON.new_code = selectResult.text;
-    scriptJSON.line_number_new = selectResult.lineNum;
-    scriptJSON.start_pos_new = selectResult.startPos;
-    scriptJSON.length_new = selectResult.len;
-    scriptJSON.change_id = document.getElementById("current").value;
-
-    oneScriptSubmit(scriptJSON);
+    addEditOp('Insert', newRow, null, selectResult, 0);
 
     storedSelectionRight.len = 0;
 }
@@ -224,48 +211,14 @@ function GenMoveLeft() {
         return;
     }
 
-    var table = document.getElementById("edit_scripts");
-    var newRow = table.insertRow();
-    var selectResult = getSelectResult();
+    let table = document.getElementById("edit_scripts");
+    let newRow = table.insertRow();
+    let selectResult = getSelectResult();
     newRow.id = selectResult.len + "/" + storedSelectionRight.len;
 
-    var newATag = document.createElement('a');
-    newATag.href = "javascript:void(0)";
-    newATag.text = "Delete";
-    newATag.className = "del_btn";
-    newATag.onclick = function() {deleteRow(this, 1);};
-
-
-    var newCell1 = newRow.insertCell(0);
-    var newCell2 = newRow.insertCell(1);
-    var newCell3 = newRow.insertCell(2);
-    var newCell4 = newRow.insertCell(3);
-    var newCell5 = newRow.insertCell(4);
-    var newCell6 = newRow.insertCell(5);
-
-    newCell1.innerText = 'Move';
-    newCell2.innerText = selectResult.text;
-    newCell3.innerText = selectResult.lineNum;
-    newCell4.innerText = storedSelectionRight.text;
-    newCell5.innerText = storedSelectionRight.lineNum;
-    newCell6.appendChild(newATag);
+    addEditOp('Move', newRow, selectResult, storedSelectionRight, 1);
 
     check = 0;
-
-    var scriptJSON = new Object();
-    scriptJSON.user_code = document.getElementById("userCode").value;
-    scriptJSON.type = "Move";
-    scriptJSON.old_code = selectResult.text;
-    scriptJSON.line_number_old = selectResult.lineNum;
-    scriptJSON.start_pos_old = selectResult.startPos;
-    scriptJSON.length_old = selectResult.len;
-    scriptJSON.new_code = storedSelectionRight.text;
-    scriptJSON.line_number_new = storedSelectionRight.lineNum;
-    scriptJSON.start_pos_new = storedSelectionRight.startPos;
-    scriptJSON.length_new = storedSelectionRight.len;
-    scriptJSON.change_id = document.getElementById("current").value;
-
-    oneScriptSubmit(scriptJSON);
 
     storedSelectionLeft.len = 0;
     storedSelectionRight.len = 0;
@@ -280,48 +233,14 @@ function GenMoveRight() {
         return;
     }
 
-    var table = document.getElementById("edit_scripts");
-    var newRow = table.insertRow();
-    var selectResult = getSelectResult();
+    let table = document.getElementById("edit_scripts");
+    let newRow = table.insertRow();
+    let selectResult = getSelectResult();
     newRow.id = storedSelectionLeft.len + "/" + selectResult.len;
 
-    var newATag = document.createElement('a');
-    newATag.href = "javascript:void(0)";
-    newATag.text = "Delete";
-    newATag.className = "del_btn";
-    newATag.onclick = function() {deleteRow(this, 1);};
-
-
-    var newCell1 = newRow.insertCell(0);
-    var newCell2 = newRow.insertCell(1);
-    var newCell3 = newRow.insertCell(2);
-    var newCell4 = newRow.insertCell(3);
-    var newCell5 = newRow.insertCell(4);
-    var newCell6 = newRow.insertCell(5);
-
-    newCell1.innerText = 'Move';
-    newCell2.innerText = storedSelectionLeft.text;
-    newCell3.innerText = storedSelectionLeft.lineNum;
-    newCell4.innerText = selectResult.text;
-    newCell5.innerText = selectResult.lineNum;
-    newCell6.appendChild(newATag);
+    addEditOp('Move', newRow, storedSelectionLeft, selectResult, 1);
 
     check = 0;
-
-    var scriptJSON = new Object();
-    scriptJSON.user_code = document.getElementById("userCode").value;
-    scriptJSON.type = "Move";
-    scriptJSON.old_code = storedSelectionLeft.text;
-    scriptJSON.line_number_old = storedSelectionLeft.lineNum;
-    scriptJSON.start_pos_old = storedSelectionLeft.startPos;
-    scriptJSON.length_old = storedSelectionLeft.len;
-    scriptJSON.new_code = selectResult.text;
-    scriptJSON.line_number_new = selectResult.lineNum;
-    scriptJSON.start_pos_new = selectResult.startPos;
-    scriptJSON.length_new = selectResult.len;
-    scriptJSON.change_id = document.getElementById("current").value;
-
-    oneScriptSubmit(scriptJSON);
 
     storedSelectionLeft.len = 0;
     storedSelectionRight.len = 0;
@@ -336,48 +255,14 @@ function GenUpdateLeft() {
         return;
     }
     
-    var table = document.getElementById("edit_scripts");
-    var newRow = table.insertRow();
-    var selectResult = getSelectResult();
+    let table = document.getElementById("edit_scripts");
+    let newRow = table.insertRow();
+    let selectResult = getSelectResult();
     newRow.id = selectResult.len +  "/" + storedSelectionRight.len;
 
-    var newATag = document.createElement('a');
-    newATag.href = "javascript:void(0)";
-    newATag.text = "Delete";
-    newATag.className = "del_btn";
-    newATag.onclick = function() {deleteRow(this, 1);};
-
-
-    var newCell1 = newRow.insertCell(0);
-    var newCell2 = newRow.insertCell(1);
-    var newCell3 = newRow.insertCell(2);
-    var newCell4 = newRow.insertCell(3);
-    var newCell5 = newRow.insertCell(4);
-    var newCell6 = newRow.insertCell(5);
-
-    newCell1.innerText = 'Update';
-    newCell2.innerText = selectResult.text;
-    newCell3.innerText = selectResult.lineNum;
-    newCell4.innerText = storedSelectionRight.text;
-    newCell5.innerText = storedSelectionRight.lineNum;
-    newCell6.appendChild(newATag);
+    addEditOp('Update', newRow, selectResult, storedSelectionRight, 1);
 
     check = 0;
-
-    var scriptJSON = new Object();
-    scriptJSON.user_code = document.getElementById("userCode").value;
-    scriptJSON.type = "Update";
-    scriptJSON.old_code = selectResult.text;
-    scriptJSON.line_number_old = selectResult.lineNum;
-    scriptJSON.start_pos_old = selectResult.startPos;
-    scriptJSON.length_old = selectResult.len;
-    scriptJSON.new_code = storedSelectionRight.text;
-    scriptJSON.line_number_new = storedSelectionRight.lineNum;
-    scriptJSON.start_pos_new = storedSelectionRight.startPos;
-    scriptJSON.length_new = storedSelectionRight.len;
-    scriptJSON.change_id = document.getElementById("current").value;
-
-    oneScriptSubmit(scriptJSON);
 
     storedSelectionLeft.len = 0;
     storedSelectionRight.len = 0;
@@ -392,65 +277,31 @@ function GenUpdateRight() {
         return;
     }
 
-    var table = document.getElementById("edit_scripts");
-    var newRow = table.insertRow();
-    var selectResult = getSelectResult();
+    let table = document.getElementById("edit_scripts");
+    let newRow = table.insertRow();
+    let selectResult = getSelectResult();
     newRow.id =  storedSelectionLeft.len + "/" + selectResult.len;
 
-    var newATag = document.createElement('a');
-    newATag.href = "javascript:void(0)";
-    newATag.text = "Delete";
-    newATag.className = "del_btn";
-    newATag.onclick = function() {deleteRow(this, 1);};
-
-
-    var newCell1 = newRow.insertCell(0);
-    var newCell2 = newRow.insertCell(1);
-    var newCell3 = newRow.insertCell(2);
-    var newCell4 = newRow.insertCell(3);
-    var newCell5 = newRow.insertCell(4);
-    var newCell6 = newRow.insertCell(5);
-
-    newCell1.innerText = 'Update';
-    newCell2.innerText = storedSelectionLeft.text;
-    newCell3.innerText = storedSelectionLeft.lineNum;
-    newCell4.innerText = selectResult.text;
-    newCell5.innerText = selectResult.lineNum;
-    newCell6.appendChild(newATag);
+    addEditOp('Update', newRow, storedSelectionLeft, selectResult, 1);
 
     check = 0;
-
-    var scriptJSON = new Object();
-    scriptJSON.user_code = document.getElementById("userCode").value;
-    scriptJSON.type = "Update";
-    scriptJSON.old_code = storedSelectionLeft.text;
-    scriptJSON.line_number_old = storedSelectionLeft.lineNum;
-    scriptJSON.start_pos_old = storedSelectionLeft.startPos;
-    scriptJSON.length_old = storedSelectionLeft.len;
-    scriptJSON.new_code = selectResult.text;
-    scriptJSON.line_number_new = selectResult.lineNum;
-    scriptJSON.start_pos_new = selectResult.startPos;
-    scriptJSON.length_new = selectResult.len;
-    scriptJSON.change_id = document.getElementById("current").value;
-
-    oneScriptSubmit(scriptJSON);
 
     storedSelectionLeft.len = 0;
     storedSelectionRight.len = 0;
 }
 
 async function deleteRow(element, e) {
-    var table = document.getElementById("edit_scripts");
-    var trs = table.children[0].children;
-    var lastRow = trs[trs.length - 1];
-    var target = element.parentNode.parentNode;
-    var rowNum = target.rowIndex;
+    let table = document.getElementById("edit_scripts");
+    let trs = table.children[0].children;
+    let lastRow = trs[trs.length - 1];
+    let target = element.parentNode.parentNode;
+    let rowNum = target.rowIndex;
 
-    var tds = trs[rowNum].children;
+    let tds = trs[rowNum].children;
 
-    var lens = target.id.split('/');
+    let lens = target.id.split('/');
 
-    var scriptJSON = new Object();
+    let scriptJSON = new Object();
     scriptJSON.user_code = document.getElementById("userCode").value;
     scriptJSON.type = tds[0].innerText;
     scriptJSON.length_old = Number(lens[0]);
