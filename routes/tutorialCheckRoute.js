@@ -6,26 +6,25 @@ const myers = require('myers-diff');
 
 
 router.use('/', function(req, res, next) {
-    // var data = JSON.parse(req.body.data);
-    var lhs = req.body.lhs;
-    var rhs = req.body.rhs;
+    let lhs = req.body.lhs;
+    let rhs = req.body.rhs;
     const diff = myers.diff(lhs, rhs);
 
-    var lhsPos = [];
-    var rhsPos = [];
-    for (var i = 0; i < diff.length; i++) {
+    let lhsPos = [];
+    let rhsPos = [];
+    for (let i = 0; i < diff.length; i++) {
         lhsPos.push(diff[i].lhs.pos);
         rhsPos.push(diff[i].rhs.pos);
     }
 
-    var lhsTemplate = ``;
+    let lhsTemplate = ``;
 
-    var cnt = 0;
-    for (var i = 0; i < lhs.length; i++) {
+    let cnt = 0;
+    for (let i = 0; i < lhs.length; i++) {
         if (lhsPos.includes(i)) {
-            var lineCnt = 0;
-            var zeroSpanStart = ``;
-            var noneZeroSpans = ``;
+            let lineCnt = 0;
+            let zeroSpanStart = ``;
+            let noneZeroSpans = ``;
             if ("add" in diff[cnt].lhs) {
                 zeroSpanStart = `<span class="line_add" id="#l${cnt}">`;
                 noneZeroSpans = `<span class="line_add">`;
@@ -42,8 +41,8 @@ router.use('/', function(req, res, next) {
                 lhsTemplate += `</span>`;
             }
 
-            var jCnt = 0;
-            for (var k = 0; k < lineCnt; k++) {
+            let jCnt = 0;
+            for (let k = 0; k < lineCnt; k++) {
                 if (k == 0) {
                     lhsTemplate += zeroSpanStart;
                 }
@@ -72,14 +71,14 @@ router.use('/', function(req, res, next) {
         }
     }
 
-    var rhsTemplate = ``;
+    let rhsTemplate = ``;
 
-    var cnt = 0;
-    for (var i = 0; i < rhs.length; i++) {
+    cnt = 0;
+    for (let i = 0; i < rhs.length; i++) {
         if (rhsPos.includes(i)) {
-            var lineCnt = 0;
-            var zeroSpanStart = ``;
-            var noneZeroSpans = ``;
+            let lineCnt = 0;
+            let zeroSpanStart = ``;
+            let noneZeroSpans = ``;
             if ("add" in diff[cnt].rhs) {
                 zeroSpanStart = `<span class="line_add" id="#r${cnt}">`;
                 noneZeroSpans = `<span class="line_add">`;
@@ -96,8 +95,8 @@ router.use('/', function(req, res, next) {
                 rhsTemplate += `</span>`;
             }
 
-            var jCnt = 0;
-            for (var k = 0; k < lineCnt; k++) {
+            let jCnt = 0;
+            for (let k = 0; k < lineCnt; k++) {
                 if (k == 0) {
                     rhsTemplate += zeroSpanStart;
                 }

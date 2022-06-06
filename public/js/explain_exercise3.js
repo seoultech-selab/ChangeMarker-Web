@@ -1,82 +1,16 @@
-async function tutorialCheckAjax(lhs, rhs) {
-  $.ajax({
-      type: 'post',
-      url: '/tutorialCheck',
-      data: {lhs : lhs, rhs : rhs},
-      dataType: 'json',
-      success: function(res) {
-        var checkButton = document.getElementById('checkButton');
+let tmpStartPos = 0;
+let tmpLen = 0;
 
-        if (res.diffCnt == 0) {
-          checkButton.value = "Go Next!";
-          checkButton.style.backgroundColor = "#0dff47";
-          checkButton.onclick = "";
-          checkButton.type = "submit";
-
-          var parentWindow = window.parent.document;
-          var checkExercise = parentWindow.getElementById('checkExercise');
-          var currentPageNum = Number(parentWindow.getElementById('current_page').innerText);
-          checkExercise.value = String(currentPageNum);
-        }
-        else {
-          checkButton.style.backgroundColor = "#fd6a78";
-          popup = window.open("tutorialPopup.html", "childForm", "width=800, height=300");
-          setTimeout(() => {
-            var lhsCodeTag = document.createElement('code');
-            lhsCodeTag.innerHTML = res.lhsTemplate;
-            lhsCodeTag.className = "java";
-            var rhsCodeTag = document.createElement('code');
-            rhsCodeTag.innerHTML = res.rhsTemplate;
-            rhsCodeTag.className = "java";
-  
-            var lhsPreTag = popup.document.getElementById('inner_left');
-            lhsPreTag.appendChild(lhsCodeTag);
-            var rhsPreTag = popup.document.getElementById('inner_right');
-            rhsPreTag.appendChild(rhsCodeTag);
-          },500);
-
-        }
-      }
-  });
-}
-
-var check = 0;
-var tmpStartPos = 0;
-var tmpLen = 0;
-async function GenController(e) {
-    if (e == 1 && check == 0) {
-        GenDelete();
-    } else if (e == 2 && check == 0) {
-        alert('This example has a only "Delete" script!');
-    } else if (e == 3 && (check == 0 || check == 1)) {
-        alert('This example has a only "Delete" script!');
-    } else if (e == 4 && (check == 0 || check == 2)) {
-      alert('This example has a only "Delete" script!');
-    } else if (e == 5 && (check == 0 || check == 3)) {
-      alert('This example has a only "Delete" script!');
-    } else if (e == 6 && (check == 0 || check == 4)) {
-      alert('This example has a only "Delete" script!');
-    } else if (check == 1) {
-      alert('This example has a only "Delete" script!');
-    } else if (check == 2) {
-      alert('This example has a only "Delete" script!');
-    } else if (check == 3) {
-      alert('This example has a only "Delete" script!');
-    } else if (check == 4) {
-      alert('This example has a only "Delete" script!');
-    }
-}
-
-var hintCnt = 0;
+let hintCnt = 0;
 
 function GenDelete() {
-  var selectResult = getSelectResult();
+  let selectResult = getSelectResult();
     if (selectResult.len == 0) {
         alert("Please select texts.");
         return;
     }
 
-    var checkExercise = window.parent.document.getElementById('checkExercise');
+    let checkExercise = window.parent.document.getElementById('checkExercise');
     if (selectResult.text.indexOf('super(settings);', 0) < 0) {
       hintCnt += 1;
       if (hintCnt == 1) {
@@ -104,83 +38,37 @@ function GenDelete() {
       alert("Correct!! The next button is activated.");
     }
 
-    var table = document.getElementById("edit_scripts");
-    var newRow = table.insertRow();
+    let table = document.getElementById("edit_scripts");
+    let newRow = table.insertRow();
     newRow.id = selectResult.len + "/:" + selectResult.startPos + "/";
 
-    var newATag = createDeleteButton(0);
+    let newATag = createDeleteButton(0);
 
-    var newCell1 = newRow.insertCell(0);
-    var newCell2 = newRow.insertCell(1);
-    var newCell3 = newRow.insertCell(2);
-    var newCell4 = newRow.insertCell(3);
-    var newCell5 = newRow.insertCell(4);
-    var newCell6 = newRow.insertCell(5);
+    let newCell1 = newRow.insertCell(0);
+    let newCell2 = newRow.insertCell(1);
+    let newCell3 = newRow.insertCell(2);
+    let newCell4 = newRow.insertCell(3);
+    let newCell5 = newRow.insertCell(4);
+    let newCell6 = newRow.insertCell(5);
 
     newCell1.innerText = 'Delete';
-    var preTag = document.createElement('pre');
+    let preTag = document.createElement('pre');
     preTag.innerHTML = selectResult.text;
     newCell2.appendChild(preTag);
     newCell3.innerText = selectResult.lineNum;
     newCell6.appendChild(newATag);
 
-    var currentPageNum = Number(window.parent.document.getElementById('current_page').innerText);
+    let currentPageNum = Number(window.parent.document.getElementById('current_page').innerText);
     checkExercise.value = currentPageNum;
-    var nextButton = window.parent.document.getElementById('next_button');
+    let nextButton = window.parent.document.getElementById('next_button');
     nextButton.style.color = "#393E46";
     nextButton.disabled = false;
 }
 
-function createDeleteButton(delType) {
-  var newATag = document.createElement('a');
-  newATag.href = "javascript:void(0)";
-  newATag.text = "Delete";
-  newATag.className = "del_btn";
-  newATag.onclick = function () { deleteRow(this, delType); };
-  return newATag;
-}
 
-async function deleteRow(element, e) {
-    var table = document.getElementById("edit_scripts");
-    var trs = table.children[0].children;
-    var lastRow = trs[trs.length - 1];
-    var target = element.parentNode.parentNode;
-    var rowNum = target.rowIndex;
 
-    if (e == 1 && lastRow == target) {
-        check = 0;
-    }
-    table.deleteRow(rowNum);
-}
 
-var selectResult = new Object();
-
-// Context Menu List 렌더링
-function renderContextMenuList( list ){
-  // List Element 생성
-  const ctxMenuList = document.createElement('ul');
-  
-  // List Item 생성
-  list.forEach(function( item ){
-    // Item Element 생성
-    const ctxMenuItem = document.createElement('li');
-    const ctxMenuItem_a = document.createElement('a');
-    const ctxMenuItem_a_text = document.createTextNode(item.label);
-    
-    // 클릭 이벤트 설정
-    if( item.onClick ){
-      ctxMenuItem.addEventListener( 'click', item.onClick, false );
-    }
-
-    // Item 추가
-    ctxMenuItem_a.appendChild( ctxMenuItem_a_text );
-    ctxMenuItem.appendChild( ctxMenuItem_a );
-    ctxMenuList.appendChild( ctxMenuItem );
-  });
-  
-  // List Element 반환
-  return ctxMenuList;
-}
+let selectResult = new Object();
 
 // Context Menu 생성
 function handleCreateContextMenu_left(event){
@@ -206,19 +94,19 @@ function handleCreateContextMenu_left(event){
     {
       label: "Generate Delete",
       onClick: function(){
-        GenController(1);
+        GenController(0, 0);
       }
     },
     {
       label: "Generate Move",
       onClick: function(event){
-        GenController(3);
+        GenController(0, 2);
       }
     },
     {
       label: "Generate Update",
       onClick: function(event){
-        GenController(5);
+        GenController(0, 3);
       }
     }
   ]));
@@ -229,9 +117,116 @@ function handleCreateContextMenu_left(event){
     prevCtxMenu.remove();
   }
   
+  var selected = document.getSelection();
+  // var selected = document.getSelection();
+  if(selected.toString().length > 0) {
+    highlightSelection(selected);
+  }
+
   // Body에 Context Menu를 추가.
   document.body.appendChild( ctxMenu );
 }
+
+
+function highlightSelection(selected) {
+  // console.log(selected);
+  let startNum, endNum, selectionStartNumber, selectionEndNumber;
+  if (selected.anchorNode.parentElement.attributes.length == 2 && !(selected.anchorNode.parentElement.attributes[1].value.includes('#'))) {
+    startNum = selected.anchorNode.parentElement.attributes[1].value;
+  } else if (selected.anchorNode.parentElement.firstChild.parentNode.offsetParent.attributes.length == 2 && !(selected.anchorNode.parentElement.firstChild.parentNode.offsetParent.attributes[1].value.includes('#'))) {
+    startNum = selected.anchorNode.parentElement.firstChild.parentNode.offsetParent.attributes[1].value;
+  }
+
+  if (selected.focusNode.parentElement.attributes.length == 2 && !(selected.focusNode.parentElement.attributes[1].value.includes('#'))) {
+    endNum = selected.focusNode.parentElement.attributes[1].value;
+  } else if (selected.focusNode.parentElement.firstChild.parentNode.offsetParent.attributes.length == 2 && !(selected.focusNode.parentElement.firstChild.parentNode.offsetParent.attributes[1].value.includes('#'))) {
+    endNum = selected.focusNode.parentElement.firstChild.parentNode.offsetParent.attributes[1].value;
+  }
+
+  startNum *= 1;
+  endNum *= 1;
+
+  if (startNum == 0) {
+    selectionStartNumber = endNum;
+    selectionEndNumber = startNum;
+  } else if (endNum == 0) {
+    selectionStartNumber = startNum;
+    selectionEndNumber = endNum;
+  } else {
+    selectionStartNumber = (startNum < endNum) ? startNum : endNum;
+    selectionEndNumber = (startNum > endNum) ? startNum : endNum;
+  }
+  
+  selected = selected.getRangeAt(0);
+  let old = selected.cloneContents();
+
+  if (selectionStartNumber != selectionEndNumber) {
+    let tbody = document.getElementById('left').children[0].children[0].children[0].children[0];x
+    let oldChildren = old.children;
+      
+    let frontSpan = createHilightedSpan(oldChildren[0].cells[0].innerHTML);
+    let frontInnerHTML = tbody.children[selectionStartNumber - 1].children[1].innerHTML;
+    let frontSelectStart = frontInnerHTML.lastIndexOf(oldChildren[0].cells[0].innerHTML);
+    frontInnerHTML = frontInnerHTML.slice(0, frontSelectStart) + frontSpan.innerHTML + frontInnerHTML.slice(frontSelectStart + oldChildren[0].cells[0].innerHTML.length);
+    tbody.children[selectionStartNumber - 1].children[1].innerHTML = frontInnerHTML;
+  
+    for (let i = 1; i < oldChildren.length - 1; i++) {
+      let span = createHilightedSpan(oldChildren[i].children[1].innerHTML);
+      tbody.children[selectionStartNumber + i - 1].children[1].innerHTML = span.innerHTML;
+    }
+  
+    let backSpan = createHilightedSpan(oldChildren[oldChildren.length - 1].cells[1].innerHTML);
+    let backInnerHTML = tbody.children[selectionEndNumber - 1].children[1].innerHTML;
+    let backSelectStart = backInnerHTML.indexOf(oldChildren[oldChildren.length - 1].cells[1].innerHTML);
+    backInnerHTML = backInnerHTML.slice(0, backSelectStart) + backSpan.innerHTML + backInnerHTML.slice(backSelectStart + oldChildren[oldChildren.length - 1].cells[1].innerHTML.length);
+    tbody.children[selectionEndNumber - 1].children[1].innerHTML = backInnerHTML;
+  }
+  else {
+    console.log(old);
+    // let span = createHilightedSpan();
+  }
+  
+  // console.log(backSelectStart);
+  // tbody.children[selectionEndNumber - 1].children[1].innerHTML = frontInnerHTML;
+  // console.log(trs[0]);
+
+  // console.log(backRemainedText);
+  // backTr.children[1].innerHTML = '';
+  // console.log(backSpan);
+  // backTr.children[1].appendChild(backSpan);
+  // console.log(backSpan + backRemainedText);
+
+
+// 앞부분 추가 완료
+  // selected.deleteContents();
+  // tbody.children[selectionStartNumber - 1].children[1].appendChild(frontSpan);
+// ---------------------------------------------------------------
+
+
+  // tbody.children[selectionEndNumber - 1].children[0].remove();
+  // backTr.children[1].innerHTML = '';
+  // backTr.children[1].appendChild(backSpan);
+  // console.log(backRemainedText);
+  // backTr.children[1].innerText += backRemainedText;
+  // console.log(backTr);
+  // console.log(tbody.children[selectionEndNumber - 1]);
+  // for ()
+  // tbody.children[selectionEndNumber - 1].appendChild(backSpan);
+}
+
+function createHilightedSpan(text) {
+  // let span = `<span id="selection" style="background-color:'#0FF0F0`;
+  let span = document.createElement('span');
+  span.id = "selection";
+  span.style.backgroundColor = '#0FF0F0';
+  span.innerHTML = text;
+  let div = document.createElement('div');
+  div.appendChild(span);
+  return div;
+}
+
+
+
 
 function handleCreateContextMenu_right(event){
   // 기본 Context Menu가 나오지 않게 차단
@@ -256,19 +251,19 @@ function handleCreateContextMenu_right(event){
       {
       label: "Generate Insert",
         onClick: function(event){
-          GenController(2);
+          GenController(0, 1);
         }
       },
       {
       label: "Generate Move",
         onClick: function(event){
-          GenController(4);
+          GenController(0, 2);
         }
       },
       {
       label: "Generate Update",
         onClick: function(event){
-          GenController(6);
+          GenController(0, 3);
         }
       }
   ]));
@@ -283,38 +278,18 @@ function handleCreateContextMenu_right(event){
   document.body.appendChild( ctxMenu );
 }
 
-// Context Menu 제거
-function handleClearContextMenu(event){
-  const ctxMenu = document.getElementById('dochi_context_menu');
-  if( ctxMenu ){
-    ctxMenu.remove();
-  }
-  var selected = document.getSelection().getRangeAt(0);
-  if(selected.toString().length > 0) {
-    highlightSelection(selected);
-  }
-}
-
-function highlightSelection(selected) {
-  var old = selected.cloneContents();
-  var span = document.createElement('span');
-  span.style.backgroundColor = '#0FF0F0';
-  span.appendChild(old);
-  selected.deleteContents();
-  selected.insertNode(span);
-}
-
 function getSelectResult() {
   return selectResult;
 }
 
+
 function dragSelect() {
-  var result = new Object();
-  var selectionText = "";
-  var startNum = "";
-  var endNum = "";
-  var selectionNumber = "";
-  var startPos = 0;
+  let result = new Object();
+  let selectionText = "";
+  let startNum = "";
+  let endNum = "";
+  let selectionNumber = "";
+  let startPos = 0;
 
   if (document.getSelection) {
     selectionText = document.getSelection();
@@ -360,18 +335,19 @@ function dragSelect() {
   selectResult = result;
 }
 
+
+
+
 function move_inner() {
-  var left = document.getElementById("left");
-  var right = document.getElementById("right")
+  let left = document.getElementById("left");
+  let right = document.getElementById("right")
 
   left.scrollTo(0, 130);
   right.scrollTo(0, 130);
 }
 
 function init() {
-    var left = document.getElementById('left');
-    var right = document.getElementById('right');
-    left.addEventListener('contextmenu', handleCreateContextMenu_left, false);    
-    right.addEventListener('contextmenu', handleCreateContextMenu_right, false);
-    document.addEventListener('click', handleClearContextMenu, false);    
+    document.getElementById('left').addEventListener('contextmenu', handleCreateContextMenu_left, false);
+    document.getElementById('right').addEventListener('contextmenu', handleCreateContextMenu_right, false);
+    document.addEventListener('click', handleClearContextMenu, false);
 }

@@ -2,13 +2,13 @@ const express = require('express');
 const router = express.Router();
 
 router.use('/', function(req, res, next) {
-    var mysql = require('mysql');
-    var config = require('../db/db_info');
-    var pool = mysql.createPool(config);
+    let mysql = require('mysql');
+    let config = require('../db/db_info');
+    let pool = mysql.createPool(config);
 
     pool.getConnection(function(err, conn) {
         if (!err) {
-            var query = "DELETE FROM scripts_web where `user_code`='";
+            let query = "DELETE FROM scripts_web where `user_code`='";
             query += req.body.user_code;
             query += "' and `type`='";
             query += req.body.type;

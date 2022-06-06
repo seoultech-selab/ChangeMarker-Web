@@ -6,18 +6,18 @@ const myers = require('myers-diff');
 
 
 router.use('/', function(req, res, next) {
-    var data = JSON.parse(req.body.data);
+    let data = JSON.parse(req.body.data);
 
     const currentFile = data.diffNum;
     const userCode = data.userCode;
 
-    var mysql = require('mysql');
-    var config = require('../db/db_info');
+    let mysql = require('mysql');
+    let config = require('../db/db_info');
 
-    var pool = mysql.createPool(config);
+    let pool = mysql.createPool(config);
     pool.getConnection(function(err, conn) {
         if (!err) {
-            var query = "select `old_code`,`line_number_old`,`start_pos_old`,`new_code`,`line_number_new`,`start_pos_new` from scripts_web where `user_code`='";
+            let query = "select `old_code`,`line_number_old`,`start_pos_old`,`length_old`,`new_code`,`line_number_new`,`start_pos_new`,`length_new` from scripts_web where `user_code`='";
             query += userCode;
             query += "' and `change_id`='";
             query += currentFile;
@@ -27,12 +27,12 @@ router.use('/', function(req, res, next) {
                 if (err) {
                     console.log(err);
                 } else {
-                    var leftScripts = new Array();
-                    var rightScripts = new Array();
-                    for (var i in results) {
-                        var result = results[i];
+                    let leftScripts = new Array();
+                    let rightScripts = new Array();
+                    for (let i in results) {
+                        let result = results[i];
                         if (result.line_number_old != null) {
-                            var tmpArr = new Object();
+                            let tmpArr = new Object();
                             tmpArr.code = result.old_code;
                             tmpArr.lineNum = result.line_number_old;
                             tmpArr.startPos = result.start_pos_old;
@@ -40,7 +40,7 @@ router.use('/', function(req, res, next) {
                             leftScripts.push(tmpArr);
                         }
                         if (result.line_number_new != null) {
-                            var tmpArr = new Object();
+                            let tmpArr = new Object();
                             tmpArr.code = result.new_code;
                             tmpArr.lineNum = result.line_number_new;
                             tmpArr.startPos = result.start_pos_new;
@@ -58,39 +58,47 @@ router.use('/', function(req, res, next) {
                     });
 
                     const baseDir = __dirname.slice(0, -7);
-                    let fileList = fs.readFileSync(baseDir + '/change_files.txt', 'utf-8');
-                    fileList = fileList.split('/');
+                    let fileList = req.session.fileNames;
                 
-                    var fileNum = Number(currentFile.slice(6));
-                    var lhs = fs.readFileSync(baseDir + '/changes/' + currentFile + '/old/' + fileList[fileNum],'utf-8');
-                    var rhs = fs.readFileSync(baseDir + '/changes/' + currentFile + '/new/' + fileList[fileNum],'utf-8');
+                    let fileNum = Number(currentFile.slice(6));
+                    let lhs = fs.readFileSync(baseDir + '/changes/' + currentFile + '/old/' + fileList[fileNum],'utf-8');
+                    let rhs = fs.readFileSync(baseDir + '/changes/' + currentFile + '/new/' + fileList[fileNum],'utf-8');
                     
-                    var lhsArray = lhs.split('\n');
-                    var rhsArray = rhs.split('\n');
+                    let lhsArray = lhs.split('\n');
+                    let rhsArray = rhs.split('\n');
 
+                    for (let i in leftScripts) {
+                        let currentScript = leftScripts[i];
 
-                    for (var i in leftScripts) {
-                        var currentScript = leftScripts[i];
+                        let currentCode = currentScript.code;
+                        let currentLineNum = currentScript.lineNum - 1;
+                        let currentStartPos = 0;
 
-                        var currentCode = currentScript.code;
-                        var currentLineNum = currentScript.lineNum - 1;
-                        var currentStartPos = currentScript.startPos;
-
-                        var codesArray = currentCode.split('\n');
-                        for (var j in codesArray) {
+                        let codesArray = currentCode.split('\n');
+                        for (let j in codesArray) {
+                            let check = 1;
                             if (lhsArray[currentLineNum].substring(currentStartPos, currentStartPos + codesArray[j].length) != codesArray[j]) {
-                                var wordsArray = lhsArray[currentLineNum].split(' ');
-                                for (var i in wordsArray) {
+                                check = 0;
+                                if (lhsArray[currentLineNum].trim().length == 0 || codesArray[j].trim().length != 0) {
+                                    while (lhsArray[currentLineNum].trim().length == 0)
+                                    currentLineNum += 1;
+                                }
+                                let wordsArray = lhsArray[currentLineNum].split(' ');
+                                for (let i in wordsArray) {
                                     currentStartPos += wordsArray[i].length;
                                     if (i > 0) {
                                         currentStartPos += 1;
                                     }
                                     if (lhsArray[currentLineNum].substring(currentStartPos, currentStartPos + codesArray[j].length) == codesArray[j]) {
+                                        check = 1;
                                         break;
                                     }
                                 }
                             }
-                            lhsArray[currentLineNum] = lhsArray[currentLineNum].substring(0, currentStartPos) + lhsArray[currentLineNum].substring(currentStartPos + codesArray[j].length);
+                            if (check == 1)
+                                lhsArray[currentLineNum] = lhsArray[currentLineNum].substring(0, currentStartPos) + lhsArray[currentLineNum].substring(currentStartPos + codesArray[j].length);
+                            else
+                                lhsArray[currentLineNum] = "";
 
                             currentLineNum += 1;
                             currentStartPos = 0;
@@ -98,45 +106,61 @@ router.use('/', function(req, res, next) {
                         
                     }
 
-                    for (var i in rightScripts) {
-                        var currentScript = rightScripts[i];
+                    for (let i in rightScripts) {
+                        let currentScript = rightScripts[i];
 
-                        var currentCode = currentScript.code;
-                        var currentLineNum = currentScript.lineNum - 1;
-                        var currentStartPos = currentScript.startPos;
+                        let currentCode = currentScript.code;
+                        let currentLineNum = currentScript.lineNum - 1;
+                        let currentStartPos = 0;
 
-                        var codesArray = currentCode.split('\n');
-                        for (var j in codesArray) {
+                        let codesArray = currentCode.split('\n');
+                        for (let j in codesArray) {
+                            let check = 1;
                             if (rhsArray[currentLineNum].substring(currentStartPos, currentStartPos + codesArray[j].length) != codesArray[j]) {
-                                var wordsArray = rhsArray[currentLineNum].split(' ');
-                                for (var i in wordsArray) {
+                                check = 0;
+                                if (rhsArray[currentLineNum].trim().length == 0 || codesArray[j].trim().length != 0) {
+                                    while (rhsArray[currentLineNum].trim().length == 0)
+                                    currentLineNum += 1;
+                                }
+                                let wordsArray = rhsArray[currentLineNum].split(' ');
+                                for (let i in wordsArray) {
                                     currentStartPos += wordsArray[i].length;
                                     if (i > 0) {
                                         currentStartPos += 1;
                                     }
                                     if (rhsArray[currentLineNum].substring(currentStartPos, currentStartPos + codesArray[j].length) == codesArray[j]) {
+                                        check = 1;
                                         break;
                                     }
                                 }
                             }
-                            rhsArray[currentLineNum] = rhsArray[currentLineNum].substring(0, currentStartPos) + rhsArray[currentLineNum].substring(currentStartPos + codesArray[j].length);
+                            if (check == 1) {
+                                rhsArray[currentLineNum] = rhsArray[currentLineNum].substring(0, currentStartPos) + rhsArray[currentLineNum].substring(currentStartPos + codesArray[j].length);
+                            }
+                            else {
+                                rhsArray[currentLineNum] = " ";
+                            }
 
                             currentLineNum += 1;
                             currentStartPos = 0;
                         }
                     }
-                    var lhsTotal = "";
-                    var rhsTotal = "";
-                    for (var i in lhsArray) {
-                        lhsTotal += lhsArray[i];
+                    let lhsTotal = "";
+                    let rhsTotal = "";
+                    for (let i in lhsArray) {
+                        lhsTmp = lhsArray[i].trim();
+                        if (lhsTmp.length != 0)
+                            lhsTotal += lhsTmp;
                     }
-                    for (var i in rhsArray) {
-                        rhsTotal += rhsArray[i];
+                    for (let i in rhsArray) {
+                        rhsTmp = rhsArray[i].trim();
+                        if (rhsTmp.length != 0)
+                            rhsTotal += rhsTmp;
                     }
 
                     const diff = myers.diff(lhsTotal, rhsTotal);
-                    var completed = req.session.completed;
-                    var fileCnt = req.session.fileCnt;
+                    let completed = req.session.completed;
+                    let fileCnt = req.session.fileCnt;
                     if (diff.length == 0) {
                         completed[fileCnt] = 1;
                     }
@@ -150,7 +174,7 @@ router.use('/', function(req, res, next) {
                 }
             })
         }
-        conn.release();
+        // conn.release();
     });
 });
 

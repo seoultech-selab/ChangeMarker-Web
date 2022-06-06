@@ -5,7 +5,6 @@
         <title>Change Marker</title>
         <link rel="stylesheet" href="/public/css/marker.css">
         <link rel="stylesheet" href="/public/css/contextMenu.css">
-        <script src="/public/js/showStored.js"></script>
         <script src="/public/js/markerViews.js"></script>
         <script src="/public/js/contextMenu.js"></script>
         <script src="/public/js/scriptSubmit.js"></script>
@@ -21,8 +20,30 @@
 	    <script>hljs.initHighlightingOnLoad();</script>
         <script src="//cdn.jsdelivr.net/npm/highlightjs-line-numbers.js@2.8.0/dist/highlightjs-line-numbers.min.js"></script>
         <script>hljs.initLineNumbersOnLoad();</script>
-        <script src="/public/js/initial.js"></script>
+        <!-- <script src="/public/js/initial.js"></script> -->
         <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+        <script>
+            function init(completed) {
+                document.getElementById("hr1").onmousedown = on_mouse_down_hr1;
+                document.getElementById("hr1").onmouseover = on_mouse_over1;
+                document.getElementById("hr1").onmouseout = on_mouse_out;
+
+                document.getElementById("hr2").onmousedown = on_mouse_down_hr2;
+                document.getElementById("hr2").onmouseover = on_mouse_over2;
+                document.getElementById("hr2").onmouseout = on_mouse_out;
+                document.onmouseup = on_mouse_up;
+                document.onmousemove = on_mouse_move;
+                window.onresize = window_on_resize;
+                storeY();
+
+                document.getElementById('left').onmouseup = storeSelectionLeft;
+                document.getElementById('right').onmouseup = storeSelectionRight;
+                document.getElementById('left').addEventListener('contextmenu', handleCreateContextMenu_left, false);
+                document.getElementById('right').addEventListener('contextmenu', handleCreateContextMenu_right, false);
+                document.addEventListener('click', handleClearContextMenu, false);
+                completeShow(completed);
+            }
+        </script>
     </head>
     <body onload="init('<%= completed %>');">
         <input id="diffNum" type="hidden" value="<%= diffNum %>">
@@ -58,7 +79,7 @@
             </div>
 
             <div class="d1" id="hr1">
-                <% for (var i = 0; i < diffNum; i++) { %> 
+                <% for (let i = 0; i < diffNum; i++) { %> 
                     <input type="button" class="move_inner" id="#<%= i %>" value="<%= i %>" onclick="move_inner(this.value)">
                 <% } %> 
             </div>

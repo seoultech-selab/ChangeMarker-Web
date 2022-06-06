@@ -1,7 +1,7 @@
 function completeShow(completed) {
     completed = completed.split(',');
-    for (var fileNum in completed) {
-        var buttonId = "file" + (Number(fileNum) + 1);
+    for (let fileNum in completed) {
+        let buttonId = "file" + (Number(fileNum) + 1);
         if (completed[fileNum] == -1) {
             document.getElementById(buttonId).style.backgroundColor = '#fd6a78';
         }
