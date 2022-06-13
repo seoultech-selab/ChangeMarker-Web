@@ -52,6 +52,8 @@ function storeSelectionLeft() {
   result.len = result.text.length;
 
   storedSelectionLeft = result;
+
+  leftHighlightSelection();
 }
 
 let storedSelectionRight = new Object();
@@ -101,6 +103,8 @@ function storeSelectionRight() {
   result.len = result.text.length;
 
   storedSelectionRight = result;
+
+  leftHighlightSelection();
 }
 
 let tmpStartPos = 0;
@@ -490,6 +494,8 @@ function move_inner() {
 }
 
 
+let storedSelectStartPos = 0;
+let storedSelectLines = new Array();
 
 function init() {
     document.getElementById('left').onmouseup = storeSelectionLeft;

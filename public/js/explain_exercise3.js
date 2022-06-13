@@ -1,3 +1,4 @@
+
 let tmpStartPos = 0;
 let tmpLen = 0;
 
@@ -116,114 +117,14 @@ function handleCreateContextMenu_left(event){
   if( prevCtxMenu ){
     prevCtxMenu.remove();
   }
-  
-  var selected = document.getSelection();
-  // var selected = document.getSelection();
-  if(selected.toString().length > 0) {
-    highlightSelection(selected);
-  }
 
   // Body에 Context Menu를 추가.
   document.body.appendChild( ctxMenu );
 }
 
 
-function highlightSelection(selected) {
-  // console.log(selected);
-  let startNum, endNum, selectionStartNumber, selectionEndNumber;
-  if (selected.anchorNode.parentElement.attributes.length == 2 && !(selected.anchorNode.parentElement.attributes[1].value.includes('#'))) {
-    startNum = selected.anchorNode.parentElement.attributes[1].value;
-  } else if (selected.anchorNode.parentElement.firstChild.parentNode.offsetParent.attributes.length == 2 && !(selected.anchorNode.parentElement.firstChild.parentNode.offsetParent.attributes[1].value.includes('#'))) {
-    startNum = selected.anchorNode.parentElement.firstChild.parentNode.offsetParent.attributes[1].value;
-  }
-
-  if (selected.focusNode.parentElement.attributes.length == 2 && !(selected.focusNode.parentElement.attributes[1].value.includes('#'))) {
-    endNum = selected.focusNode.parentElement.attributes[1].value;
-  } else if (selected.focusNode.parentElement.firstChild.parentNode.offsetParent.attributes.length == 2 && !(selected.focusNode.parentElement.firstChild.parentNode.offsetParent.attributes[1].value.includes('#'))) {
-    endNum = selected.focusNode.parentElement.firstChild.parentNode.offsetParent.attributes[1].value;
-  }
-
-  startNum *= 1;
-  endNum *= 1;
-
-  if (startNum == 0) {
-    selectionStartNumber = endNum;
-    selectionEndNumber = startNum;
-  } else if (endNum == 0) {
-    selectionStartNumber = startNum;
-    selectionEndNumber = endNum;
-  } else {
-    selectionStartNumber = (startNum < endNum) ? startNum : endNum;
-    selectionEndNumber = (startNum > endNum) ? startNum : endNum;
-  }
-  
-  selected = selected.getRangeAt(0);
-  let old = selected.cloneContents();
-
-  if (selectionStartNumber != selectionEndNumber) {
-    let tbody = document.getElementById('left').children[0].children[0].children[0].children[0];x
-    let oldChildren = old.children;
-      
-    let frontSpan = createHilightedSpan(oldChildren[0].cells[0].innerHTML);
-    let frontInnerHTML = tbody.children[selectionStartNumber - 1].children[1].innerHTML;
-    let frontSelectStart = frontInnerHTML.lastIndexOf(oldChildren[0].cells[0].innerHTML);
-    frontInnerHTML = frontInnerHTML.slice(0, frontSelectStart) + frontSpan.innerHTML + frontInnerHTML.slice(frontSelectStart + oldChildren[0].cells[0].innerHTML.length);
-    tbody.children[selectionStartNumber - 1].children[1].innerHTML = frontInnerHTML;
-  
-    for (let i = 1; i < oldChildren.length - 1; i++) {
-      let span = createHilightedSpan(oldChildren[i].children[1].innerHTML);
-      tbody.children[selectionStartNumber + i - 1].children[1].innerHTML = span.innerHTML;
-    }
-  
-    let backSpan = createHilightedSpan(oldChildren[oldChildren.length - 1].cells[1].innerHTML);
-    let backInnerHTML = tbody.children[selectionEndNumber - 1].children[1].innerHTML;
-    let backSelectStart = backInnerHTML.indexOf(oldChildren[oldChildren.length - 1].cells[1].innerHTML);
-    backInnerHTML = backInnerHTML.slice(0, backSelectStart) + backSpan.innerHTML + backInnerHTML.slice(backSelectStart + oldChildren[oldChildren.length - 1].cells[1].innerHTML.length);
-    tbody.children[selectionEndNumber - 1].children[1].innerHTML = backInnerHTML;
-  }
-  else {
-    console.log(old);
-    // let span = createHilightedSpan();
-  }
-  
-  // console.log(backSelectStart);
-  // tbody.children[selectionEndNumber - 1].children[1].innerHTML = frontInnerHTML;
-  // console.log(trs[0]);
-
-  // console.log(backRemainedText);
-  // backTr.children[1].innerHTML = '';
-  // console.log(backSpan);
-  // backTr.children[1].appendChild(backSpan);
-  // console.log(backSpan + backRemainedText);
-
-
-// 앞부분 추가 완료
-  // selected.deleteContents();
-  // tbody.children[selectionStartNumber - 1].children[1].appendChild(frontSpan);
-// ---------------------------------------------------------------
-
-
-  // tbody.children[selectionEndNumber - 1].children[0].remove();
-  // backTr.children[1].innerHTML = '';
-  // backTr.children[1].appendChild(backSpan);
-  // console.log(backRemainedText);
-  // backTr.children[1].innerText += backRemainedText;
-  // console.log(backTr);
-  // console.log(tbody.children[selectionEndNumber - 1]);
-  // for ()
-  // tbody.children[selectionEndNumber - 1].appendChild(backSpan);
-}
-
-function createHilightedSpan(text) {
-  // let span = `<span id="selection" style="background-color:'#0FF0F0`;
-  let span = document.createElement('span');
-  span.id = "selection";
-  span.style.backgroundColor = '#0FF0F0';
-  span.innerHTML = text;
-  let div = document.createElement('div');
-  div.appendChild(span);
-  return div;
-}
+let storedSelectStartPos = 0;
+let storedSelectLines = new Array();
 
 
 
@@ -347,6 +248,8 @@ function move_inner() {
 }
 
 function init() {
+    document.getElementById('left').onmouseup = leftHighlightSelection;
+    document.getElementById('right').onmouseup = rightHighlightSelection;
     document.getElementById('left').addEventListener('contextmenu', handleCreateContextMenu_left, false);
     document.getElementById('right').addEventListener('contextmenu', handleCreateContextMenu_right, false);
     document.addEventListener('click', handleClearContextMenu, false);

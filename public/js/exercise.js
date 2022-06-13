@@ -119,3 +119,174 @@ function createDeleteButton(delType) {
   newATag.onclick = function () { deleteRow(this, delType); };
   return newATag;
 }
+
+
+
+
+
+
+function leftHighlightSelection() {
+  let selectedSpans = document.getElementById("left").getElementsByClassName("selection");
+  for (i in selectedSpans) {
+    selectedSpans[i].style = "";
+  }
+
+  let selected = document.getSelection();
+  if(selected.toString().length > 0) {
+    highlightSelection(selected);
+  }
+}
+
+function rightHighlightSelection() {
+  let selectedSpans = document.getElementById("right").getElementsByClassName("selection");
+  for (i in selectedSpans) {
+    selectedSpans[i].style = "";
+  }
+  
+  let selected = document.getSelection();
+  if(selected.toString().length > 0) {
+    highlightSelection(selected);
+  }
+}
+
+// let storedSelectStartPos = 0;
+// let storedSelectLines = new Array();
+
+function highlightSelection(selected) {
+  let startNum, endNum, selectionStartNumber, selectionEndNumber;
+  if (selected.anchorNode.parentElement.attributes.length == 2 && !(selected.anchorNode.parentElement.attributes[1].value.includes('#'))) {
+    startNum = selected.anchorNode.parentElement.attributes[1].value;
+  } else if (selected.anchorNode.parentElement.firstChild.parentNode.offsetParent.attributes.length == 2 && !(selected.anchorNode.parentElement.firstChild.parentNode.offsetParent.attributes[1].value.includes('#'))) {
+    startNum = selected.anchorNode.parentElement.firstChild.parentNode.offsetParent.attributes[1].value;
+  }
+
+  if (selected.focusNode.parentElement.attributes.length == 2 && !(selected.focusNode.parentElement.attributes[1].value.includes('#'))) {
+    endNum = selected.focusNode.parentElement.attributes[1].value;
+  } else if (selected.focusNode.parentElement.firstChild.parentNode.offsetParent.attributes.length == 2 && !(selected.focusNode.parentElement.firstChild.parentNode.offsetParent.attributes[1].value.includes('#'))) {
+    endNum = selected.focusNode.parentElement.firstChild.parentNode.offsetParent.attributes[1].value;
+  }
+
+  startNum *= 1;
+  endNum *= 1;
+
+  if (startNum == 0) {
+    selectionStartNumber = endNum;
+    selectionEndNumber = startNum;
+  } else if (endNum == 0) {
+    selectionStartNumber = startNum;
+    selectionEndNumber = endNum;
+  } else {
+    selectionStartNumber = (startNum < endNum) ? startNum : endNum;
+    selectionEndNumber = (startNum > endNum) ? startNum : endNum;
+  }
+  
+  storedSelectLines = [];
+  storedSelectStartPos = selectionStartNumber - 1;
+
+
+  selected = selected.getRangeAt(0);
+  let old = selected.cloneContents();
+
+  if (selectionStartNumber != selectionEndNumber) {
+    let safeRanges = getSafeRanges(selected);
+    for (let i = 0; i < safeRanges.length; i++) {
+      highlightRange(safeRanges[i]);
+    }
+    let tbody = document.getElementById('left').children[0].children[0].children[0].children[0];
+    let oldChildren = old.children;
+  
+    for (let i = 1; i < oldChildren.length - 1; i++) {
+      storedSelectLines.push(tbody.children[selectionStartNumber + i - 1].children[1].innerHTML);
+      let span = createHilightedSpan(oldChildren[i].children[1].innerHTML);
+      tbody.children[selectionStartNumber + i - 1].children[1].innerHTML = span.innerHTML;
+    }
+    
+    storedSelectLines.push(tbody.children[selectionEndNumber - 1].children[1].innerHTML);
+  }
+  else {
+    let safeRanges = getSafeRanges(selected);
+    for (let i = 0; i < safeRanges.length; i++) {
+      highlightRange(safeRanges[i]);
+    }
+  }
+}
+
+function getSafeRanges(dangerous) {
+  let a = dangerous.commonAncestorContainer;
+  // Starts -- Work inward from the start, selecting the largest safe range
+  let s = new Array(0), rs = new Array(0);
+  if (dangerous.startContainer != a)
+    for(let i = dangerous.startContainer; i != a; i = i.parentNode) {
+      s.push(i);
+    }
+  
+  if (0 < s.length) for(let i = 0; i < s.length; i++) {
+    let xs = document.createRange();
+    if (i) {
+        xs.setStartAfter(s[i-1]);
+        xs.setEndAfter(s[i].lastChild);
+    }
+    else {
+        xs.setStart(s[i], dangerous.startOffset);
+        xs.setEndAfter(
+            (s[i].nodeType == Node.TEXT_NODE)
+            ? s[i] : s[i].lastChild
+        );
+    }
+    if (xs.commonAncestorContainer.innerHTML.indexOf("data-line-number") < 0) {
+      rs.push(xs);
+    }
+  }
+
+  // Ends -- basically the same code reversed
+  let e = new Array(0), re = new Array(0);
+  if (dangerous.endContainer != a)
+    for(let i = dangerous.endContainer; i != a; i = i.parentNode)
+        e.push(i)
+  ;
+  if (0 < e.length) for(let i = 0; i < e.length; i++) {
+    let xe = document.createRange();
+    if (i) {
+        xe.setStartBefore(e[i].firstChild);
+        xe.setEndBefore(e[i-1]);
+    }
+    else {
+        xe.setStartBefore(
+            (e[i].nodeType == Node.TEXT_NODE)
+            ? e[i] : e[i].firstChild
+        );
+        xe.setEnd(e[i], dangerous.endOffset);
+    }
+    if (xe.commonAncestorContainer.innerHTML.indexOf("data-line-number") < 0) {
+      re.unshift(xe);
+    }
+  }
+  
+  if ((0 >= s.length) || (0 >= e.length)) {
+    return [dangerous];
+  }
+
+  response = rs.concat(re);
+  
+  return response;
+}
+
+function createHilightedSpan(text) {
+  let span = document.createElement('span');
+  span.className = "selection";
+  span.style.backgroundColor = '#bbd6fb';
+  span.innerHTML = text;
+  let div = document.createElement('div');
+  div.appendChild(span);
+  return div;
+}
+
+function highlightRange(range) {
+  let newNode = document.createElement("span");
+  newNode.setAttribute(
+     "style",
+     "background-color: #bbd6fb;"
+  );
+  newNode.className = "selection";
+  range.surroundContents(newNode);
+}
