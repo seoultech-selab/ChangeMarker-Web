@@ -244,8 +244,12 @@ function move_inner() {
 }
 
 
+let storedSelectStartPos = 0;
+let storedSelectLines = new Array();
 
 function init() {
+    document.getElementById('left').onmouseup = leftHighlightSelection;
+    document.getElementById('right').onmouseup = rightHighlightSelection;
     document.getElementById('left').addEventListener('contextmenu', handleCreateContextMenu_left, false);
     document.getElementById('right').addEventListener('contextmenu', handleCreateContextMenu_right, false);
     document.addEventListener('click', handleClearContextMenu, false);
