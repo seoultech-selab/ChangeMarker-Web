@@ -16,26 +16,50 @@ class Selection {
   }
 }
 
-let span = null;
+let highlight = null;
+const highlightColor = '#0FF0F0';
 function restoreContent() {
-  let p = span.parentNode;
-  span.childNodes.forEach(function (c) {
-    p.insertBefore(c.cloneNode(true), span);
+  let p = highlight.parentNode;
+  highlight.childNodes.forEach(function (c) {
+    p.insertBefore(c.cloneNode(true), highlight);
   });
-  p.removeChild(span);
+  p.removeChild(highlight);
   p.normalize();
 }
 
-function highlightSelection(selected) {
-  if(span != null && span.hasChildNodes()) {    
+function highlightSelection(range) {
+  if(highlight != null && highlight.hasChildNodes()) {    
     restoreContent();
   }
-  let old = selected.cloneContents();
-  span = document.createElement('span');
-  span.style.backgroundColor = '#0FF0F0';
-  span.appendChild(old);
-  selected.deleteContents();
-  selected.insertNode(span);
+  
+  const top = range.commonAncestorContainer;
+  //Check whether selection ranges multiple lines, handle accordingly.
+  if(top.nodeName === "TBODY") {
+    //First/Last TDs may have partial selection. Need to be handled.        
+    const lines = []
+    for(let i=0; i<top.childNodes.length; i++) {
+      const line = top.childNodes[i];
+      if(range.intersectsNode(line)){
+        lines.push(line);        
+      }
+    }
+    for(let i=0; i<lines.length; i++) {
+      const code = lines[i].childNodes[1];
+      const span = document.createElement('span');
+      span.style.backgroundColor = highlightColor;
+      code.childNodes.forEach(function(c) {
+        span.appendChild(c.cloneNode(true));
+      });
+      const newCode = code.cloneNode(false);
+      newCode.appendChild(span);
+      code.parentNode.replaceChild(newCode, code);
+    }
+        
+  } else {
+    highlight = document.createElement('span');
+    highlight.style.backgroundColor = highlightColor;
+    range.surroundContents(highlight);
+  }  
 }
 
 let storedSelectionLeft = new Selection();
@@ -70,9 +94,9 @@ function storeSelectionLeft() {
   endNum *= 1;
   selectionNumber = getSelectionNum(startNum, selectionNumber, endNum);
 
-  let selected = document.getSelection().getRangeAt(0);
-  if(selected.toString().length > 0) {
-    highlightSelection(selected);
+  let range = document.getSelection().getRangeAt(0);
+  if(range.toString().length > 0) {
+    highlightSelection(range);
   }
 
   let sText = selectionText.toString();
