@@ -16,6 +16,28 @@ class Selection {
   }
 }
 
+let span = null;
+function restoreContent() {
+  let p = span.parentNode;
+  span.childNodes.forEach(function (c) {
+    p.insertBefore(c.cloneNode(true), span);
+  });
+  p.removeChild(span);
+  p.normalize();
+}
+
+function highlightSelection(selected) {
+  if(span != null && span.hasChildNodes()) {    
+    restoreContent();
+  }
+  let old = selected.cloneContents();
+  span = document.createElement('span');
+  span.style.backgroundColor = '#0FF0F0';
+  span.appendChild(old);
+  selected.deleteContents();
+  selected.insertNode(span);
+}
+
 let storedSelectionLeft = new Selection();
 
 function storeSelectionLeft() {
@@ -47,6 +69,11 @@ function storeSelectionLeft() {
   startNum *= 1;
   endNum *= 1;
   selectionNumber = getSelectionNum(startNum, selectionNumber, endNum);
+
+  let selected = document.getSelection().getRangeAt(0);
+  if(selected.toString().length > 0) {
+    highlightSelection(selected);
+  }
 
   let sText = selectionText.toString();
   storedSelectionLeft.update(sText, selectionNumber, startPos, sText.length);
