@@ -16,6 +16,52 @@ class Selection {
   }
 }
 
+let highlight = null;
+const highlightColor = '#0FF0F0';
+function restoreContent() {
+  let p = highlight.parentNode;
+  highlight.childNodes.forEach(function (c) {
+    p.insertBefore(c.cloneNode(true), highlight);
+  });
+  p.removeChild(highlight);
+  p.normalize();
+}
+
+function highlightSelection(range) {
+  if(highlight != null && highlight.hasChildNodes()) {    
+    restoreContent();
+  }
+  
+  const top = range.commonAncestorContainer;
+  //Check whether selection ranges multiple lines, handle accordingly.
+  if(top.nodeName === "TBODY") {
+    //First/Last TDs may have partial selection. Need to be handled.        
+    const lines = []
+    for(let i=0; i<top.childNodes.length; i++) {
+      const line = top.childNodes[i];
+      if(range.intersectsNode(line)){
+        lines.push(line);        
+      }
+    }
+    for(let i=0; i<lines.length; i++) {
+      const code = lines[i].childNodes[1];
+      const span = document.createElement('span');
+      span.style.backgroundColor = highlightColor;
+      code.childNodes.forEach(function(c) {
+        span.appendChild(c.cloneNode(true));
+      });
+      const newCode = code.cloneNode(false);
+      newCode.appendChild(span);
+      code.parentNode.replaceChild(newCode, code);
+    }
+        
+  } else {
+    highlight = document.createElement('span');
+    highlight.style.backgroundColor = highlightColor;
+    range.surroundContents(highlight);
+  }  
+}
+
 let storedSelectionLeft = new Selection();
 
 function storeSelectionLeft() {
@@ -47,6 +93,11 @@ function storeSelectionLeft() {
   startNum *= 1;
   endNum *= 1;
   selectionNumber = getSelectionNum(startNum, selectionNumber, endNum);
+
+  let range = document.getSelection().getRangeAt(0);
+  if(range.toString().length > 0) {
+    highlightSelection(range);
+  }
 
   let sText = selectionText.toString();
   storedSelectionLeft.update(sText, selectionNumber, startPos, sText.length);
