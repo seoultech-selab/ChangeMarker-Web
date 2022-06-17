@@ -16,7 +16,6 @@ async function tutorialCheckAjax(lhs, rhs) {
           let parentWindow = window.parent.document;
           let checkExercise = parentWindow.getElementById('checkExercise');
           checkExercise.value = String(Number(checkExercise.value) + 1);
-          console.log(checkExercise.value);
         }
         else {
           checkButton.style.backgroundColor = "#fd6a78";

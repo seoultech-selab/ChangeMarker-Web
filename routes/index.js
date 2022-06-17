@@ -34,11 +34,13 @@ const submit = require('./submitRoute');
 const deleteRoute = require('./deleteRoute');
 const check = require('./checkRoute');
 const tutorialCheck = require('./tutorialCheckRoute');
+const surveySubmit = require('./surveySubmitRoute');
 
 router.use('/submit', submit);
 router.delete('/delete', deleteRoute);
 router.use('/check', check);
 router.use('/tutorialCheck', tutorialCheck);
+router.use('/survey', surveySubmit);
 
 router.use('/finish', function(req, res, next) {
     res.render('../views/finish.ejs', {

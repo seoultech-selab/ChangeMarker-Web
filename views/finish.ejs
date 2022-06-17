@@ -3,6 +3,8 @@
     <head>
         <meta charset="UTF-8">
         <title>Change Marker</title>
+        <script src="/public/js/surveyAjax.js"></script>
+        <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
         <link rel="stylesheet" href="/public/css/close.css">
         <script>
             function copyCode() {
@@ -13,11 +15,30 @@
         </script>
     </head>
     <body>
-        <p>Thank You for completing our request!</p>
-        <p>Please submit the code below to Amazon Turk.</p>
-        <div class="code_container">
-            <input id="code_number" value="<%= code %>" readonly>
-            <button class="button-28" role="button" onclick="copyCode()">Copy</button>
+        <div id="survey">
+            <p>
+                Before finish this project, please tell me about some information.<br>
+                This information is only used to our research.<br>
+                If you press Submit button, the code for AWS MTurk is appeared;<br>
+            </p>
+
+            <p>e-mail</p>
+            <input type="text" id="email">
+
+            <p>Job</p>
+            <input type="text" id="job">
+            <input type="hidden" id="userCode" value="<%= code %>">
+            
+            <input type="submit" value="Submit" onclick="surveySubmit()">
+        </div>
+
+        <div id="display_user_code" style="display: none;">
+            <p>Thank You for completing our request!</p>
+            <p>Please submit the code below to Amazon Turk.</p>
+            <div class="code_container">
+                <input id="code_number" value="<%= code %>" readonly>
+                <button class="button-28" role="button" onclick="copyCode()">Copy</button>
+            </div>
         </div>
     </body>
 </html>

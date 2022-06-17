@@ -15,7 +15,7 @@ router.use('/', function(req, res, next) {
             conn.query(sql, function(error, results, fields) {
                 if (error) throw error;
 
-                let sql = "select distinct `change_id` from script_polish;";
+                let sql = "select `change_id` from cmw_use_files;";
 
                 let mysql = require('mysql');
                 let config = require('../db/db_info');
