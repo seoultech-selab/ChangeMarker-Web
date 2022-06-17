@@ -36,6 +36,8 @@
                 window.onresize = window_on_resize;
                 storeY();
 
+                document.getElementById('left').onmousedown = restoreContentLeft;
+                document.getElementById('right').onmousedown = restoreContentRight;
                 document.getElementById('left').onmouseup = storeSelectionLeft;
                 document.getElementById('right').onmouseup = storeSelectionRight;
                 document.getElementById('left').addEventListener('contextmenu', handleCreateContextMenu_left, false);

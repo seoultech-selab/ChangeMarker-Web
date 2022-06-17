@@ -16,11 +16,12 @@ class Selection {
   }
 }
 
-let highlighted = [];
+let highlightedLeft = [];
+let highlightedRight = [];
 const highlightColor = '#A0D0FF';
 
-function restoreContent() {
-  highlighted.forEach(function(n){        
+function restoreContentLeft() {
+  highlightedLeft.forEach(function(n){        
     const p = n.parentNode;
     n.childNodes.forEach(function (c) {
       p.insertBefore(c.cloneNode(true), n);
@@ -28,45 +29,63 @@ function restoreContent() {
     p.removeChild(n);
     p.normalize();    
   });
-  highlighted = [];
+  highlightedLeft = [];
 }
 
-function partialHighlight(node, startOffset, endOffset) {
+function restoreContentRight() {
+  highlightedRight.forEach(function(n){        
+    const p = n.parentNode;
+    n.childNodes.forEach(function (c) {
+      p.insertBefore(c.cloneNode(true), n);
+    });
+    p.removeChild(n);
+    p.normalize();    
+  });
+  highlightedRight = [];
+}
+
+function partialHighlight(node, startOffset, endOffset, side) {
   const selected = new Range();
   selected.setStart(node, startOffset);
   selected.setEnd(node, endOffset);
   const span = createSpan();
   selected.surroundContents(span);
-  highlighted.push(span);
+  if (side == 0 ){
+    highlightedLeft.push(span);
+  }
+  else {
+    highlightedRight.push(span);
+  }
 }
 
-function highlight(node, range) {
+function highlight(node, range, side) {
   if(node === range.startContainer) {
-    partialHighlight(node, range.startOffset, node.length);
+    partialHighlight(node, range.startOffset, node.length, side);
     return 1;
   } else if(node === range.endContainer) {
-    partialHighlight(node, 0, range.endOffset);
+    partialHighlight(node, 0, range.endOffset, side);
   } else if(node.childNodes.length > 0) {
     for(let i=0; i<node.childNodes.length; i++) {
       const c = node.childNodes[i];
       if(range.intersectsNode(c)) {
-        i = i + highlight(c, range); //ignore additional children.
+        i = i + highlight(c, range, side); //ignore additional children.
       }
     }    
   } else {
     const span = createSpan();
     span.appendChild(node.cloneNode(true));
     node.parentNode.replaceChild(span, node);
-    highlighted.push(span);
+    if (side == 0) {
+      highlightedLeft.push(span);
+    }
+    else {
+      highlightedRight.push(span);
+    }
   }
   return 0;
 }
 
-function highlightSelection(range) {
-  if(highlighted.length > 0) {    
-    restoreContent();
-  }
-
+function highlightSelection(range, side) {
   const top = range.commonAncestorContainer;
   //Check whether selection ranges multiple lines, handle accordingly.
   if(top.nodeName === "TBODY") {
@@ -81,11 +100,11 @@ function highlightSelection(range) {
     //Process partial selection for first/last lines.
     if(lines.length > 0) {
       const code = lines[0].childNodes[1];
-      highlight(code, range);
+      highlight(code, range, side);
     }
     if(lines.length > 1) {
       const code = lines[lines.length-1].childNodes[1];
-      highlight(code, range);
+      highlight(code, range, side);
     }
     
     for(let i=1; i<lines.length-1; i++) {
@@ -99,7 +118,12 @@ function highlightSelection(range) {
       });     
       const newCode = code.cloneNode(false);
       newCode.appendChild(span);
-      highlighted.push(span);
+      if (side == 0) {
+        highlightedLeft.push(span);
+      }
+      else {
+        highlightedRight.push(span);
+      }
       code.parentNode.replaceChild(newCode, code);
     }        
   } else {        
@@ -108,7 +132,12 @@ function highlightSelection(range) {
     span.appendChild(old);
     range.deleteContents();
     range.insertNode(span);
-    highlighted.push(span);
+    if (side == 0) {
+      highlightedLeft.push(span);
+    }
+    else {
+      highlightedRight.push(span);
+    }
   }  
 }
 
@@ -152,9 +181,8 @@ function storeSelectionLeft() {
 
   let range = document.getSelection().getRangeAt(0);
   if(range.toString().length > 0) {
-    highlightSelection(range);
+    highlightSelection(range, 0);
   }
-
   let sText = selectionText.toString();
   storedSelectionLeft.update(sText, selectionNumber, startPos, sText.length);
 }
@@ -191,6 +219,10 @@ function storeSelectionRight() {
   endNum *= 1;
   selectionNumber = getSelectionNum(startNum, selectionNumber, endNum);
 
+  let range = document.getSelection().getRangeAt(0);
+  if(range.toString().length > 0) {
+    highlightSelection(range, 1);
+  }
   let sText = selectionText.toString();
   storedSelectionRight.update(sText, selectionNumber, startPos, sText.length);
 }
