@@ -16,48 +16,106 @@ class Selection {
   }
 }
 
-let highlight = null;
-const highlightColor = '#0FF0F0';
+let highlighted = [];
+const highlightColor = '#A0D0FF';
+
 function restoreContent() {
-  let p = highlight.parentNode;
-  highlight.childNodes.forEach(function (c) {
-    p.insertBefore(c.cloneNode(true), highlight);
+  highlighted.forEach(function(n){        
+    const p = n.parentNode;
+    n.childNodes.forEach(function (c) {
+      p.insertBefore(c.cloneNode(true), n);
+    });
+    p.removeChild(n);
+    p.normalize();    
   });
-  p.removeChild(highlight);
-  p.normalize();
+  highlighted = [];
+}
+
+function partialHighlight(node, startOffset, endOffset) {
+  const selected = new Range();
+  selected.setStart(node, startOffset);
+  selected.setEnd(node, endOffset);
+  const span = createSpan();
+  selected.surroundContents(span);
+  highlighted.push(span);
+}
+
+function highlight(node, range) {
+  if(node === range.startContainer) {
+    partialHighlight(node, range.startOffset, node.length);
+    return 1;
+  } else if(node === range.endContainer) {
+    partialHighlight(node, 0, range.endOffset);
+  } else if(node.childNodes.length > 0) {
+    for(let i=0; i<node.childNodes.length; i++) {
+      const c = node.childNodes[i];
+      if(range.intersectsNode(c)) {
+        i = i + highlight(c, range); //ignore additional children.
+      }
+    }    
+  } else {
+    const span = createSpan();
+    span.appendChild(node.cloneNode(true));
+    node.parentNode.replaceChild(span, node);
+    highlighted.push(span);
+  }
+  return 0;
 }
 
 function highlightSelection(range) {
-  if(highlight != null && highlight.hasChildNodes()) {    
+  if(highlighted.length > 0) {    
     restoreContent();
   }
-  
+
   const top = range.commonAncestorContainer;
+  //Check whether selection ranges multiple lines, handle accordingly.
   if(top.nodeName === "TBODY") {
+    //First/Last TDs may have partial selection. Need to be handled.        
     const lines = []
     for(let i=0; i<top.childNodes.length; i++) {
       const line = top.childNodes[i];
       if(range.intersectsNode(line)){
-        lines.push(line);        
+        lines.push(line);
       }
+    }    
+    //Process partial selection for first/last lines.
+    if(lines.length > 0) {
+      const code = lines[0].childNodes[1];
+      highlight(code, range);
     }
-    for(let i=0; i<lines.length; i++) {
-      const code = lines[i].childNodes[1];
-      const span = document.createElement('span');
-      span.style.backgroundColor = highlightColor;
+    if(lines.length > 1) {
+      const code = lines[lines.length-1].childNodes[1];
+      highlight(code, range);
+    }
+    
+    for(let i=1; i<lines.length-1; i++) {
+      let code = lines[i].childNodes[1];
+      const span = createSpan();
+      if(code.childNodes.length == 1 && code.childNodes[0].nodeName == "SPAN") {
+        code = code.childNodes[0];
+      }
       code.childNodes.forEach(function(c) {
         span.appendChild(c.cloneNode(true));
-      });
+      });     
       const newCode = code.cloneNode(false);
       newCode.appendChild(span);
+      highlighted.push(span);
       code.parentNode.replaceChild(newCode, code);
-    }
-        
-  } else {
-    highlight = document.createElement('span');
-    highlight.style.backgroundColor = highlightColor;
-    range.surroundContents(highlight);
+    }        
+  } else {        
+    const span = createSpan();
+    const old = range.cloneContents();
+    span.appendChild(old);
+    range.deleteContents();
+    range.insertNode(span);
+    highlighted.push(span);
   }  
+}
+
+function createSpan() {
+  const span = document.createElement('span');
+  span.style.backgroundColor = highlightColor;
+  return span;
 }
 
 let storedSelectionLeft = new Selection();
@@ -365,8 +423,4 @@ async function deleteRow(element, e) {
         check = 0;
     }
     table.deleteRow(rowNum);
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> e0f68f9f27b29449ae41736396ee60b7fe72edf2
