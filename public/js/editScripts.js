@@ -365,4 +365,8 @@ async function deleteRow(element, e) {
         check = 0;
     }
     table.deleteRow(rowNum);
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> e0f68f9f27b29449ae41736396ee60b7fe72edf2

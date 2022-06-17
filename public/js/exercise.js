@@ -149,7 +149,6 @@ function rightHighlightSelection() {
   }
 }
 
-
 function storeSelectionLeft() {
   let result = new Object();
   let selectionText = "";
