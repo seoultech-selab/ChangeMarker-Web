@@ -4,6 +4,4 @@
 *.txt
 *.log
 
-/changes
-
 /node_modules
