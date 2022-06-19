@@ -4,7 +4,7 @@ const uuid = require('uuid');
 
 router.use('/', function(req, res, next) {
     let hashCode = uuid.v4();
-    let sql = "select b.change_Id, count(b.change_id) cnt from (select distinct user_code, change_id from scripts_web) b group by b.change_id order by cnt";
+    let sql = "select b.change_id, count(b.change_id) cnt from (select distinct user_code, change_id from scripts_web) b group by b.change_id order by cnt";
 
     let mysql = require('mysql');
     let config = require('../db/db_info');
@@ -31,7 +31,7 @@ router.use('/', function(req, res, next) {
                             if (diffNum > 0) {
                                 let filesObjArray = new Array();
                                 for (let i = 0; i < results.length; i++) {
-                                    filesObjArray.push(results[i].change_Id);
+                                    filesObjArray.push(results[i].change_id);
                                 }
                                 for (let i = 0; i < results2.length; i++){
                                     if (!(filesObjArray.includes(results2[i].change_id))) {
@@ -42,12 +42,12 @@ router.use('/', function(req, res, next) {
                                 }
                                 let cnt = 0;
                                 while (result.length < 5) {
-                                    result.push(results[cnt].change_Id);
+                                    result.push(results[cnt].change_id);
                                     cnt++;
                                 }
                             } else {
                                 for (let i = 0; i < 5; i++) {
-                                    result.push(results[i].change_Id);
+                                    result.push(results[i].change_id);
                                 }
                             }
                             req.session.codeFiles = result;

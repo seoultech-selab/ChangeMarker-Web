@@ -43,8 +43,10 @@ router.use('/tutorialCheck', tutorialCheck);
 router.use('/survey', surveySubmit);
 
 router.use('/finish', function(req, res, next) {
+    let userCode = req.session.code;
+    req.session.destroy();
     res.render('../views/finish.ejs', {
-        code : req.session.code
+        code : userCode
     });
     
 });
