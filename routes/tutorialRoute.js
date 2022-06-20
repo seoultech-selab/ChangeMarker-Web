@@ -4,7 +4,7 @@ const uuid = require('uuid');
 
 router.use('/', function(req, res, next) {
     let hashCode = uuid.v4();
-    let sql = "select b.change_id, count(b.change_id) cnt from (select distinct user_code, change_id from scripts_web) b group by b.change_id order by cnt";
+    let sql = "select cmw_use_files.change_id, ifnull(d.cnt, 0), cmw_use_files.unique_group from (select b.change_id, count(b.change_id) cnt from (select distinct user_code, change_id from scripts_web) b group by b.change_id order by cnt) d right join cmw_use_files on cmw_use_files.change_id = d.change_id order by d.cnt;"
 
     let mysql = require('mysql');
     let config = require('../db/db_info');
@@ -15,46 +15,20 @@ router.use('/', function(req, res, next) {
             conn.query(sql, function(error, results, fields) {
                 if (error) throw error;
 
-                let sql = "select `change_id` from cmw_use_files;";
-
                 let mysql = require('mysql');
                 let config = require('../db/db_info');
                 let pool = mysql.createPool(config);
-                let result = new Array();
-            
-                pool.getConnection(function(err, conn) {
-                    if (!err) {
-                        conn.query(sql, function(error, results2, fields) {
-                            if (error) throw error;
-                            
-                            let diffNum = results2.length - results.length;
-                            if (diffNum > 0) {
-                                let filesObjArray = new Array();
-                                for (let i = 0; i < results.length; i++) {
-                                    filesObjArray.push(results[i].change_id);
-                                }
-                                for (let i = 0; i < results2.length; i++){
-                                    if (!(filesObjArray.includes(results2[i].change_id))) {
-                                        result.push(results2[i].change_id);
-                                    }
-                                    if (result.length == 5)
-                                        break;
-                                }
-                                let cnt = 0;
-                                while (result.length < 5) {
-                                    result.push(results[cnt].change_id);
-                                    cnt++;
-                                }
-                            } else {
-                                for (let i = 0; i < 5; i++) {
-                                    result.push(results[i].change_id);
-                                }
-                            }
-                            req.session.codeFiles = result;
-                        })
+                let result = [0, 0, 0, 0, 0];
+                
+                let resultCnt = 0;
+                for (let i = 0; resultCnt < 5; i++) {
+                    let group = parseInt(results[i].unique_group.slice(13)) - 2;
+                    if (result[group] == 0) {
+                        result[group] = results[i].change_id;
+                        resultCnt += 1;
                     }
-                    conn.release();
-                });
+                }
+                req.session.codeFiles = result;
 
                 let sql2 = "select `file_name` from change_file_name order by `change_id`;";
 
