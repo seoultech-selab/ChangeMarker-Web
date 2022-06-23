@@ -61,13 +61,27 @@ function nextExplain() {
     }
     else {
         let totalPage = Number(document.getElementById('total_page').innerHTML);
-        if (newPageNum == totalPage) {
-            let startButton = document.getElementById('start_button');
-            startButton.style.color = "#000";
-            startButton.disabled = false;
-        }
+        // if (newPageNum == totalPage) {
+        //     let startButton = document.getElementById('start_button');
+        //     startButton.style.color = "#000";
+        //     startButton.disabled = false;
+        // }
         explainWindow.style.height = "100%";
         exerciseWindow.style.display = "none";
     }
     document.getElementById('current_page').innerHTML = newPageNum;
+}
+
+function startProject() {
+    let form = document.createElement('form');
+    document.body.appendChild(form);
+    form.action = "/";
+    form.method = "post";
+
+    let input = document.createElement('input');
+    form.appendChild(input);
+    input.name = "fileNum";
+    input.type = "hidden";
+    input.value = "change001";
+    form.submit();
 }
