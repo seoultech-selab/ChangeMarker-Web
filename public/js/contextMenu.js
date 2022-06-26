@@ -44,8 +44,6 @@ function handleCreateContextMenu_left(event){
   ctxMenu.style.top = event.pageY+'px';
   ctxMenu.style.left = event.pageX+'px';
   
-  dragSelect();
-
   // 메뉴 목록 생성
   ctxMenu.appendChild(renderContextMenuList([
     {
@@ -93,8 +91,6 @@ function handleCreateContextMenu_right(event){
   ctxMenu.style.top = event.pageY+'px';
   ctxMenu.style.left = event.pageX+'px';
   
-  dragSelect();
-
   // 메뉴 목록 생성
   ctxMenu.appendChild(renderContextMenuList([
       {
@@ -133,55 +129,4 @@ function handleClearContextMenu(event){
   if( ctxMenu ){
     ctxMenu.remove();
   }
-}
-
-function getSelectResult() {
-  return leftSel;
-}
-
-
-function dragSelect() {
-  let result = new Object();
-  let selectionText = "";
-  let startNum = "";
-  let endNum = "";
-  let selectionNumber = "";
-  let startPos = 0;
-
-  if (document.getSelection) {
-    selectionText = document.getSelection();
-    startPos = selectionText.getRangeAt(0).startOffset;
-  } else if (document.selection) {
-    selectionText = document.selection.createRange().text;
-  }
-  
-  if (document.getSelection().anchorNode.parentElement.attributes.length == 2 && !(document.getSelection().anchorNode.parentElement.attributes[1].value.includes('#'))) {
-    startNum = document.getSelection().anchorNode.parentElement.attributes[1].value;
-  } else if (document.getSelection().anchorNode.parentElement.firstChild.parentNode.offsetParent.attributes.length == 2 && !(document.getSelection().anchorNode.parentElement.firstChild.parentNode.offsetParent.attributes[1].value.includes('#'))) {
-    startNum = document.getSelection().anchorNode.parentElement.firstChild.parentNode.offsetParent.attributes[1].value;
-  }
-
-  if (document.getSelection().focusNode.parentElement.attributes.length == 2 && !(document.getSelection().focusNode.parentElement.attributes[1].value.includes('#'))) {
-    endNum = document.getSelection().focusNode.parentElement.attributes[1].value;
-  } else if (document.getSelection().focusNode.parentElement.firstChild.parentNode.offsetParent.attributes.length == 2 && !(document.getSelection().focusNode.parentElement.firstChild.parentNode.offsetParent.attributes[1].value.includes('#'))) {
-    endNum = document.getSelection().focusNode.parentElement.firstChild.parentNode.offsetParent.attributes[1].value;
-  }
-
-  startNum *= 1;
-  endNum *= 1;
-
-  if (startNum == 0) {
-    selectionNumber = endNum;
-  } else if (endNum == 0) {
-    selectionNumber = startNum;
-  } else {
-    selectionNumber = (startNum < endNum) ? startNum : endNum;
-  }
-
-  result.text = selectionText.toString();
-  result.lineNum = selectionNumber;
-  result.startPos = startPos;
-  result.len = result.text.length;
-
-  leftSel = result;
 }

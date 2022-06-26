@@ -1,31 +1,18 @@
-let storedSelectionLeft = new Object();
-storedSelectionLeft.len = 0;
-
-let storedSelectionRight = new Object();
-storedSelectionRight.len = 0;
-
-let tmpStartPos = 0;
-let tmpLen = 0;
-
 let hintCnt = 0;
-
-let selectResult = new Object();
-
-let storedSelectStartPos = 0;
-let storedSelectLines = new Array();
 
 let genControllerType = [4, 5];
 
 function GenUpdateLeft() {
-  let selectResult = getSelectResult();
-  if (getSelectResult().len == 0) {
+  let selectResult = storedSelectionLeft;
+  if (selectResult.len == 0) {
       alert("Please select texts on the left side.");
       return;
   } else if (storedSelectionRight.len == 0) {
       alert("Please select texts on the right side.");
       return;
   }
-  if (selectResult.text.indexOf('BlockServiceHandler', 0) < 0 || selectResult.len > 21) {
+  
+  if (selectResult.text.trim() != "BlockServiceHandler") {
     hintCnt += 1;
     if (hintCnt == 1) {
       alert('Check the selection on the left side again.');
@@ -53,7 +40,7 @@ function GenUpdateLeft() {
     }
   }
   
-  if (storedSelectionRight.text.indexOf('BlockWorkerClientServiceHandler', 0) < 0 || storedSelectionRight.len > 33) {
+  if (storedSelectionRight.text.trim() != 'BlockWorkerClientServiceHandler') {
     hintCnt += 1;
     if (hintCnt == 1) {
       alert('Check the selection on the right side again.');
@@ -86,14 +73,14 @@ function GenUpdateLeft() {
 
   let table = document.getElementById("edit_scripts");
   let newRow = table.insertRow();
-  selectResult = getSelectResult();
+  selectResult = storedSelectionRight;
   newRow.id = storedSelectionRight.len + "/" + selectResult.len;
 
   let newATag = document.createElement('a');
   newATag.href = "javascript:void(0)";
   newATag.text = "Delete";
   newATag.className = "del_btn";
-  newATag.onclick = function() {deleteRow(this, 1);};
+  newATag.onclick = function() {exDeleteRow(this, 1);};
 
 
   let newCell1 = newRow.insertCell(0);
@@ -119,8 +106,8 @@ function GenUpdateLeft() {
 }
 
 function GenUpdateRight() {
-  let selectResult = getSelectResult();
-  if (getSelectResult().len == 0) {
+  let selectResult = storedSelectionRight;
+  if (selectResult.len == 0) {
       alert("Please select texts on the right side.");
       return;
   } else if (storedSelectionLeft.len == 0) {
@@ -189,7 +176,7 @@ function GenUpdateRight() {
 
   let table = document.getElementById("edit_scripts");
   let newRow = table.insertRow();
-  selectResult = getSelectResult();
+  selectResult = storedSelectionRight;
   newRow.id = storedSelectionLeft.len + "/" + selectResult.len;
 
   let newATag = createDeleteButton(0);

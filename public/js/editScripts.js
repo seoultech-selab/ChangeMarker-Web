@@ -96,7 +96,7 @@ function highlightSelection(range, side) {
       if(range.intersectsNode(line)){
         lines.push(line);
       }
-    }    
+    }
     //Process partial selection for first/last lines.
     if(lines.length > 0) {
       const code = lines[0].childNodes[1];
@@ -180,10 +180,10 @@ function storeSelectionLeft() {
   selectionNumber = getSelectionNum(startNum, selectionNumber, endNum);
 
   let range = document.getSelection().getRangeAt(0);
+  let sText = selectionText.toString();
   if(range.toString().length > 0) {
     highlightSelection(range, 0);
   }
-  let sText = selectionText.toString();
   storedSelectionLeft.update(sText, selectionNumber, startPos, sText.length);
 }
 
@@ -220,10 +220,10 @@ function storeSelectionRight() {
   selectionNumber = getSelectionNum(startNum, selectionNumber, endNum);
 
   let range = document.getSelection().getRangeAt(0);
+  let sText = selectionText.toString();
   if(range.toString().length > 0) {
     highlightSelection(range, 1);
   }
-  let sText = selectionText.toString();
   storedSelectionRight.update(sText, selectionNumber, startPos, sText.length);
 }
 
@@ -312,37 +312,35 @@ function createDeleteButton(delType) {
 }
 
 function GenDelete() {
-    if (getSelectResult().len == 0) {
+    if (storedSelectionLeft.len == 0) {
         alert("Please select texts.");
         return;
     }
     let table = document.getElementById("edit_scripts");
     let newRow = table.insertRow();
-    let selectResult = getSelectResult();
-    newRow.id = selectResult.len + "/";
+    newRow.id = storedSelectionLeft.len + "/";
 
-    addEditOp('Delete', newRow, selectResult, null, 0);
+    addEditOp('Delete', newRow, storedSelectionLeft, null, 0);
 
     storedSelectionLeft.len = 0;
 }
 
 function GenInsert() {
-    if (getSelectResult().len == 0) {
+    if (storedSelectionRight.len == 0) {
         alert("Please select texts.");
         return;
     }
     let table = document.getElementById("edit_scripts");
     let newRow = table.insertRow();
-    let selectResult = getSelectResult();
-    newRow.id = "/" + selectResult.len;
+    newRow.id = "/" + storedSelectionRight.len;
 
-    addEditOp('Insert', newRow, null, selectResult, 0);
+    addEditOp('Insert', newRow, null, storedSelectionRight, 0);
 
     storedSelectionRight.len = 0;
 }
 
 function GenMoveLeft() {
-    if (getSelectResult().len == 0) {
+    if (storedSelectionLeft.len == 0) {
         alert("Please select texts on the left side.");
         return;
     } else if (storedSelectionRight.len == 0) {
@@ -352,10 +350,9 @@ function GenMoveLeft() {
 
     let table = document.getElementById("edit_scripts");
     let newRow = table.insertRow();
-    let selectResult = getSelectResult();
-    newRow.id = selectResult.len + "/" + storedSelectionRight.len;
+    newRow.id = storedSelectionLeft.len + "/" + storedSelectionRight.len;
 
-    addEditOp('Move', newRow, selectResult, storedSelectionRight, 1);
+    addEditOp('Move', newRow, storedSelectionLeft, storedSelectionRight, 1);
 
     check = 0;
 
@@ -364,7 +361,7 @@ function GenMoveLeft() {
 }
 
 function GenMoveRight() {
-    if (getSelectResult().len == 0) {
+    if (storedSelectionRight.len == 0) {
         alert("Please select texts on the right side.");
         return;
     } else if (storedSelectionLeft.len == 0) {
@@ -374,10 +371,9 @@ function GenMoveRight() {
 
     let table = document.getElementById("edit_scripts");
     let newRow = table.insertRow();
-    let selectResult = getSelectResult();
-    newRow.id = storedSelectionLeft.len + "/" + selectResult.len;
+    newRow.id = storedSelectionLeft.len + "/" + storedSelectionRight.len;
 
-    addEditOp('Move', newRow, storedSelectionLeft, selectResult, 1);
+    addEditOp('Move', newRow, storedSelectionLeft, storedSelectionRight, 1);
 
     check = 0;
 
@@ -386,7 +382,7 @@ function GenMoveRight() {
 }
 
 function GenUpdateLeft() {
-    if (getSelectResult().len == 0) {
+    if (storedSelectionLeft.len == 0) {
         alert("Please select texts on the left side.");
         return;
     } else if (storedSelectionRight.len == 0) {
@@ -396,10 +392,9 @@ function GenUpdateLeft() {
     
     let table = document.getElementById("edit_scripts");
     let newRow = table.insertRow();
-    let selectResult = getSelectResult();
-    newRow.id = selectResult.len +  "/" + storedSelectionRight.len;
+    newRow.id = storedSelectionLeft.len +  "/" + storedSelectionRight.len;
 
-    addEditOp('Update', newRow, selectResult, storedSelectionRight, 1);
+    addEditOp('Update', newRow, storedSelectionLeft, storedSelectionRight, 1);
 
     check = 0;
 
@@ -408,7 +403,7 @@ function GenUpdateLeft() {
 }
 
 function GenUpdateRight() {
-    if (getSelectResult().len == 0) {
+    if (storedSelectionRight.len == 0) {
         alert("Please select texts on the right side.");
         return;
     } else if (storedSelectionLeft.len == 0) {
@@ -418,10 +413,9 @@ function GenUpdateRight() {
 
     let table = document.getElementById("edit_scripts");
     let newRow = table.insertRow();
-    let selectResult = getSelectResult();
-    newRow.id =  storedSelectionLeft.len + "/" + selectResult.len;
+    newRow.id =  storedSelectionLeft.len + "/" + storedSelectionRight.len;
 
-    addEditOp('Update', newRow, storedSelectionLeft, selectResult, 1);
+    addEditOp('Update', newRow, storedSelectionLeft, storedSelectionRight, 1);
 
     check = 0;
 

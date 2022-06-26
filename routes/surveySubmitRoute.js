@@ -7,15 +7,15 @@ router.use('/', function(req, res, next) {
     let pool = mysql.createPool(config);
     pool.getConnection(function(err, conn) {
         if (!err) {
-            let query = "SELECT `user_code`, `change_id1`, `change_id2`, `change_id3`, `change_id4`, `change_id5` FROM cmw_participants WHERE `email` = '";
-            query += req.body.email;
+            let query = "SELECT `user_code`, `change_id1`, `change_id2`, `change_id3`, `change_id4`, `change_id5` FROM cmw_participants WHERE `worker_id` = '";
+            query += req.body.workerId;
             query += "';";
             conn.query(query, (err, result) => {
                 if (result.length == 0) {
-                    let query2 = "INSERT INTO cmw_participants(`user_code`, `email`, `job`, `change_id1`, `change_id2`, `change_id3`, `change_id4`, `change_id5`) values('";
+                    let query2 = "INSERT INTO cmw_participants(`user_code`, `worker_id`, `job`, `change_id1`, `change_id2`, `change_id3`, `change_id4`, `change_id5`) values('";
                     query2 += req.session.code;
                     query2 += "', '";
-                    query2 += req.body.email;
+                    query2 += req.body.workerId;
                     query2 += "', '";
                     query2 += req.body.job;
                     query2 += "', '";

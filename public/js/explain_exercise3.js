@@ -1,30 +1,16 @@
-let storedSelectionLeft = new Object();
-storedSelectionLeft.len = 0;
-
-let storedSelectionRight = new Object();
-storedSelectionRight.len = 0;
-
-let tmpStartPos = 0;
-let tmpLen = 0;
-
 let hintCnt = 0;
-
-let selectResult = new Object();
-
-let storedSelectStartPos = 0;
-let storedSelectLines = new Array();
 
 let genControllerType = [0];
 
-function GenDelete() {
-  let selectResult = getSelectResult();
+function exGenDelete() {
+  let selectResult = storedSelectionLeft;
     if (selectResult.len == 0) {
         alert("Please select texts.");
         return;
     }
 
     let checkExercise = window.parent.document.getElementById('checkExercise');
-    if (selectResult.text.indexOf('super(settings);', 0) < 0) {
+    if (selectResult.text.trim() != "super(settings);") {
       hintCnt += 1;
       if (hintCnt == 1) {
         alert('Check the selection again.');
