@@ -31,7 +31,7 @@ router.use('/', function(req, res, next) {
                     query2 += "');";
                     conn.query(query2, (err, result) => {
                         if (err) {
-                            alert(err);
+                            swal(err);
                         } else {
                             res.status(200).send({message : 'Insert participant success!!'});
                         }

@@ -63,7 +63,7 @@ async function GenController(type, typeCheck) {
         }
     }
     else {
-        alert('This example has a only "' + TYPE_NAMES[type] + '" script!');
+        swal('This example has a only "' + TYPE_NAMES[type] + '" script!');
     }
 
 }
@@ -410,7 +410,7 @@ function dragSelect() {
       startPos = selectionText.getRangeAt(0).startOffset;
     }
     catch {
-      alert('Pleas select texts again.');
+      swal('Pleas select texts again.');
       return;
     }
   } else if (document.selection) {

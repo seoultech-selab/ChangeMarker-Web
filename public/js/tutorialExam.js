@@ -56,19 +56,19 @@ async function GenController(e) {
     } else if (e == 6 && (check == 0 || check == 4)) {
         GenUpdateRight();
     } else if (check == 1) {
-        alert("Please generate Move on left side code.");
+        swal("Please generate Move on left side code.");
     } else if (check == 2) {
-        alert("Please generate Move on right side code.");
+        swal("Please generate Move on right side code.");
     } else if (check == 3) {
-        alert("Please generate Update on left side code.");
+        swal("Please generate Update on left side code.");
     } else if (check == 4) {
-        alert("Please generate Update on right side code.");
+        swal("Please generate Update on right side code.");
     }
 }
 
 function GenDelete() {
     if (getSelectResult().len == 0) {
-        alert("Please select texts.");
+        swal("Please select texts.");
         return;
     }
     let table = document.getElementById("edit_scripts");
@@ -99,7 +99,7 @@ function GenDelete() {
 
 function GenInsert() {
     if (getSelectResult().len == 0) {
-        alert("Please select texts.");
+        swal("Please select texts.");
         return;
     }
     let table = document.getElementById("edit_scripts");
@@ -131,7 +131,7 @@ function GenInsert() {
 
 function GenMoveLeft() {
     if (getSelectResult().len == 0) {
-        alert("Please select texts.");
+        swal("Please select texts.");
         return;
     }
     if (check == 0) {
@@ -183,7 +183,7 @@ function GenMoveLeft() {
 
 function GenMoveRight() {
     if (getSelectResult().len == 0) {
-        alert("Please select texts.");
+        swal("Please select texts.");
         return;
     }
     if (check == 0) {
@@ -235,7 +235,7 @@ function GenMoveRight() {
 
 function GenUpdateLeft() {
     if (getSelectResult().len == 0) {
-        alert("Please select texts.");
+        swal("Please select texts.");
         return;
     }
     if (check == 0) {
@@ -287,7 +287,7 @@ function GenUpdateLeft() {
 
 function GenUpdateRight() {
     if (getSelectResult().len == 0) {
-        alert("Please select texts.");
+        swal("Please select texts.");
         return;
     }
     if (check == 0) {

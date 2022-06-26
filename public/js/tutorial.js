@@ -49,7 +49,7 @@ function nextExplain() {
     let newPageNum = currentPage + 1;
 
     if (currentPage == totalPage) {
-        alert("This is the last page.");
+        swal("This is the last page.");
         return;
     }
     explainWindow.src = "/views/explain" + newPageNum + ".html";

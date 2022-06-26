@@ -16,22 +16,22 @@ let genControllerType = [1];
 function GenInsert() {
   let selectResult = getSelectResult();
   if (getSelectResult().len == 0) {
-      alert("Please select texts.");
+      swal("Please select texts.");
       return;
   }
 
   if (selectResult.text.indexOf('this.routing = routing;', 0) < 0) {
     hintCnt += 1;
     if (hintCnt == 1) {
-      alert('Check the selection again.');
+      swal('Check the selection again.');
       return;
     }
     else if (hintCnt == 2) {
-      alert('Check the selection again. Look carefully the green highlighted line.');
+      swal('Check the selection again. Look carefully the green highlighted line.');
       return;
     }
     else if (hintCnt == 3) {
-      alert('The changed code is "this.routing = routing;".');
+      swal('The changed code is "this.routing = routing;".');
       return;
     }
     else {
@@ -39,12 +39,12 @@ function GenInsert() {
       selectResult.startPos = 0;
       selectResult.text = 'this.routing = routing;';
       selectResult.lineNum = 15;
-      alert('Check the correct answer.');
+      swal('Check the correct answer.');
 
     }
   }
   else {
-    alert("Correct!! The next button is activated.");
+    swal("Correct!! The next button is activated.");
   }
 
   let table = document.getElementById("edit_scripts");

@@ -5,6 +5,7 @@
         <title>Change Marker</title>
         <script src="/public/js/surveyAjax.js"></script>
         <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <link rel="stylesheet" href="/public/css/explain.css">
         <style>
             .start_button {
@@ -21,7 +22,7 @@
                 const reg_email = /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
                 let email = document.getElementById('email').value;
                 if (!reg_email.test(email)) {
-                    alert("Check the email!");
+                    swal("Check the email!");
                 }
                 else {
                     surveySubmit();

@@ -5,7 +5,7 @@ function finishAll() {
         rgb = rgb.slice(4, -1);
         rgb = rgb.split(', ');
         if (Number(rgb[2]) != 71) {
-            alert("Please check incorrect files.");
+            swal("Please check incorrect files.");
             return;
         }
     }

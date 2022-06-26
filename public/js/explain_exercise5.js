@@ -19,25 +19,25 @@ let genControllerType = [2, 3];
 function GenMoveLeft() {
   let selectResult = getSelectResult();
   if (getSelectResult().len == 0) {
-      alert("Please select texts on the left side.");
+      swal("Please select texts on the left side.");
       return;
   } else if (storedSelectionRight.len == 0) {
-      alert("Please select texts on the right side.");
+      swal("Please select texts on the right side.");
       return;
   }
 
   if (selectResult.text.indexOf('Properties props = new Properties();', 0) < 0) {
     hintCnt += 1;
     if (hintCnt == 1) {
-      alert('Check the selection on the left side again.');
+      swal('Check the selection on the left side again.');
       return;
     }
     else if (hintCnt == 2) {
-      alert('Check the selection on the left side again. Look carefully the red highlighted line.');
+      swal('Check the selection on the left side again. Look carefully the red highlighted line.');
       return;
     }
     else if (hintCnt == 3) {
-      alert('The changed code is "Properties props = new Properties();".');
+      swal('The changed code is "Properties props = new Properties();".');
       return;
     }
     else {
@@ -50,22 +50,22 @@ function GenMoveLeft() {
       storedSelectionRight.startPos = 0;
       storedSelectionRight.text = 'Properties props = new Properties();';
       storedSelectstoredSelectionRightionLeft.lineNum = 35;
-      alert('Check the correct answer.');
+      swal('Check the correct answer.');
     }
   }
   
   if (storedSelectionRight.text.indexOf('Properties props = new Properties();', 0) < 0) {
     hintCnt += 1;
     if (hintCnt == 1) {
-      alert('Check the selection on the right side again.');
+      swal('Check the selection on the right side again.');
       return;
     }
     else if (hintCnt == 2) {
-      alert('Check the selection on the right side again. Look carefully the green highlighted line.');
+      swal('Check the selection on the right side again. Look carefully the green highlighted line.');
       return;
     }
     else if (hintCnt == 3) {
-      alert('The changed code is "Properties props = new Properties();".');
+      swal('The changed code is "Properties props = new Properties();".');
       return;
     }
     else {
@@ -78,11 +78,11 @@ function GenMoveLeft() {
       storedSelectionRight.startPos = 0;
       storedSelectionRight.text = 'Properties props = new Properties();';
       storedSelectionRight.lineNum = 35;
-      alert('Check the correct answer.');
+      swal('Check the correct answer.');
     }
   }
   else {
-    alert("Correct!! The next button is activated.");
+    swal("Correct!! The next button is activated.");
   }
 
   let table = document.getElementById("edit_scripts");
@@ -118,25 +118,25 @@ function GenMoveLeft() {
 function GenMoveRight() {
   let selectResult = getSelectResult();
   if (getSelectResult().len == 0) {
-      alert("Please select texts on the right side.");
+      swal("Please select texts on the right side.");
       return;
   } else if (storedSelectionLeft.len == 0) {
-      alert("Please select texts on the left side.");
+      swal("Please select texts on the left side.");
       return;
   }
 
   if (selectResult.text.indexOf('Properties props = new Properties();', 0) < 0) {
     hintCnt += 1;
     if (hintCnt == 1) {
-      alert('Check the selection on the right side again.');
+      swal('Check the selection on the right side again.');
       return;
     }
     else if (hintCnt == 2) {
-      alert('Check the selection on the right side again. Look carefully the green highlighted line.');
+      swal('Check the selection on the right side again. Look carefully the green highlighted line.');
       return;
     }
     else if (hintCnt == 3) {
-      alert('The changed code is "Properties props = new Properties();".');
+      swal('The changed code is "Properties props = new Properties();".');
       return;
     }
     else {
@@ -149,22 +149,22 @@ function GenMoveRight() {
       storedSelectionLeft.startPos = 0;
       storedSelectionLeft.text = 'Properties props = new Properties();';
       storedSelectionLeft.lineNum = 35;
-      alert('Check the correct answer.');
+      swal('Check the correct answer.');
     }
   }
   
   if (storedSelectionLeft.text.indexOf('Properties props = new Properties();', 0) < 0) {
     hintCnt += 1;
     if (hintCnt == 1) {
-      alert('Check the selection on the left side again.');
+      swal('Check the selection on the left side again.');
       return;
     }
     else if (hintCnt == 2) {
-      alert('Check the selection on the left side again. Look carefully the red highlighted line.');
+      swal('Check the selection on the left side again. Look carefully the red highlighted line.');
       return;
     }
     else if (hintCnt == 3) {
-      alert('The changed code is "Properties props = new Properties();".');
+      swal('The changed code is "Properties props = new Properties();".');
       return;
     }
     else {
@@ -177,11 +177,11 @@ function GenMoveRight() {
       storedSelectionLeft.startPos = 0;
       storedSelectionLeft.text = 'Properties props = new Properties();';
       storedSelectionLeft.lineNum = 35;
-      alert('Check the correct answer.');
+      swal('Check the correct answer.');
     }
   }
   else {
-    alert("Correct!! The next button is activated.");
+    swal("Correct!! The next button is activated.");
   }
 
   let table = document.getElementById("edit_scripts");

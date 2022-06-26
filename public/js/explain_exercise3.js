@@ -19,7 +19,7 @@ let genControllerType = [0];
 function GenDelete() {
   let selectResult = getSelectResult();
     if (selectResult.len == 0) {
-        alert("Please select texts.");
+        swal("Please select texts.");
         return;
     }
 
@@ -27,15 +27,15 @@ function GenDelete() {
     if (selectResult.text.indexOf('super(settings);', 0) < 0) {
       hintCnt += 1;
       if (hintCnt == 1) {
-        alert('Check the selection again.');
+        swal('Check the selection again.');
         return;
       }
       else if (hintCnt == 2) {
-        alert('Check the selection again. Look carefully the red highlighted line.');
+        swal('Check the selection again. Look carefully the red highlighted line.');
         return;
       }
       else if (hintCnt == 3) {
-        alert('The changed code is "super(settings);".');
+        swal('The changed code is "super(settings);".');
         return;
       }
       else {
@@ -43,12 +43,12 @@ function GenDelete() {
         selectResult.startPos = 0;
         selectResult.text = 'super(settings);';
         selectResult.lineNum = 15;
-        alert('Check the correct answer.');
+        swal('Check the correct answer.');
 
       }
     }
     else {
-      alert("Correct!! The next button is activated.");
+      swal("Correct!! The next button is activated.");
     }
 
     let table = document.getElementById("edit_scripts");
