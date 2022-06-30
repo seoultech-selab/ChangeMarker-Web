@@ -3,77 +3,21 @@
     <head>
         <meta charset="UTF-8">
         <title>Change Marker</title>
-        <script src="/public/js/surveyAjax.js"></script>
-        <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
         <link rel="stylesheet" href="/public/css/explain.css">
-        <style>
-            .start_button {
-                font-weight: bold;
-            }
-            .start_button:hover {
-                cursor: pointer;
-                font-size: 1.2em;
-                transition-duration: 0.5s;
-            }
-        </style>
-        <script>
-            function checkStart() {
-                let workerId = document.getElementById('workerId').value;
-                if (workerId.length == 0) {
-                    alert("Please check the worker ID!");
-                }
-                else {
-                    surveySubmit();
-                }
-            }
-        </script>
     </head>
     <body>
         <div class="contents">
-            If you find the all edit scripts correctly, the buttons which show file numbers on the top turn <span class="file_green_exam">green color</span>.<br>
-            The <span class="file_red_exam">red color</span> of the buttons on the top means that you miss or incorrectly make edit scripts.<br>
+            <h1>Update</h1>
+            Some parts of the code on the left side are changed to othe value.<br>
             <br>
-            After all of the buttons on the top turn green color, you can click the finish button and move to a last page.<br>
-        </div>
-        <div class="image_container">
-            <img src="/public/img/check_example.png">
-        </div>
-        <div class="contents">
+            The way to generate Update is <span class="emphasize">similar to generate Move</span>.<br>
+            You have to drag and select both of the codes.<br>
+            <br>
+            Let's do it!<br>
             <br>
             <br>
-            After you finished generating edit scripts for the given code changes, you can submit your edit scripts by clicking "Finish" button.<br>
-            Then you will see your <span class="emphasize">code</span> which can be used to obtain your reward in <span class="emphasize">Amazon Mturk</span>.<br>
-        </div>
-        <div class="image_container">
-            <img src="/public/img/finish_example.png">
-        </div>
-        <div id="survey" class="contents">
-            <p>
-                Before start this project, please tell me about some information.<br>
-                <br>
-                This information is only used to our research.<br>
-                <br>
-            </p>
-
-            <p style="margin: 0;">Worker ID</p>
-            <input type="text" id="workerId">
-
-            <p style="margin-bottom: 0;">Job</p>
-            <form id="form_job">
-                <input type="radio" id="job1" name="job" value="job1" checked>
-                <label for="job1">Job1</label>
-                <input type="radio" id="job2" name="job" value="job2">
-                <label for="job2">Job2</label>
-                <input type="radio" id="job3" name="job" value="job3">
-                <label for="job3">Job3</label>
-                <input type="radio" id="job4" name="job" value="job4">
-                <label for="job4">Job4</label>
-            </form>
-            <input type="hidden" id="userCode" value="<%= code %>">
-            <br>
-            <br>
-            <a class="start_button" onclick="checkStart()">Start</a>
-            <br><br><br>
+            <span class="emphasize">Hint!</span><br>
+            1. The parts of the code Updated in this example are <span class="emphasize">not sentences</span>, it is <span class="emphasize">words</span>.<br>
         </div>
     </body>
 </html>

@@ -23,7 +23,7 @@
         <!-- <script src="/public/js/initial.js"></script> -->
         <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
         <script>
-            function init(completed) {
+            function init() {
                 document.getElementById("hr1").onmousedown = on_mouse_down_hr1;
                 document.getElementById("hr1").onmouseover = on_mouse_over1;
                 document.getElementById("hr1").onmouseout = on_mouse_out;
@@ -43,7 +43,6 @@
                 document.getElementById('left').addEventListener('contextmenu', handleCreateContextMenu_left, false);
                 document.getElementById('right').addEventListener('contextmenu', handleCreateContextMenu_right, false);
                 document.addEventListener('click', handleClearContextMenu, false);
-                completeShow(completed);
             }
         </script>
     </head>
@@ -69,11 +68,13 @@
             </div>
             <div>&nbsp;</div>
             <div class="check_container">
-                <input type="button" class="file_button" id="file1" value="1" onclick="movePage(this.value);">
-                <input type="button" class="file_button" id="file2" value="2" onclick="movePage(this.value);">
-                <input type="button" class="file_button" id="file3" value="3" onclick="movePage(this.value);">
-                <input type="button" class="file_button" id="file4" value="4" onclick="movePage(this.value);">
-                <input type="button" class="file_button" id="file5" value="5" onclick="movePage(this.value);">
+                <% for (let i = 1; i <= 5; i++) { %>
+                    <% if (i - 1 == fileCnt) { %>
+                        <input style="background:#0dff47" type="button" class="file_button" id="file<%= i %>" value="<%= i %>" onclick="movePage(this.value);">
+                    <% } else { %>    
+                        <input style="background-color: #d4d4d4;" type="button" class="file_button" id="file<%= i %>" value="<%= i %>" onclick="movePage(this.value);">
+                    <% } %>
+                <% } %>
             </div>
         </header>
         <div class="container">

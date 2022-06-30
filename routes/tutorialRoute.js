@@ -63,7 +63,6 @@ router.use('/', function(req, res, next) {
                 }, 2000);
             })
         }
-        conn.release();
     });
 })
 

@@ -4,11 +4,18 @@ function surveySubmit() {
     formData.workerId = document.getElementById("workerId").value;
     // formData.job = document.getElementById("job").value;
     let formJob = document.getElementById("form_job");
-    console.log(formJob.getElementsByTagName("input"));
     let jobInputs = formJob.getElementsByTagName("input");
-    for (let i = 0; i < jobInputs.length; i ++) {
+    let formJava = document.getElementById("form_java");
+    let javaInputs = formJava.getElementsByTagName("input");
+    for (let i = 0; i < jobInputs.length; i++) {
         if (jobInputs[i].checked) {
             formData.job = jobInputs[i].value;
+            break;
+        }
+    }
+    for (let i = 0; i < javaInputs.length; i++) {
+        if (javaInputs[i].checked) {
+            formData.java = javaInputs[i].value;
             break;
         }
     }
@@ -18,7 +25,14 @@ function surveySubmit() {
         data: formData,
         dataType: 'json',
         success: function(res) {
-            parent.startProject();
+            if (res.message == 'first') {
+                let nextButton = parent.document.getElementById('next_button');
+                nextButton.style.color = "#393E46";
+                nextButton.disabled = false;
+            }
+            else {
+                parent.startProject();
+            }
         } 
     });
 }

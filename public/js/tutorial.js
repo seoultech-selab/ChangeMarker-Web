@@ -16,7 +16,7 @@ function prevExplain() {
         prevButton.disabled = true;
     }
     explainWindow.src = "/views/explain" + (currentPage - 1) + ".html";
-    if ((currentPage - 1) >= 3 && (currentPage - 1) <= 6) {
+    if ((currentPage - 1) >= 4 && (currentPage - 1) <= 7) {
         explainWindow.style.height = "39%";
         exerciseWindow.style.height = "60%";
         exerciseWindow.style.display = "block";
@@ -53,7 +53,7 @@ function nextExplain() {
         return;
     }
     explainWindow.src = "/views/explain" + newPageNum + ".html";
-    if (newPageNum >= 3 && newPageNum <= 6) {
+    if (newPageNum >= 4 && newPageNum <= 7) {
         explainWindow.style.height = "39%";
         exerciseWindow.style.height = "60%";
         exerciseWindow.style.display = "block";
@@ -61,11 +61,6 @@ function nextExplain() {
     }
     else {
         let totalPage = Number(document.getElementById('total_page').innerHTML);
-        // if (newPageNum == totalPage) {
-        //     let startButton = document.getElementById('start_button');
-        //     startButton.style.color = "#000";
-        //     startButton.disabled = false;
-        // }
         explainWindow.style.height = "100%";
         exerciseWindow.style.display = "none";
     }

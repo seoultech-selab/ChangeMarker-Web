@@ -13,167 +13,109 @@
         <script src="/public/js/exercise.js"></script>
         <script src="/public/js/editScripts.js"></script>
         <script src="/public/js/contextMenu.js"></script>
-        <script src="/public/js/explain_exercise6.js"></script>
+        <script src="/public/js/explain_exercise5.js"></script>
         <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
     </head>
     <body onload="exInit();">
         <div class="container">
         <section id="section">
             <div id="left">
-                <pre><code class="java" id="inner_left">package org.elasticsearch.search.fetch;
+                <pre><code class="java" id="inner_left">package org.elasticsearch.common.settings.loader;
 
-import org.apache.lucene.search.Scorer;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import org.apache.lucene.util.IOUtils;
+import org.elasticsearch.common.io.FastStringReader;
+import org.elasticsearch.common.io.stream.BytesStreamInput;
 
-import static java.util.Collections.unmodifiableMap;
+import java.io.IOException;
+import java.util.Map;
+import java.util.Properties;
 
-public class FetchPhase implements SearchPhase {
+import static com.google.common.collect.Maps.newHashMap;
 
-    private final FetchSubPhase[] fetchSubPhases;
+public class PropertiesSettingsLoader implements SettingsLoader {
 
     @Override
-    public Map parseElements() {
-        Map parseElements = new HashMap();
-        for (FetchSubPhase fetchSubPhase : fetchSubPhases) {
-            parseElements.putAll(fetchSubPhase.parseElements());
-        }
-        return unmodifiableMap(parseElements);
-    }
-    
-
-    private InternalSearchHit getInternalNestedIdentity() {
-        int currentParent = nestedSubDocId;
-        ObjectMapper nestedParentObjectMapper;
-        ObjectMapper current = nestedObjectMapper;
-        String originalName = nestedObjectMapper.name();
-<span class="code_delete">        private BlockServiceHandler mWorkerServiceHandler = null;</span>
-        InternalSearchHit.InternalNestedIdentity nestedIdentity = null;
-        do {
-            Query parentFilter;
-            if (nestedParentObjectMapper != null) {
-                if (nestedParentObjectMapper.nested().isNested() == false) {
-                    current = nestedParentObjectMapper;
-                    continue;
-                }
-                parentFilter = nestedParentObjectMapper.nestedTypeFilter();
-            } else {
-                parentFilter = Queries.newNonNestedFilter();
-            }
-
-            Query childFilter = nestedObjectMapper.nestedTypeFilter();
-            if (childFilter == null) {
-                current = nestedParentObjectMapper;
-                continue;
-            }
-            Scorer childScorer = childWeight.scorer(subReaderContext);
-            if (childScorer == null) {
-                current = nestedParentObjectMapper;
-                continue;
-            }
-            DocIdSetIterator childIter = childScorer.iterator();
-
-            int offset = 0;
-            int nextParent = parentBits.nextSetBit(currentParent);
-            currentParent = nextParent;
-            current = nestedObjectMapper = nestedParentObjectMapper;
-            int currentPrefix = current == null ? 0 : current.name().length() + 1;
-            if (current != null) {
-                originalName = current.name();
-            }
-        } while (current != null);
-        return nestedIdentity;
-    }
-
-    private void loadStoredFields(SearchContext searchContext) {
-        fieldVisitor.reset();
+    public Map<String, String> load(String source) throws IOException {
+        Properties props = new Properties();
+        FastStringReader reader = new FastStringReader(source);
         try {
-            readerContext.reader().document(docId, fieldVisitor);
-        } catch (IOException e) {
-            throw new FetchPhaseExecutionException(searchContext, e);
+            props.load(reader);
+            Map<String, String> result = newHashMap();
+            for (Map.Entry entry : props.entrySet()) {
+                result.put((String) entry.getKey(), (String) entry.getValue());
+            }
+            return result;
+        } finally {
+            IOUtils.closeWhileHandlingException(reader);
+        }
+    }
+
+    @Override
+    public Map<String, String> load(byte[] source) throws IOException {
+<span class="code_delete">        Properties props = new Properties();</span>
+        BytesStreamInput stream = new BytesStreamInput(source);
+        try {
+            props.load(stream);
+            Map<String, String> result = newHashMap();
+            for (Map.Entry entry : props.entrySet()) {
+                result.put((String) entry.getKey(), (String) entry.getValue());
+            }
+            return result;
+        } finally {
+            IOUtils.closeWhileHandlingException(stream);
         }
     }
 }</code></pre>
             </div>
 
             <div class="d1" id="hr1">
-                <input type="button" class="move_inner" id="#1" value="1" onclick="move_inner(0, 330, 0, 330)">
+                <input type="button" class="move_inner" id="#1" value="1" onclick="move_inner(0, 400, 0, 430)">
             </div>
 
             <div id="right">
-                <pre><code class="java" id="inner_right">package org.elasticsearch.search.fetch;
+                <pre><code class="java" id="inner_right">package org.elasticsearch.common.settings.loader;
 
-import org.apache.lucene.search.Scorer;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import org.apache.lucene.util.IOUtils;
+import org.elasticsearch.common.io.FastStringReader;
+import org.elasticsearch.common.io.stream.BytesStreamInput;
 
-import static java.util.Collections.unmodifiableMap;
+import java.io.IOException;
+import java.util.Map;
+import java.util.Properties;
 
-public class FetchPhase implements SearchPhase {
+import static com.google.common.collect.Maps.newHashMap;
 
-    private final FetchSubPhase[] fetchSubPhases;
+public class PropertiesSettingsLoader implements SettingsLoader {
 
     @Override
-    public Map parseElements() {
-        Map parseElements = new HashMap();
-        for (FetchSubPhase fetchSubPhase : fetchSubPhases) {
-            parseElements.putAll(fetchSubPhase.parseElements());
-        }
-        return unmodifiableMap(parseElements);
-    }
-    
-
-    private InternalSearchHit getInternalNestedIdentity() {
-        int currentParent = nestedSubDocId;
-        ObjectMapper nestedParentObjectMapper;
-        ObjectMapper current = nestedObjectMapper;
-        String originalName = nestedObjectMapper.name();
-<span class="code_insert">        private BlockWorkerClientServiceHandler mWorkerServiceHandler = null;</span>
-        InternalSearchHit.InternalNestedIdentity nestedIdentity = null;
-        do {
-            Query parentFilter;
-            if (nestedParentObjectMapper != null) {
-                if (nestedParentObjectMapper.nested().isNested() == false) {
-                    current = nestedParentObjectMapper;
-                    continue;
-                }
-                parentFilter = nestedParentObjectMapper.nestedTypeFilter();
-            } else {
-                parentFilter = Queries.newNonNestedFilter();
-            }
-
-            Query childFilter = nestedObjectMapper.nestedTypeFilter();
-            if (childFilter == null) {
-                current = nestedParentObjectMapper;
-                continue;
-            }
-            Scorer childScorer = childWeight.scorer(subReaderContext);
-            if (childScorer == null) {
-                current = nestedParentObjectMapper;
-                continue;
-            }
-            DocIdSetIterator childIter = childScorer.iterator();
-
-            int offset = 0;
-            int nextParent = parentBits.nextSetBit(currentParent);
-            currentParent = nextParent;
-            current = nestedObjectMapper = nestedParentObjectMapper;
-            int currentPrefix = current == null ? 0 : current.name().length() + 1;
-            if (current != null) {
-                originalName = current.name();
-            }
-        } while (current != null);
-        return nestedIdentity;
-    }
-
-    private void loadStoredFields(SearchContext searchContext) {
-        fieldVisitor.reset();
+    public Map<String, String> load(String source) throws IOException {
+        Properties props = new Properties();
+        FastStringReader reader = new FastStringReader(source);
         try {
-            readerContext.reader().document(docId, fieldVisitor);
-        } catch (IOException e) {
-            throw new FetchPhaseExecutionException(searchContext, e);
+            props.load(reader);
+            Map<String, String> result = newHashMap();
+            for (Map.Entry entry : props.entrySet()) {
+                result.put((String) entry.getKey(), (String) entry.getValue());
+            }
+            return result;
+        } finally {
+            IOUtils.closeWhileHandlingException(reader);
+        }
+    }
+
+    @Override
+    public Map<String, String> load(byte[] source) throws IOException {
+        BytesStreamInput stream = new BytesStreamInput(source);
+        try {
+<span class="code_insert">            Properties props = new Properties();</span>
+            props.load(stream);
+            Map<String, String> result = newHashMap();
+            for (Map.Entry entry : props.entrySet()) {
+                result.put((String) entry.getKey(), (String) entry.getValue());
+            }
+            return result;
+        } finally {
+            IOUtils.closeWhileHandlingException(stream);
         }
     }
 }</code></pre>

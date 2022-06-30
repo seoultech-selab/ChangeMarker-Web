@@ -5,7 +5,7 @@ function oneScriptSubmit(data) {
         data: data,
         dataType: 'json',
         success: function(res) {
-            confirmScript();
+            // confirmScript();
             // console.log(res.message);
         }
     });

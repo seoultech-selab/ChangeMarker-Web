@@ -44,7 +44,7 @@ router.use('/survey', surveySubmit);
 
 router.use('/finish', function(req, res, next) {
     let userCode = req.session.code;
-    req.session.destroy();
+    // req.session.destroy();
     res.render('../views/finish.ejs', {
         code : userCode
     });

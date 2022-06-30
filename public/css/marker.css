@@ -182,7 +182,7 @@ footer table {
 
 .file_button {
     width: 30px;
-    background: #d4d4d4;
+    /* background: red; */
     border: 0.5;
     outline: none;
     display: block;
