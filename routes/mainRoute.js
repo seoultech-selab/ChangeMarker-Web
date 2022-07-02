@@ -16,6 +16,22 @@ function mkFileName(num) {
     return result;
 }
 
+const DBText = [
+    "<",
+    ">"
+]
+
+const htmlText = [
+    "&lt;",
+    "&gt;"
+];
+
+function convertToHtmlText(s) {
+    s = s.replace(/</g, "&lt;");
+    s = s.replace(/>/g, "&gt;");
+    return s;
+}
+
 const fs = require('fs');
 const myers = require('myers-diff');
 const Connection = require('mysql/lib/Connection');
@@ -41,8 +57,11 @@ router.use('/', function(req, res, next) {
     
     let fileNum = req.session.codeFiles[fileCnt];
     let numExt = parseInt(fileNum.slice(6));
-    const lhs = fs.readFileSync(baseDir + '/changes/' + fileNum + '/old/' + fileList[numExt],'utf-8');
+    let lhs = fs.readFileSync(baseDir + '/changes/' + fileNum + '/old/' + fileList[numExt],'utf-8');
     let rhs = fs.readFileSync(baseDir + '/changes/' + fileNum + '/new/' + fileList[numExt],'utf-8');
+
+    lhs = convertToHtmlText(lhs);
+    rhs = convertToHtmlText(rhs);
 
     const diff = myers.diff(lhs, rhs);
     
