@@ -9,6 +9,47 @@ function setSelectionsNew() {
 }
 
 
+function generateInsert(e) {
+    if (isInsertValid()) {
+        scriptDBInsert();
+        // removeAllHighlightsNew();
+    }
+    
+    handleClearContextMenuNew(e);
+}
+
+function generateDelete(e) {
+    if (isDeleteValid()) {
+        scriptDBDelete();
+        // removeAllHighlightsOld();
+    }
+
+    handleClearContextMenuOld(e);
+}
+
+function generateMove(e) {
+    if (isMoveValid()) {
+        scriptDBMove();
+        // removeAllHighlightsNew();
+        // removeAllHighlightsOld();
+    }
+
+    handleClearContextMenuNew(e);
+    handleClearContextMenuOld(e);
+}
+
+function generateUpdate(e) {
+    if (isUpdateValid()) {
+        scriptDBUpdate();
+        // removeAllHighlightsNew();
+        // removeAllHighlightsOld();
+    }
+
+    handleClearContextMenuNew(e);
+    handleClearContextMenuOld(e);
+}
+
+
 function isRightClicked(e) {
     let te = e || window.event;
 
@@ -19,13 +60,9 @@ function isRightClicked(e) {
     return null;
 }
 
-
-function initChangeMarker() {
-    initSelectionHighlighter();
-
+function initLeftDivEvent() {
     document.querySelector('#left').addEventListener('mousedown', (e) => {
         if (!isRightClicked(e)) {
-            console.log("remove All left");
             removeAllHighlightsOld();
         } else {
 
@@ -39,7 +76,9 @@ function initChangeMarker() {
 
         }
     });
+}
 
+function initRightDivEvent() {
     document.querySelector('#right').addEventListener('mousedown', (e) => {
         if (!isRightClicked(e)) {
             removeAllHighlightsNew();
@@ -55,4 +94,14 @@ function initChangeMarker() {
 
         }
     });
+}
+
+function initChangeMarker() {
+    initSelectionHighlighter();
+
+    initContextMenuLeft();
+    initContextMenuRight();
+    
+    initLeftDivEvent();
+    initRightDivEvent();
 }

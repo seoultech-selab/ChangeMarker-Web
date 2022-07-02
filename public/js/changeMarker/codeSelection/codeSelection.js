@@ -1,26 +1,28 @@
-let selectionOld;
-let selectionNew;
+let selection = document.getSelection();
+
+let oldDraggedCodeInfo;
+let newDraggedCodeInfo;
 
 
 function setSelectionOld() {
-    selectionOld = document.getSelection();
+    oldDraggedCodeInfo = getOldDraggedCodeInfo();
 }
 
 function setSelectionNew() {
-    selectionNew = document.getSelection();
+    newDraggedCodeInfo = getNewDraggedCodeInfo();
 }
 
 
-function getDraggedCodeText(selection) {
+function getDraggedCodeText() {
     return selection.toString();
 }
 
-function getDraggedCodeTextLength(selection) {
+function getDraggedCodeTextLength() {
     return getDraggedCodeText(selection).length;
 }
 
 
-function getStartLine(selection) {
+function getStartLine() {
     let anchor = selection.anchorNode;
     let focus = selection.focusNode;
 
@@ -31,7 +33,7 @@ function getStartLine(selection) {
     return Math.min(getNodeLine(anchor), getNodeLine(focus));
 }
 
-function getEndLine(selection) {
+function getEndLine() {
     let anchor = selection.anchorNode;
     let focus = selection.focusNode;
 
@@ -57,12 +59,12 @@ function getNodeLine(node) {
 }
 
 
-function getoffsetFromStartLine(selection) {
+function getoffsetFromStartLine(type) {
     const startLine = getStartLine();
     if (startLine == -1)
         return -1;
 
-    const tbody = document.querySelector('tbody');
+    const tbody = document.querySelector(type + ' tbody');
     const td = tbody.childNodes.item(startLine - 1).querySelector('.hljs-ln-code');
 
     let result = 0;
@@ -80,14 +82,13 @@ function getoffsetFromStartLine(selection) {
 
 function getOffset(type) {
     const tbody = document.querySelector(type + " tbody");
-    const selection = selection;
 
     let result = 0;
     for (tr of tbody.childNodes) {
         const td = tr.querySelector('.hljs-ln-code');
 
         if (td.contains(selection.anchorNode) || td.contains(selection.focusNode))
-            return result + getoffsetFromStartLine();
+            return result + getoffsetFromStartLine(type);
         else
             result += td.textContent.length;
     }
@@ -96,21 +97,21 @@ function getOffset(type) {
 }
 
 
-function getDraggedCodeInfo(selection, type) {
+function getDraggedCodeInfo(type) {
     return {
-        codeText : getDraggedCodeText(selection),
-        length : getDraggedCodeTextLength(selection),
-        startLine : getStartLine(selection),
-        endLine : getEndLine(selection),
-        offsetFromStartLine : getoffsetFromStartLine(selection),
+        codeText : getDraggedCodeText(),
+        length : getDraggedCodeTextLength(),
+        startLine : getStartLine(),
+        endLine : getEndLine(),
+        offsetFromStartLine : getoffsetFromStartLine(type),
         offset : getOffset(type)
     };
 }
 
 function getOldDraggedCodeInfo() {
-    return getDraggedCodeInfo(selectionOld, '.left')
+    return getDraggedCodeInfo('#left')
 }
 
 function getNewDraggedCodeInfo() {
-    return getDraggedCodeInfo(selectionNew, '.right')
+    return getDraggedCodeInfo('#right')
 }
