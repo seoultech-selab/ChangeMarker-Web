@@ -214,3 +214,15 @@ footer table {
     display: flex;
     justify-content: center;
 }
+
+.highlight_marker {
+    background-color: #e6ffec;
+}
+
+.highlight_select {
+    background-color: #A0D0FF;
+}
+
+code::selection {
+    background-color: #A0D0FF;
+}

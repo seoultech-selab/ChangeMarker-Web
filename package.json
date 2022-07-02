@@ -26,7 +26,7 @@
   "dependencies": {
     "body-parser": "^1.19.1",
     "crypto-js": "^4.1.1",
-    "ejs": "^3.1.6",
+    "ejs": "^3.1.8",
     "express": "^4.17.2",
     "express-mysql-session": "^2.1.7",
     "express-session": "^1.17.2",
@@ -63,7 +63,7 @@
     "test:watch": "mocha --recursive --watch",
     "test:nocoverage": "mocha --recursive",
     "lint": "eslint src test",
-    "start": "node app",
+    "start": "nodemon app",
     "dev": "nodemon app"
   }
 }

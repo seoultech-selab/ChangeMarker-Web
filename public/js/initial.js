@@ -11,8 +11,8 @@ function init() {
     window.onresize = window_on_resize;
     storeY();
 
-    document.getElementById('left').onmouseup = storeSelectionLeft;
-    document.getElementById('right').onmouseup = storeSelectionRight;
+    // document.getElementById('left').onmouseup = storeSelectionLeft;
+    // document.getElementById('right').onmouseup = storeSelectionRight;
     document.getElementById('left').addEventListener('contextmenu', handleCreateContextMenu_left, false);
     document.getElementById('right').addEventListener('contextmenu', handleCreateContextMenu_right, false);
     document.addEventListener('click', handleClearContextMenu, false);

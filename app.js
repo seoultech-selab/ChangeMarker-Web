@@ -3,7 +3,7 @@ const http = require('http');
 const app = express();
 
 const hostname = '0.0.0.0';
-const port = 3000;
+const port = 80;
 // 117.17.198.111:3000
 
 const server = http.createServer(app);

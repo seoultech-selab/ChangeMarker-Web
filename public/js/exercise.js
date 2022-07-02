@@ -130,10 +130,10 @@ function exHandleCreateContextMenu_right(event){
 }
 
 function exInit() {
-  document.getElementById('left').onmousedown = restoreContentLeft;
-  document.getElementById('right').onmousedown = restoreContentRight;
-  document.getElementById('left').onmouseup = storeSelectionLeft;
-  document.getElementById('right').onmouseup = storeSelectionRight;
+  // document.getElementById('left').onmousedown = restoreContentLeft;
+  // document.getElementById('right').onmousedown = restoreContentRight;
+  // document.getElementById('left').onmouseup = storeSelectionLeft;
+  // document.getElementById('right').onmouseup = storeSelectionRight;
   document.getElementById('left').addEventListener('contextmenu', exHandleCreateContextMenu_left, false);
   document.getElementById('right').addEventListener('contextmenu', exHandleCreateContextMenu_right, false);
   document.addEventListener('click', handleClearContextMenu, false);
