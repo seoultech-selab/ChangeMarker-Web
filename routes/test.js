@@ -35,7 +35,6 @@ const deleteRoute = require('./deleteRoute');
 const check = require('./checkRoute');
 const tutorialCheck = require('./tutorialCheckRoute');
 const surveySubmit = require('./surveySubmitRoute');
-const test = require('./test');
 
 router.use('/submit', submit);
 router.delete('/delete', deleteRoute);
@@ -47,11 +46,8 @@ router.use('/finish', function(req, res, next) {
     let userCode = req.session.code;
     // req.session.destroy();
     res.render('../views/finish.ejs', {
-        code : userCode
+        code : "Thank you for participating in the test."
     });
-    
 });
-
-router.use('/test', test);
 
 module.exports = router;

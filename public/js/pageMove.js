@@ -8,7 +8,7 @@ async function moveNext() {
         let form = document.createElement('form');
         document.body.appendChild(form);
         form.method = 'post';
-        form.action = '/';
+        form.action = window.location.href;
     
         let input = document.createElement('input');
         input.setAttribute("type", "hidden");
@@ -30,7 +30,7 @@ async function movePrev() {
         let form = document.createElement('form');
         document.body.appendChild(form);
         form.method = 'post';
-        form.action = '/';
+        form.action = window.location.href;
     
         let input = document.createElement('input');
         input.setAttribute("type", "hidden");
@@ -46,7 +46,7 @@ async function movePage(val) {
     let form = document.createElement('form');
     document.body.appendChild(form);
     form.method = 'post';
-    form.action = '/';
+    form.action = window.location.href;
 
     let input = document.createElement('input');
     input.setAttribute("type", "hidden");

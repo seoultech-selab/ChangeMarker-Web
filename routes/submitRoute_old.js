@@ -37,7 +37,7 @@ router.use('/', function(req, res, next) {
                                     + "var form = document.createElement('form');"
                                     + "document.body.appendChild(form);"
                                     + "form.method = 'post';"
-                                    + "form.action = '/';"
+                                    + "form.action = window.location.href;"
                                     + "form.submit();}"
                                     + "</script></head>"
                                     + "<body onload='goNext()'></body>"

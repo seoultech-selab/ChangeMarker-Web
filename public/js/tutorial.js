@@ -70,7 +70,7 @@ function nextExplain() {
 function startProject() {
     let form = document.createElement('form');
     document.body.appendChild(form);
-    form.action = "/";
+    form.action = window.location.href;
     form.method = "post";
 
     let input = document.createElement('input');

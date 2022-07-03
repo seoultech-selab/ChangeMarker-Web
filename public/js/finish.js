@@ -13,7 +13,7 @@ function finishAll() {
     let form = document.createElement('form');
     document.body.appendChild(form);
     form.method = 'post';
-    form.action = '/finish';
+    form.action = window.location.href + '/finish';
 
     form.submit();
 }
