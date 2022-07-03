@@ -1,7 +1,21 @@
 let selection = document.getSelection();
 
-let oldDraggedCodeInfo;
-let newDraggedCodeInfo;
+let oldDraggedCodeInfo = {
+    codeText : "",
+    length : 0,
+    startLine : -1,
+    endLine : -1,
+    offsetFromStartLine : -1,
+    offset : -1
+};
+let newDraggedCodeInfo = {
+    codeText : "",
+    length : 0,
+    startLine : -1,
+    endLine : -1,
+    offsetFromStartLine : -1,
+    offset : -1
+};
 
 
 function setSelectionOld() {

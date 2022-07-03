@@ -19,7 +19,7 @@ router.use('/', function(req, res, next) {
     }
     
     if (values.length == 0) {
-        res.write("<script>alert('Empty Edit Script!! Please try again.');history.back();</script>");
+        res.write("<script>swal('Empty Edit Script!! Please try again.');history.back();</script>");
     } else {
         var mysql = require('mysql');
         var config = require('../db/db_info');
@@ -33,7 +33,7 @@ router.use('/', function(req, res, next) {
                     } else {
                         req.session.fileCnt += 1;
                         res.send("<html><head><script>"
-                                    + "function goNext() {alert('Submission success!');"
+                                    + "function goNext() {swal('Submission success!');"
                                     + "var form = document.createElement('form');"
                                     + "document.body.appendChild(form);"
                                     + "form.method = 'post';"

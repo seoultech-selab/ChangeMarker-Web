@@ -32,7 +32,6 @@ function scriptDBUpdate() {
     newRow.id = oldDraggedCodeInfo.length +  "/" + newDraggedCodeInfo.length;
 
     addDB('Update', newRow, oldDraggedCodeInfo, newDraggedCodeInfo, 1);
-
 }
 
 function addDB(opType, newRow, leftSel, rightSel, delType) {
@@ -50,7 +49,7 @@ function addDB(opType, newRow, leftSel, rightSel, delType) {
       cellOldLine.innerText = leftSel.startLine;  
       scriptJSON.old_code = convertToDBText(leftSel.codeText);
       scriptJSON.line_number_old = leftSel.startLine;
-      scriptJSON.start_pos_old = leftSel.offsetFromStartLine;
+      scriptJSON.start_pos_old = leftSel.offset;
       scriptJSON.length_old = leftSel.length;  
     }
     if(rightSel) {
@@ -58,7 +57,7 @@ function addDB(opType, newRow, leftSel, rightSel, delType) {
       cellNewLine.innerText = rightSel.startLine;
       scriptJSON.new_code = convertToDBText(rightSel.codeText);
       scriptJSON.line_number_new = rightSel.startLine;
-      scriptJSON.start_pos_new = rightSel.offsetFromStartLine;
+      scriptJSON.start_pos_new = rightSel.offset;
       scriptJSON.length_new = rightSel.length;
     }
   

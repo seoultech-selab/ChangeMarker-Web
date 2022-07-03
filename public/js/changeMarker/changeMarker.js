@@ -8,8 +8,20 @@ function setSelectionsNew() {
     setSelectionRangyNew();
 }
 
+function isTutorial() {
+    return document.getElementById("current").value.includes('tutorial');
+}
 
 function generateInsert(e) {
+    if (isTutorial()) {
+        GenInsert({
+            len : newDraggedCodeInfo.length,
+            startPos : newDraggedCodeInfo.offset,
+            text : newDraggedCodeInfo.codeText,
+            lineNum : newDraggedCodeInfo.startLine,
+        }); return;
+    }
+
     if (isInsertValid()) {
         scriptDBInsert();
         // removeAllHighlightsNew();
@@ -19,6 +31,15 @@ function generateInsert(e) {
 }
 
 function generateDelete(e) {
+    if (isTutorial()) {
+        exGenDelete({
+            len : oldDraggedCodeInfo.length,
+            startPos : oldDraggedCodeInfo.offset,
+            text : oldDraggedCodeInfo.codeText,
+            lineNum : oldDraggedCodeInfo.startLine,
+        }); return;
+    }
+
     if (isDeleteValid()) {
         scriptDBDelete();
         // removeAllHighlightsOld();
@@ -28,6 +49,20 @@ function generateDelete(e) {
 }
 
 function generateMove(e) {
+    if (isTutorial()) {
+        GenMoveLeft({
+            len : oldDraggedCodeInfo.length,
+            startPos : oldDraggedCodeInfo.offset,
+            text : oldDraggedCodeInfo.codeText,
+            lineNum : oldDraggedCodeInfo.startLine,
+        }, {
+            len : newDraggedCodeInfo.length,
+            startPos : newDraggedCodeInfo.offset,
+            text : newDraggedCodeInfo.codeText,
+            lineNum : newDraggedCodeInfo.startLine,
+        }); return;
+    }
+
     if (isMoveValid()) {
         scriptDBMove();
         // removeAllHighlightsNew();
@@ -39,7 +74,22 @@ function generateMove(e) {
 }
 
 function generateUpdate(e) {
+    if (isTutorial()) {
+        GenUpdateLeft({
+            len : oldDraggedCodeInfo.length,
+            startPos : oldDraggedCodeInfo.offset,
+            text : oldDraggedCodeInfo.codeText,
+            lineNum : oldDraggedCodeInfo.startLine,
+        }, {
+            len : newDraggedCodeInfo.length,
+            startPos : newDraggedCodeInfo.offset,
+            text : newDraggedCodeInfo.codeText,
+            lineNum : newDraggedCodeInfo.startLine,
+        }); return;
+    }
+
     if (isUpdateValid()) {
+
         scriptDBUpdate();
         // removeAllHighlightsNew();
         // removeAllHighlightsOld();

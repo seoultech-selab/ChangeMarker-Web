@@ -10,9 +10,9 @@ function renderContextMenuListNew(list){
         ctxMenuItem.addEventListener( 'click', item.onClick, false );
       }
 
-      ctxMenuItem_a.appendChild( ctxMenuItem_a_text );
-      ctxMenuItem.appendChild( ctxMenuItem_a );
-      ctxMenuList.appendChild( ctxMenuItem );
+      ctxMenuItem_a.appendChild(ctxMenuItem_a_text);
+      ctxMenuItem.appendChild(ctxMenuItem_a);
+      ctxMenuList.appendChild(ctxMenuItem);
     });
     
     return ctxMenuList;
