@@ -63,7 +63,7 @@
     "test:watch": "mocha --recursive --watch",
     "test:nocoverage": "mocha --recursive",
     "lint": "eslint src test",
-    "start": "nodemon app",
+    "start": "node app",
     "dev": "nodemon app"
   }
 }
