@@ -1,3 +1,6 @@
+const mysql = require('mysql');
+const dbPoolCreator = require('../db/dbPoolCreator')
+
 class Dao {
     sqlHandler = (sql, q, fn) => {
         if (q) sql = mysql.format(sql, q);

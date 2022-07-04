@@ -23,6 +23,7 @@ router.use(
 
 router.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+router.use('/src', express.static(path.join(__dirname, '../src')));
 router.use('/public', express.static(path.join(__dirname, '../public')));
 router.use('/views', express.static(path.join(__dirname, '../views')));
 
