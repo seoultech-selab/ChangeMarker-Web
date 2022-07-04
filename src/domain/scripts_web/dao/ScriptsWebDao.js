@@ -1,5 +1,5 @@
 const mysql = require('mysql');
-const dao = require("/src/global/dao/dao")
+const dao = require("../../../global/dao/dao")
 
 const sqls = {
     findByUserCodeAndChangeId : "SELECT * FROM `scd_benchmark`.`scripts_web` WHERE (`user_code` = ? AND `change_id` = ?)",

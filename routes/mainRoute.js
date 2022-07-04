@@ -57,13 +57,13 @@ router.use('/', function(req, res, next) {
     }
     
     let fileNum = req.session.codeFiles[fileCnt];
-    let changeId = 'change' + fileNum;
 
     let numExt = parseInt(fileNum.slice(6));
     // let lhs = fs.readFileSync(baseDir + '/changes/' + fileNum + '/old/' + fileList[numExt],'utf-8');
     // let rhs = fs.readFileSync(baseDir + '/changes/' + fileNum + '/new/' + fileList[numExt],'utf-8');
 
-    let oldCodeAndNewCode = cmwUseFilesTotalDao.selectOldCodeAndNewCodeByChangeId(changeId);
+    cmwUseFilesTotalDao.selectOldCodeAndNewCodeByChangeId(fileNum).then(e => {
+    let oldCodeAndNewCode = e;
 
     let lhs = oldCodeAndNewCode[0].old_code;
     let rhs = oldCodeAndNewCode[0].new_code;
@@ -265,12 +265,7 @@ router.use('/', function(req, res, next) {
         }
         conn.release();
     });
-
-
-    
-    
-    
-    
+    });
 });
 
 module.exports = router;

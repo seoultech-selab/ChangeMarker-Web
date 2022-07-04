@@ -31,7 +31,7 @@ router.use('/', function(req, res, next) {
                     if (err) {
                         console.log(err);
                     } else {
-                        res.write("<script>swal('Submission success!');window.location.href='/fin';</script>");
+                        res.write("<script>swal('Submission success!');window.location.href='fin';</script>");
                     }
                 })
             }

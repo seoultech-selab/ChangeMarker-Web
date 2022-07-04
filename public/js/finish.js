@@ -13,7 +13,11 @@ function finishAll() {
     let form = document.createElement('form');
     document.body.appendChild(form);
     form.method = 'post';
-    form.action = window.location.href + '/finish';
+    let href = window.location.href;
+    if (href.endsWith('/'))
+        form.action = href + 'finish';
+    else
+        form.action = href + '/finish';
 
     form.submit();
 }

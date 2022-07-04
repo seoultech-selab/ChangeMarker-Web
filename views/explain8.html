@@ -19,7 +19,7 @@
         </style>
         <script>
             function checkStart() {
-                let workerId = document.getElementById('workerId').value;
+                // let workerId = document.getElementById('workerId').value;
                 parent.startProject();
             }
         </script>
@@ -51,20 +51,6 @@
                 <br>
             </p>
 
-            <p style="margin: 0;">Worker ID</p>
-            <input type="text" id="workerId">
-
-            <p style="margin-bottom: 0;">Job</p>
-            <form id="form_job">
-                <input type="radio" id="job1" name="job" value="job1" checked>
-                <label for="job1">Job1</label>
-                <input type="radio" id="job2" name="job" value="job2">
-                <label for="job2">Job2</label>
-                <input type="radio" id="job3" name="job" value="job3">
-                <label for="job3">Job3</label>
-                <input type="radio" id="job4" name="job" value="job4">
-                <label for="job4">Job4</label>
-            </form>
             <input type="hidden" id="userCode" value="<%= code %>">
             <br>
             <br>
