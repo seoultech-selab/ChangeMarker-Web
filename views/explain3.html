@@ -4,20 +4,37 @@
         <meta charset="UTF-8">
         <title>Change Marker</title>
         <link rel="stylesheet" href="/public/css/explain.css">
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     </head>
-    <body onload="">
+    <body>
         <div class="contents">
-            <h1>Delete</h1>
-            Some parts of the code on the left side are removed.<br>
+            The edit scripts are about how the codes change.<br>
+            It have four types, "Insert", "Delete", "Move", "Update".<br>
             <br>
+        </div>
+
+        <div class="image_container">
+            Example<br>
+            <img src="/public/img/context_menu.png">
+        </div>
+        <br>
+        <div class="contents">
             <br>
-            Let's do it!<br>
-            Drag the "Delete" part of code, click the right mouse button and click the "Generate Delete".<br>
+            After you find changes in codes, you <span class="emphasize">drag</span> that part and click the <span class="emphasize">right mouse button</span>.<br>
+            Then, you can choose "Generate Delete", "Generate Move", etc.<br>
+            If you click the "Generate ~", edit scripts are create on the "Edit Script" menu in the bottom.<br>
             <br>
+        </div>
+
+        <div class="image_container">
+            Example<br>
+            <img src="/public/img/delete_button.png">
+        </div>
+        <div class="contents">
             <br>
-            <span class="emphasize">Hint!</span><br>
-            1. The deleted parts are <span class="delete_exam">highlighted red</span>.<br>
-            2. If you click the tiny box between the codes, you can move to the targeted code line.<img src="/public/img/box_exam.png" style="height:0.8em; width:1.6em; border:0;"><br>
+            If you want to change or delete edit scripts which you made, click the delete button in "Option" column.<br>
+            <br>
+            I will explain about edit scripts in next pages.<br>
         </div>
     </body>
 </html>

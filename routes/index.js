@@ -23,6 +23,7 @@ router.use(
 
 router.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+router.use('/src', express.static(path.join(__dirname, '../src')));
 router.use('/public', express.static(path.join(__dirname, '../public')));
 router.use('/views', express.static(path.join(__dirname, '../views')));
 
@@ -35,6 +36,7 @@ const deleteRoute = require('./deleteRoute');
 const check = require('./checkRoute');
 const tutorialCheck = require('./tutorialCheckRoute');
 const surveySubmit = require('./surveySubmitRoute');
+const test = require('./test');
 
 router.use('/submit', submit);
 router.delete('/delete', deleteRoute);
@@ -44,11 +46,13 @@ router.use('/survey', surveySubmit);
 
 router.use('/finish', function(req, res, next) {
     let userCode = req.session.code;
-    req.session.destroy();
+    // req.session.destroy();
     res.render('../views/finish.ejs', {
         code : userCode
     });
     
 });
+
+router.use('/test', test);
 
 module.exports = router;

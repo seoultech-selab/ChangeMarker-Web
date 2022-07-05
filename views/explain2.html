@@ -3,37 +3,79 @@
     <head>
         <meta charset="UTF-8">
         <title>Change Marker</title>
+        <script src="/public/js/surveyAjax.js"></script>
+        <script  src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <link rel="stylesheet" href="/public/css/explain.css">
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <style>
+            .start_button {
+                font-weight: bold;
+            }
+            .start_button:hover {
+                cursor: pointer;
+                font-size: 1.2em;
+                transition-duration: 0.5s;
+            }
+        </style>
     </head>
-    <body>
-        <div class="contents">
-            The edit scripts are about how the codes change.<br>
-            It have four types, "Insert", "Delete", "Move", "Update".<br>
-            <br>
-        </div>
+    <script>
+        function init() {
+            let prevButton = parent.document.getElementById('next_button');
+            prevButton.style.color = "#d7d7d8";
+            prevButton.disabled = true;
+        }
 
-        <div class="image_container">
-            Example<br>
-            <img src="/public/img/context_menu.png">
-        </div>
-        <br>
-        <div class="contents">
-            <br>
-            After you find changes in codes, you <span class="emphasize">drag</span> that part and click the <span class="emphasize">right mouse button</span>.<br>
-            Then, you can choose "Generate Delete", "Generate Move", etc.<br>
-            If you click the "Generate ~", edit scripts are create on the "Edit Script" menu in the bottom.<br>
-            <br>
-        </div>
+        function checkStart() {
+            let workerId = document.getElementById('workerId').value;
+            if (workerId.length == 0) {
+                swal("Please check the worker ID!");
+            }
+            else {
+                surveySubmit();
+            }
+        }
+    </script>
+    <body onload="init()">
+        <div id="survey" class="contents">
+            <p>
+                Before start this project, please tell me about some information.<br>
+                <br>
+                This information is only used to our research.<br>
+                <br>
+            </p>
 
-        <div class="image_container">
-            Example<br>
-            <img src="/public/img/delete_button.png">
-        </div>
-        <div class="contents">
+            <p style="margin: 0;">Worker ID</p>
+            <input type="text" id="workerId">
             <br>
-            If you want to change or delete edit scripts which you made, click the delete button in "Option" column.<br>
+            <p style="margin-bottom: 0;">Job</p>
+            <form id="form_job">
+                <input type="radio" id="job1" name="job" value="job1" checked>
+                <label for="job1">Job1</label>
+                <input type="radio" id="job2" name="job" value="job2">
+                <label for="job2">Job2</label>
+                <input type="radio" id="job3" name="job" value="job3">
+                <label for="job3">Job3</label>
+                <input type="radio" id="job4" name="job" value="job4">
+                <label for="job4">Job4</label>
+            </form>
+            <input type="hidden" id="userCode" value="<%= code %>">
             <br>
-            I will explain about edit scripts in next pages.<br>
+            <p style="margin-bottom: 0;">Java experience</p>
+            <form id="form_java">
+                <input type="radio" id="javaExp1" name="javaExp" value="Less than a year" checked>
+                <label for="javaExp1">Less than a year</label>
+                <input type="radio" id="javaExp2" name="javaExp" value="1~2 years">
+                <label for="javaExp2">1~2 years</label>
+                <input type="radio" id="javaExp3" name="javaExp" value="2~3 years">
+                <label for="javaExp3">2~3 years</label>
+                <input type="radio" id="javaExp4" name="javaExp" value="3~4 years">
+                <label for="javaExp4">3~4 years</label>
+                <input type="radio" id="javaExp5" name="javaExp" value="Over than 5 years">
+                <label for="javaExp4">Over than 5 years</label>
+            </form>
+            <br>
+            <br>
+            <a class="start_button" onclick="checkStart()">Submit</a>
         </div>
     </body>
 </html>

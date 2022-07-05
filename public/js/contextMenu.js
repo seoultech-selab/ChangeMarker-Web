@@ -126,7 +126,7 @@ function handleCreateContextMenu_right(event){
 // Context Menu 제거
 function handleClearContextMenu(event){
   const ctxMenu = document.getElementById('dochi_context_menu');
-  if( ctxMenu ){
+  if(ctxMenu){
     ctxMenu.remove();
   }
 }

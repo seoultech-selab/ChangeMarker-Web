@@ -19,7 +19,7 @@ router.use('/', function(req, res, next) {
     }
     
     if (values.length == 0) {
-        res.write("<script>alert('Empty Edit Script!! Please try again.');history.back();</script>");
+        res.write("<script>swal('Empty Edit Script!! Please try again.');history.back();</script>");
     } else {
         let mysql = require('mysql');
         let config = require('../db/db_info');
@@ -31,7 +31,7 @@ router.use('/', function(req, res, next) {
                     if (err) {
                         console.log(err);
                     } else {
-                        res.write("<script>alert('Submission success!');window.location.href='/fin';</script>");
+                        res.write("<script>swal('Submission success!');window.location.href='fin';</script>");
                     }
                 })
             }

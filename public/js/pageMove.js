@@ -1,14 +1,14 @@
 async function moveNext() {
     let fileCnt = Number($('#fileCnt').val()) + 1;
     if (fileCnt == 5) {
-        alert("This is the last page.")
+        swal("This is the last page.")
         return;
     }
     else {
         let form = document.createElement('form');
         document.body.appendChild(form);
         form.method = 'post';
-        form.action = '/';
+        form.action = window.location.href;
     
         let input = document.createElement('input');
         input.setAttribute("type", "hidden");
@@ -23,14 +23,14 @@ async function moveNext() {
 async function movePrev() {
     let fileCnt = Number($('#fileCnt').val()) - 1;
     if (fileCnt < 0) {
-        alert("This is the first page.")
+        swal("This is the first page.")
         return;
     }
     else {
         let form = document.createElement('form');
         document.body.appendChild(form);
         form.method = 'post';
-        form.action = '/';
+        form.action = window.location.href;
     
         let input = document.createElement('input');
         input.setAttribute("type", "hidden");
@@ -46,7 +46,7 @@ async function movePage(val) {
     let form = document.createElement('form');
     document.body.appendChild(form);
     form.method = 'post';
-    form.action = '/';
+    form.action = window.location.href;
 
     let input = document.createElement('input');
     input.setAttribute("type", "hidden");

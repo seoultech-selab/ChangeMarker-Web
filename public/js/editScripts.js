@@ -20,6 +20,7 @@ let highlightedLeft = [];
 let highlightedRight = [];
 const highlightColor = '#A0D0FF';
 
+// this function is deprecated (-> restoreContentLeftNew())
 function restoreContentLeft() {
   highlightedLeft.forEach(function(n){        
     const p = n.parentNode;
@@ -32,6 +33,11 @@ function restoreContentLeft() {
   highlightedLeft = [];
 }
 
+function restoreContentLeftNew() {
+
+}
+
+// this function is deprecated (-> restoreContentRightNew())
 function restoreContentRight() {
   highlightedRight.forEach(function(n){        
     const p = n.parentNode;
@@ -42,6 +48,10 @@ function restoreContentRight() {
     p.normalize();    
   });
   highlightedRight = [];
+}
+
+function restoreContentRightNew() {
+
 }
 
 function partialHighlight(node, startOffset, endOffset, side) {
@@ -149,6 +159,7 @@ function createSpan() {
 
 let storedSelectionLeft = new Selection();
 
+// this function is deprecated, (-> storeSelectionLeftNew())
 function storeSelectionLeft() {
   let selectionText = "";
   let startNum = "";
@@ -187,8 +198,29 @@ function storeSelectionLeft() {
   storedSelectionLeft.update(sText, selectionNumber, startPos, sText.length);
 }
 
+//       codeText : getDraggedCodeText(selection),
+//       length : getDraggedCodeTextLength(selection),
+//       startLine : getStartLine(selection),
+//       endLine : getEndLine(selection),
+//       offsetFromStartLine : getoffsetFromStartLine(selection),
+//       offset : getOffset(type)
+
+function storeSelectionLeftNew() {
+  // let selectionText = "";
+  // let startNum = "";
+  // let endNum = "";
+  // let selectionNumber = "";
+  // let startPos = 0;
+
+  let seletionInfo = getDraggedCodeInfo(storeSelectionLeft, '.left');
+
+  let sText = selectionInfo.codeText;
+  let selectionNumber = seletionInfo.startLine;
+}
+
 let storedSelectionRight = new Selection();
 
+// this function is deprecated, (-> storeSelectionRightNew())
 function storeSelectionRight() {
   let selectionText = "";
   let startNum = "";
@@ -227,6 +259,10 @@ function storeSelectionRight() {
   storedSelectionRight.update(sText, selectionNumber, startPos, sText.length);
 }
 
+function storeSelectionRightNew() {
+
+}
+
 function getSelectionNum(startNum, selectionNumber, endNum) {
   if (startNum == 0) {
     selectionNumber = endNum;
@@ -256,13 +292,13 @@ function GenController(e) {
     } else if (e == 6 && (check == 0 || check == 4)) {
         GenUpdateRight();
     } else if (check == 1) {
-        alert("Please generate Move on left side code.");
+        swal("Please generate Move on left side code.");
     } else if (check == 2) {
-        alert("Please generate Move on right side code.");
+        swal("Please generate Move on right side code.");
     } else if (check == 3) {
-        alert("Please generate Update on left side code.");
+        swal("Please generate Update on left side code.");
     } else if (check == 4) {
-        alert("Please generate Update on right side code.");
+        swal("Please generate Update on right side code.");
     }
 }
 
@@ -313,7 +349,7 @@ function createDeleteButton(delType) {
 
 function GenDelete() {
     if (storedSelectionLeft.len == 0) {
-        alert("Please select texts.");
+        swal("Please select texts.");
         return;
     }
     let table = document.getElementById("edit_scripts");
@@ -327,7 +363,7 @@ function GenDelete() {
 
 function GenInsert() {
     if (storedSelectionRight.len == 0) {
-        alert("Please select texts.");
+        swal("Please select texts.");
         return;
     }
     let table = document.getElementById("edit_scripts");
@@ -341,10 +377,10 @@ function GenInsert() {
 
 function GenMoveLeft() {
     if (storedSelectionLeft.len == 0) {
-        alert("Please select texts on the left side.");
+        swal("Please select texts on the left side.");
         return;
     } else if (storedSelectionRight.len == 0) {
-        alert("Please select texts on the right side.");
+        swal("Please select texts on the right side.");
         return;
     }
 
@@ -362,10 +398,10 @@ function GenMoveLeft() {
 
 function GenMoveRight() {
     if (storedSelectionRight.len == 0) {
-        alert("Please select texts on the right side.");
+        swal("Please select texts on the right side.");
         return;
     } else if (storedSelectionLeft.len == 0) {
-        alert("Please select texts on the left side.");
+        swal("Please select texts on the left side.");
         return;
     }
 
@@ -383,10 +419,10 @@ function GenMoveRight() {
 
 function GenUpdateLeft() {
     if (storedSelectionLeft.len == 0) {
-        alert("Please select texts on the left side.");
+        swal("Please select texts on the left side.");
         return;
     } else if (storedSelectionRight.len == 0) {
-        alert("Please select texts on the right side.");
+        swal("Please select texts on the right side.");
         return;
     }
     
@@ -404,10 +440,10 @@ function GenUpdateLeft() {
 
 function GenUpdateRight() {
     if (storedSelectionRight.len == 0) {
-        alert("Please select texts on the right side.");
+        swal("Please select texts on the right side.");
         return;
     } else if (storedSelectionLeft.len == 0) {
-        alert("Please select texts on the left side.");
+        swal("Please select texts on the left side.");
         return;
     }
 

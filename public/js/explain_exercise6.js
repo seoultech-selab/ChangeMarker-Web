@@ -2,28 +2,27 @@ let hintCnt = 0;
 
 let genControllerType = [4, 5];
 
-function GenUpdateLeft() {
-  let selectResult = storedSelectionLeft;
+function GenUpdateLeft(selectResult, storedSelectionRight) {
   if (selectResult.len == 0) {
-      alert("Please select texts on the left side.");
+      swal("Please select texts on the left side.");
       return;
   } else if (storedSelectionRight.len == 0) {
-      alert("Please select texts on the right side.");
+      swal("Please select texts on the right side.");
       return;
   }
   
   if (selectResult.text.trim() != "BlockServiceHandler") {
     hintCnt += 1;
     if (hintCnt == 1) {
-      alert('Check the selection on the left side again.');
+      swal('Check the selection on the left side again.');
       return;
     }
     else if (hintCnt == 2) {
-      alert('Check the selection on the left side again. Look carefully the red highlighted line.');
+      swal('Check the selection on the left side again. Look carefully the red highlighted line.');
       return;
     }
     else if (hintCnt == 3) {
-      alert('The changed code on the left side is "BlockServiceHandler".');
+      swal('The changed code on the left side is "BlockServiceHandler".');
       return;
     }
     else {
@@ -36,22 +35,22 @@ function GenUpdateLeft() {
       storedSelectionRight.startPos = 0;
       storedSelectionRight.text = 'BlockWorkerClientServiceHandler';
       storedSelectstoredSelectionRightionLeft.lineNum = 29;
-      alert('Check the correct answer.');
+      swal('Check the correct answer.');
     }
   }
   
   if (storedSelectionRight.text.trim() != 'BlockWorkerClientServiceHandler') {
     hintCnt += 1;
     if (hintCnt == 1) {
-      alert('Check the selection on the right side again.');
+      swal('Check the selection on the right side again.');
       return;
     }
     else if (hintCnt == 2) {
-      alert('Check the selection on the right side again. Look carefully the green highlighted line.');
+      swal('Check the selection on the right side again. Look carefully the green highlighted line.');
       return;
     }
     else if (hintCnt == 3) {
-      alert('The changed code on the right side is "BlockWorkerClientServiceHandler".');
+      swal('The changed code on the right side is "BlockWorkerClientServiceHandler".');
       return;
     }
     else {
@@ -64,11 +63,11 @@ function GenUpdateLeft() {
       storedSelectionRight.startPos = 0;
       storedSelectionRight.text = 'BlockWorkerClientServiceHandler';
       storedSelectstoredSelectionRightionLeft.lineNum = 29;
-      alert('Check the correct answer.');
+      swal('Check the correct answer.');
     }
   }
   else {
-    alert("Correct!! The next button is activated.");
+    swal("Correct!! The next button is activated.");
   }
 
   let table = document.getElementById("edit_scripts");
@@ -108,25 +107,25 @@ function GenUpdateLeft() {
 function GenUpdateRight() {
   let selectResult = storedSelectionRight;
   if (selectResult.len == 0) {
-      alert("Please select texts on the right side.");
+      swal("Please select texts on the right side.");
       return;
   } else if (storedSelectionLeft.len == 0) {
-      alert("Please select texts on the left side.");
+      swal("Please select texts on the left side.");
       return;
   }
 
   if (selectResult.text.indexOf('BlockWorkerClientServiceHandler', 0) < 0 || selectResult.len > 33) {
     hintCnt += 1;
     if (hintCnt == 1) {
-      alert('Check the selection on the right side again.');
+      swal('Check the selection on the right side again.');
       return;
     }
     else if (hintCnt == 2) {
-      alert('Check the selection on the right side again. Look carefully the green highlighted line.');
+      swal('Check the selection on the right side again. Look carefully the green highlighted line.');
       return;
     }
     else if (hintCnt == 3) {
-      alert('The changed code on the right side is "BlockWorkerClientServiceHandler".');
+      swal('The changed code on the right side is "BlockWorkerClientServiceHandler".');
       return;
     }
     else {
@@ -139,22 +138,22 @@ function GenUpdateRight() {
       storedSelectionLeft.startPos = 0;
       storedSelectionLeft.text = 'BlockServiceHandler';
       storedSelectstoredSelectionRightionLeft.lineNum = 29;
-      alert('Check the correct answer.');
+      swal('Check the correct answer.');
     }
   }
   
   if (storedSelectionLeft.text.indexOf('BlockServiceHandler', 0) < 0 || storedSelectionLeft.len > 21) {
     hintCnt += 1;
     if (hintCnt == 1) {
-      alert('Check the selection on the left side again.');
+      swal('Check the selection on the left side again.');
       return;
     }
     else if (hintCnt == 2) {
-      alert('Check the selection on the left side again. Look carefully the red highlighted line.');
+      swal('Check the selection on the left side again. Look carefully the red highlighted line.');
       return;
     }
     else if (hintCnt == 3) {
-      alert('The changed code on the left side is "BlockServiceHandler".');
+      swal('The changed code on the left side is "BlockServiceHandler".');
       return;
     }
     else {
@@ -167,11 +166,11 @@ function GenUpdateRight() {
       storedSelectionLeft.startPos = 0;
       storedSelectionLeft.text = 'BlockServiceHandler';
       storedSelectstoredSelectionRightionLeft.lineNum = 29;
-      alert('Check the correct answer.');
+      swal('Check the correct answer.');
     }
   }
   else {
-    alert("Correct!! The next button is activated.");
+    swal("Correct!! The next button is activated.");
   }
 
   let table = document.getElementById("edit_scripts");

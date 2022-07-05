@@ -5,6 +5,7 @@
         <title>Change Marker</title>
         <link rel="stylesheet" href="/public/css/tutorialExam.css">
         <link rel="stylesheet" href="/public/css/contextMenu.css">
+        <link rel="stylesheet" href="/public/css/marker.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github.min.css">
 	    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
 	    <script>hljs.initHighlightingOnLoad();</script>
@@ -13,167 +14,126 @@
         <script src="/public/js/exercise.js"></script>
         <script src="/public/js/editScripts.js"></script>
         <script src="/public/js/contextMenu.js"></script>
-        <script src="/public/js/explain_exercise6.js"></script>
-        <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+        <script src="/public/js/explain_exercise5.js"></script>
+        <script  src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/rangy/1.3.0/rangy-core.js" integrity="sha512-5qAG717EHs5QEXyZGnsQphorTLrZMPEr3Soh6w+mE2+WfHDuEyBQOTOb/wlO2Hd7Ox/5iUG0bzUNu/8KELEl9g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/rangy/1.3.0/rangy-classapplier.js" integrity="sha512-kPRZf6xUyz6Kj6dmWTUZIGtdwW8AD7i7rMFpxybhMvjmlKJ/L+KspUZDj75Y1dsq73QTA/1QqFh2kW04xGGiXQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/rangy/1.3.0/rangy-textrange.js" integrity="sha512-cn3M0Jp3chCiQfpeXvD7IIrfrqq2I2WokvTO1cvLxJkT08A7BeYzJx0hFOaqc3j2wT9UlZfUFtAOMpVSJqD4Kw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/rangy/1.3.0/rangy-highlighter.js" integrity="sha512-FTpr4BiLGBjmxDvuCam722rXBOsG67oz8t7MzzV15x3GNSu6VkJDRBqdqW/uuJv7y7dWei1KMUoMcDfZ4Fmx6Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+        <script src="/public/js/changeMarker/codeSelection/codeSelection.js"></script>
+        <script src="/public/js/changeMarker/contextMenu/contextMenuNew.js"></script>
+        <script src="/public/js/changeMarker/contextMenu/contextMenuOld.js"></script>
+        <script src="/public/js/changeMarker/editScript/editScript.js"></script>
+        <script src="/public/js/changeMarker/highlighter/selectionHighlighter.js"></script>
+        <script src="/public/js/changeMarker/changeMarker.js"></script>
+        
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     </head>
     <body onload="exInit();">
+        <input type="hidden" value="tutorial6" id="current">
         <div class="container">
         <section id="section">
             <div id="left">
-                <pre><code class="java" id="inner_left">package org.elasticsearch.search.fetch;
+                <pre><code class="java" id="inner_left">package org.elasticsearch.common.settings.loader;
 
-import org.apache.lucene.search.Scorer;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import org.apache.lucene.util.IOUtils;
+import org.elasticsearch.common.io.FastStringReader;
+import org.elasticsearch.common.io.stream.BytesStreamInput;
 
-import static java.util.Collections.unmodifiableMap;
+import java.io.IOException;
+import java.util.Map;
+import java.util.Properties;
 
-public class FetchPhase implements SearchPhase {
+import static com.google.common.collect.Maps.newHashMap;
 
-    private final FetchSubPhase[] fetchSubPhases;
+public class PropertiesSettingsLoader implements SettingsLoader {
 
     @Override
-    public Map parseElements() {
-        Map parseElements = new HashMap();
-        for (FetchSubPhase fetchSubPhase : fetchSubPhases) {
-            parseElements.putAll(fetchSubPhase.parseElements());
-        }
-        return unmodifiableMap(parseElements);
-    }
-    
-
-    private InternalSearchHit getInternalNestedIdentity() {
-        int currentParent = nestedSubDocId;
-        ObjectMapper nestedParentObjectMapper;
-        ObjectMapper current = nestedObjectMapper;
-        String originalName = nestedObjectMapper.name();
-<span class="code_delete">        private BlockServiceHandler mWorkerServiceHandler = null;</span>
-        InternalSearchHit.InternalNestedIdentity nestedIdentity = null;
-        do {
-            Query parentFilter;
-            if (nestedParentObjectMapper != null) {
-                if (nestedParentObjectMapper.nested().isNested() == false) {
-                    current = nestedParentObjectMapper;
-                    continue;
-                }
-                parentFilter = nestedParentObjectMapper.nestedTypeFilter();
-            } else {
-                parentFilter = Queries.newNonNestedFilter();
-            }
-
-            Query childFilter = nestedObjectMapper.nestedTypeFilter();
-            if (childFilter == null) {
-                current = nestedParentObjectMapper;
-                continue;
-            }
-            Scorer childScorer = childWeight.scorer(subReaderContext);
-            if (childScorer == null) {
-                current = nestedParentObjectMapper;
-                continue;
-            }
-            DocIdSetIterator childIter = childScorer.iterator();
-
-            int offset = 0;
-            int nextParent = parentBits.nextSetBit(currentParent);
-            currentParent = nextParent;
-            current = nestedObjectMapper = nestedParentObjectMapper;
-            int currentPrefix = current == null ? 0 : current.name().length() + 1;
-            if (current != null) {
-                originalName = current.name();
-            }
-        } while (current != null);
-        return nestedIdentity;
-    }
-
-    private void loadStoredFields(SearchContext searchContext) {
-        fieldVisitor.reset();
+    public Map<String, String> load(String source) throws IOException {
+        Properties props = new Properties();
+        FastStringReader reader = new FastStringReader(source);
         try {
-            readerContext.reader().document(docId, fieldVisitor);
-        } catch (IOException e) {
-            throw new FetchPhaseExecutionException(searchContext, e);
+            props.load(reader);
+            Map<String, String> result = newHashMap();
+            for (Map.Entry entry : props.entrySet()) {
+                result.put((String) entry.getKey(), (String) entry.getValue());
+            }
+            return result;
+        } finally {
+            IOUtils.closeWhileHandlingException(reader);
+        }
+    }
+
+    @Override
+    public Map<String, String> load(byte[] source) throws IOException {
+<span class="code_delete">        Properties props = new Properties();</span>
+        BytesStreamInput stream = new BytesStreamInput(source);
+        try {
+            props.load(stream);
+            Map<String, String> result = newHashMap();
+            for (Map.Entry entry : props.entrySet()) {
+                result.put((String) entry.getKey(), (String) entry.getValue());
+            }
+            return result;
+        } finally {
+            IOUtils.closeWhileHandlingException(stream);
         }
     }
 }</code></pre>
             </div>
 
             <div class="d1" id="hr1">
-                <input type="button" class="move_inner" id="#1" value="1" onclick="move_inner(0, 330, 0, 330)">
+                <input type="button" class="move_inner" id="#1" value="1" onclick="move_inner(0, 400, 0, 430)">
             </div>
 
             <div id="right">
-                <pre><code class="java" id="inner_right">package org.elasticsearch.search.fetch;
+                <pre><code class="java" id="inner_right">package org.elasticsearch.common.settings.loader;
 
-import org.apache.lucene.search.Scorer;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import org.apache.lucene.util.IOUtils;
+import org.elasticsearch.common.io.FastStringReader;
+import org.elasticsearch.common.io.stream.BytesStreamInput;
 
-import static java.util.Collections.unmodifiableMap;
+import java.io.IOException;
+import java.util.Map;
+import java.util.Properties;
 
-public class FetchPhase implements SearchPhase {
+import static com.google.common.collect.Maps.newHashMap;
 
-    private final FetchSubPhase[] fetchSubPhases;
+public class PropertiesSettingsLoader implements SettingsLoader {
 
     @Override
-    public Map parseElements() {
-        Map parseElements = new HashMap();
-        for (FetchSubPhase fetchSubPhase : fetchSubPhases) {
-            parseElements.putAll(fetchSubPhase.parseElements());
-        }
-        return unmodifiableMap(parseElements);
-    }
-    
-
-    private InternalSearchHit getInternalNestedIdentity() {
-        int currentParent = nestedSubDocId;
-        ObjectMapper nestedParentObjectMapper;
-        ObjectMapper current = nestedObjectMapper;
-        String originalName = nestedObjectMapper.name();
-<span class="code_insert">        private BlockWorkerClientServiceHandler mWorkerServiceHandler = null;</span>
-        InternalSearchHit.InternalNestedIdentity nestedIdentity = null;
-        do {
-            Query parentFilter;
-            if (nestedParentObjectMapper != null) {
-                if (nestedParentObjectMapper.nested().isNested() == false) {
-                    current = nestedParentObjectMapper;
-                    continue;
-                }
-                parentFilter = nestedParentObjectMapper.nestedTypeFilter();
-            } else {
-                parentFilter = Queries.newNonNestedFilter();
-            }
-
-            Query childFilter = nestedObjectMapper.nestedTypeFilter();
-            if (childFilter == null) {
-                current = nestedParentObjectMapper;
-                continue;
-            }
-            Scorer childScorer = childWeight.scorer(subReaderContext);
-            if (childScorer == null) {
-                current = nestedParentObjectMapper;
-                continue;
-            }
-            DocIdSetIterator childIter = childScorer.iterator();
-
-            int offset = 0;
-            int nextParent = parentBits.nextSetBit(currentParent);
-            currentParent = nextParent;
-            current = nestedObjectMapper = nestedParentObjectMapper;
-            int currentPrefix = current == null ? 0 : current.name().length() + 1;
-            if (current != null) {
-                originalName = current.name();
-            }
-        } while (current != null);
-        return nestedIdentity;
-    }
-
-    private void loadStoredFields(SearchContext searchContext) {
-        fieldVisitor.reset();
+    public Map<String, String> load(String source) throws IOException {
+        Properties props = new Properties();
+        FastStringReader reader = new FastStringReader(source);
         try {
-            readerContext.reader().document(docId, fieldVisitor);
-        } catch (IOException e) {
-            throw new FetchPhaseExecutionException(searchContext, e);
+            props.load(reader);
+            Map<String, String> result = newHashMap();
+            for (Map.Entry entry : props.entrySet()) {
+                result.put((String) entry.getKey(), (String) entry.getValue());
+            }
+            return result;
+        } finally {
+            IOUtils.closeWhileHandlingException(reader);
+        }
+    }
+
+    @Override
+    public Map<String, String> load(byte[] source) throws IOException {
+        BytesStreamInput stream = new BytesStreamInput(source);
+        try {
+<span class="code_insert">            Properties props = new Properties();</span>
+            props.load(stream);
+            Map<String, String> result = newHashMap();
+            for (Map.Entry entry : props.entrySet()) {
+                result.put((String) entry.getKey(), (String) entry.getValue());
+            }
+            return result;
+        } finally {
+            IOUtils.closeWhileHandlingException(stream);
         }
     }
 }</code></pre>

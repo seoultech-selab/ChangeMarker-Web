@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const cmwUseFilesTotalDao = require('../src/domain/cmwUseFilesTotal/dao/cmwUseFilesTotalDao')
 
 function mkFileName(num) {
     if (num < 1) {
@@ -14,6 +15,22 @@ function mkFileName(num) {
         result = "change001";
     }
     return result;
+}
+
+const DBText = [
+    "<",
+    ">"
+]
+
+const htmlText = [
+    "&lt;",
+    "&gt;"
+];
+
+function convertToHtmlText(s) {
+    s = s.replace(/</g, "&lt;");
+    s = s.replace(/>/g, "&gt;");
+    return s;
 }
 
 const fs = require('fs');
@@ -40,9 +57,19 @@ router.use('/', function(req, res, next) {
     }
     
     let fileNum = req.session.codeFiles[fileCnt];
+
     let numExt = parseInt(fileNum.slice(6));
-    const lhs = fs.readFileSync(baseDir + '/changes/' + fileNum + '/old/' + fileList[numExt],'utf-8');
-    let rhs = fs.readFileSync(baseDir + '/changes/' + fileNum + '/new/' + fileList[numExt],'utf-8');
+    // let lhs = fs.readFileSync(baseDir + '/changes/' + fileNum + '/old/' + fileList[numExt],'utf-8');
+    // let rhs = fs.readFileSync(baseDir + '/changes/' + fileNum + '/new/' + fileList[numExt],'utf-8');
+
+    cmwUseFilesTotalDao.selectOldCodeAndNewCodeByChangeId(fileNum).then(e => {
+    let oldCodeAndNewCode = e;
+
+    let lhs = oldCodeAndNewCode[0].old_code;
+    let rhs = oldCodeAndNewCode[0].new_code;
+
+    lhs = convertToHtmlText(lhs);
+    rhs = convertToHtmlText(rhs);
 
     const diff = myers.diff(lhs, rhs);
     
@@ -238,12 +265,7 @@ router.use('/', function(req, res, next) {
         }
         conn.release();
     });
-
-
-    
-    
-    
-    
+    });
 });
 
 module.exports = router;

@@ -12,12 +12,14 @@ router.use('/', function(req, res, next) {
             query += "';";
             conn.query(query, (err, result) => {
                 if (result.length == 0) {
-                    let query2 = "INSERT INTO cmw_participants(`user_code`, `worker_id`, `job`, `change_id1`, `change_id2`, `change_id3`, `change_id4`, `change_id5`) values('";
+                    let query2 = "INSERT INTO cmw_participants(`user_code`, `worker_id`, `job`, `java_experience`, `change_id1`, `change_id2`, `change_id3`, `change_id4`, `change_id5`) values('";
                     query2 += req.session.code;
                     query2 += "', '";
                     query2 += req.body.workerId;
                     query2 += "', '";
                     query2 += req.body.job;
+                    query2 += "', '";
+                    query2 += req.body.java;
                     query2 += "', '";
                     query2 += req.session.codeFiles[0];
                     query2 += "', '";
@@ -31,9 +33,9 @@ router.use('/', function(req, res, next) {
                     query2 += "');";
                     conn.query(query2, (err, result) => {
                         if (err) {
-                            alert(err);
+                            swal(err);
                         } else {
-                            res.status(200).send({message : 'Insert participant success!!'});
+                            res.status(200).send({message : 'first'});
                         }
                     })
                 }
@@ -46,7 +48,7 @@ router.use('/', function(req, res, next) {
                     codeFiles.push(result[0].change_id4);
                     codeFiles.push(result[0].change_id5);
                     req.session.codeFiles = codeFiles;
-                    res.status(200).send({message : 'success!'});
+                    res.status(200).send({message : 'not first'});
                 }
             })
 

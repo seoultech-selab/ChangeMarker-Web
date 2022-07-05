@@ -1,4 +1,4 @@
-function init(completed) {
+function init() {
     document.getElementById("hr1").onmousedown = on_mouse_down_hr1;
     document.getElementById("hr1").onmouseover = on_mouse_over1;
     document.getElementById("hr1").onmouseout = on_mouse_out;
@@ -11,10 +11,9 @@ function init(completed) {
     window.onresize = window_on_resize;
     storeY();
 
-    document.getElementById('left').onmouseup = storeSelectionLeft;
-    document.getElementById('right').onmouseup = storeSelectionRight;
+    // document.getElementById('left').onmouseup = storeSelectionLeft;
+    // document.getElementById('right').onmouseup = storeSelectionRight;
     document.getElementById('left').addEventListener('contextmenu', handleCreateContextMenu_left, false);
     document.getElementById('right').addEventListener('contextmenu', handleCreateContextMenu_right, false);
     document.addEventListener('click', handleClearContextMenu, false);
-    completeShow(completed);
 }

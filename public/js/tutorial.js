@@ -16,7 +16,7 @@ function prevExplain() {
         prevButton.disabled = true;
     }
     explainWindow.src = "/views/explain" + (currentPage - 1) + ".html";
-    if ((currentPage - 1) >= 3 && (currentPage - 1) <= 6) {
+    if ((currentPage - 1) >= 4 && (currentPage - 1) <= 7) {
         explainWindow.style.height = "39%";
         exerciseWindow.style.height = "60%";
         exerciseWindow.style.display = "block";
@@ -49,11 +49,11 @@ function nextExplain() {
     let newPageNum = currentPage + 1;
 
     if (currentPage == totalPage) {
-        alert("This is the last page.");
+        swal("This is the last page.");
         return;
     }
     explainWindow.src = "/views/explain" + newPageNum + ".html";
-    if (newPageNum >= 3 && newPageNum <= 6) {
+    if (newPageNum >= 4 && newPageNum <= 7) {
         explainWindow.style.height = "39%";
         exerciseWindow.style.height = "60%";
         exerciseWindow.style.display = "block";
@@ -61,11 +61,6 @@ function nextExplain() {
     }
     else {
         let totalPage = Number(document.getElementById('total_page').innerHTML);
-        // if (newPageNum == totalPage) {
-        //     let startButton = document.getElementById('start_button');
-        //     startButton.style.color = "#000";
-        //     startButton.disabled = false;
-        // }
         explainWindow.style.height = "100%";
         exerciseWindow.style.display = "none";
     }
@@ -75,7 +70,7 @@ function nextExplain() {
 function startProject() {
     let form = document.createElement('form');
     document.body.appendChild(form);
-    form.action = "/";
+    form.action = window.location.href;
     form.method = "post";
 
     let input = document.createElement('input');
