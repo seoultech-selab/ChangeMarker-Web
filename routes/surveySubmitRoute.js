@@ -12,7 +12,7 @@ router.use('/', function(req, res, next) {
             query += "';";
             conn.query(query, (err, result) => {
                 if (result.length == 0) {
-                    let query2 = "INSERT INTO cmw_participants(`user_code`, `worker_id`, `job`, `java_experience`, `change_id1`, `change_id2`, `change_id3`, `change_id4`, `change_id5`) values('";
+                    let query2 = "INSERT INTO cmw_participants(`user_code`, `worker_id`, `job`, `java_experience`, `change_id1`, `change_id2`, `change_id3`, `change_id4`, `change_id5`, `status`) values('";
                     query2 += req.session.code;
                     query2 += "', '";
                     query2 += req.body.workerId;
@@ -30,6 +30,8 @@ router.use('/', function(req, res, next) {
                     query2 += req.session.codeFiles[3];
                     query2 += "', '";
                     query2 += req.session.codeFiles[4];
+                    query2 += "', '";
+                    query2 += "in progress";
                     query2 += "');";
                     conn.query(query2, (err, result) => {
                         if (err) {
