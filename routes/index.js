@@ -45,11 +45,20 @@ router.use('/tutorialCheck', tutorialCheck);
 router.use('/survey', surveySubmit);
 
 router.use('/finish', function(req, res, next) {
-    let userCode = req.session.code;
-    // req.session.destroy();
-    res.render('../views/finish.ejs', {
-        code : userCode
-    });
+
+    if (req.body.user_status != 'finished') {
+        res.render('../views/finish.ejs', {
+            code : ""
+        });
+
+        return;
+    } else {
+        let userCode = req.session.code;
+        // req.session.destroy();
+        res.render('../views/finish.ejs', {
+            code : userCode
+        });
+    }
     
 });
 

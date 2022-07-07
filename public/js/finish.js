@@ -11,6 +11,14 @@ function finishAll() {
     // }
 
     let form = document.createElement('form');
+    let input = document.createElement('input');
+
+    input.type = 'hidden';
+    input.name = 'user_status';
+    input.value = 'finished';
+
+    form.appendChild(input);
+
     document.body.appendChild(form);
     form.method = 'post';
     let href = window.location.href;
