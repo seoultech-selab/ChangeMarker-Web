@@ -5,7 +5,7 @@ html, body {
     padding: 0;
     height: 100%;
     overflow: hidden;
-    font-family: Franklin Gothic, Charcoal, sans-serif;
+    font-family: "Gill Sans", sans-serif;
 }
 
 iframe {
@@ -21,6 +21,9 @@ iframe {
     /* background-color: #F6F6F6; */
     background-color: #393E46;
     height: 80px;
+    width: 100%;
+    display: flex;
+    align-items: center;
 }
 
 .explain_window {
@@ -43,7 +46,6 @@ iframe {
 }
 
 .button_container {
-    width: 100%;
     display: flex;
     justify-content: center;
 }

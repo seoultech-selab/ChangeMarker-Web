@@ -1,5 +1,5 @@
 html, body {
-    font-family: Franklin Gothic, Charcoal, sans-serif;
+    font-family: "Gill Sans", sans-serif;
     font-weight: 90;
     font-size: 22px;
 }
@@ -17,8 +17,10 @@ img {
     -webkit-border-radius: 7px;
 }
 
-h1 {
+h3 {
     color: #00ADB5;
+    text-align: center;
+    width: 100%;
 }
 
 .example_img {
@@ -27,6 +29,32 @@ h1 {
 
 .contents {
     text-align: center;
+    width: 100%;
+    display: flex; 
+    align-items: center; 
+    flex-direction: column;
+}
+
+.question {
+    margin-bottom: 0; 
+    font-weight: bold;
+}
+
+.description {
+    text-align: left;
+    width: 50%;
+}
+
+.footnote {
+    text-align: left;
+    width: 50%;
+    font-size: 14pt;
+    font-family:  "Gill Sans", sans-serif;
+}
+
+.empty_line {
+    height: 10px;
+    width: 100%;
 }
 
 .image_container {
@@ -35,7 +63,7 @@ h1 {
 }
 
 .emphasize {
-    color: #f19292;
+    color: #1561b7;
     font-weight: bold;
 }
 

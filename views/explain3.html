@@ -8,33 +8,41 @@
     </head>
     <body>
         <div class="contents">
-            The edit scripts are about how the codes change.<br>
-            It have four types, "Insert", "Delete", "Move", "Update".<br>
-            <br>
-        </div>
-
-        <div class="image_container">
-            Example<br>
-            <img src="/public/img/context_menu.png">
-        </div>
-        <br>
-        <div class="contents">
-            <br>
-            After you find changes in codes, you <span class="emphasize">drag</span> that part and click the <span class="emphasize">right mouse button</span>.<br>
-            Then, you can choose "Generate Delete", "Generate Move", etc.<br>
-            If you click the "Generate ~", edit scripts are create on the "Edit Script" menu in the bottom.<br>
-            <br>
-        </div>
-
-        <div class="image_container">
-            Example<br>
-            <img src="/public/img/delete_button.png">
-        </div>
-        <div class="contents">
-            <br>
-            If you want to change or delete edit scripts which you made, click the delete button in "Option" column.<br>
-            <br>
-            I will explain about edit scripts in next pages.<br>
-        </div>
+            <h3>Change Marker Basics</h3>
+            <div class="description">
+                Here are the basics of Change Marker.<br>
+                You can create an edit script for a given code change by marking changed parts of the code with Change Marker.
+                In Change Marker, a code change is given like the following, similar to a typical compare editor.
+            </div>
+            <div style="height:10px;">&nbsp;</div>
+            <div class="image_container">
+                <img src="/public/img/context_menu.png">
+            </div>
+            <div style="height:10px;">&nbsp;</div>
+            <div class="description">
+                To add an edit operation, <span class="emphasize">drag</span> a changed part of the code, then <span class="emphasize">right click</span> on it to see the menu.<br>
+                You can see "Generate XXX" commands like the above example. <br>
+                Then <span class="emphasize">choose a command</span> for an appropriate edit operation to describe how the selcted part was changed.
+                For instance, you can click "Generate Delete", if you think the selected part was deleted. <br>                
+            </div>
+            <div class="empty_line">&nbsp;</div>
+            <div class="description">
+                To support creating edit scripts, Change Marker highlights line by line differences with 
+                <span class="delete_exam">red (deleted)</span> and <span class="insert_exam">green (inserted)</span>.
+                You can also click <img src="/public/img/box_exam.png" style="height:0.8em; width:1.6em; border:0;"> in the middle to jump to a changed part.<br>
+                Remind that this is merely a simple support, and actual changed code do not need to be exactly matched to the highlighted part.
+                Hence you need to examine a given change carefully, and describe it as you seem to fit using the commands.
+            </div>
+            <div class="empty_line">&nbsp;</div>
+            <div class="description">
+                Once you select the command, a "Delete" edit operation will be appeared in your edit script at the bottom like the following.
+            </div>
+            <div class="image_container">
+                <img src="/public/img/edit_script.png">
+            </div>
+            <div class="footnote">
+                *if you made a mistake, you can click <span style="color:red;">Delete</span> to remove each edit operation.
+            </div>            
+        </div>        
     </body>
 </html>
