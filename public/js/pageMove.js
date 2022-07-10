@@ -56,3 +56,7 @@ async function movePage(val) {
     form.appendChild(input);
     form.submit();
 }
+
+async function moveTutorial() {
+    location.href = '/';
+}

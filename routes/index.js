@@ -44,7 +44,11 @@ router.use('/check', check);
 router.use('/tutorialCheck', tutorialCheck);
 router.use('/survey', surveySubmit);
 
-router.use('/finish', function(req, res, next) {
+const userService = require("../src/domain/user/userService");
+
+router.use('/finish', async function(req, res, next) {
+
+    await userService.putStatusByUserCode('finished', req.session.code);
 
     if (req.body.user_status != 'finished') {
         res.render('../views/finish.ejs', {

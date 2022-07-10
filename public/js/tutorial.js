@@ -79,4 +79,71 @@ function startProject() {
     input.type = "hidden";
     input.value = "change001";
     form.submit();
+
+    $.ajax({
+        type: 'put',
+        url: '/survey/userInfo',
+        data: {status : 'started'},
+        dataType : 'json',
+        success: function(res) {}
+      });
+}
+
+function jumpFinish() {
+    let form = document.createElement('form');
+    let input = document.createElement('input');
+
+    input.type = 'hidden';
+    input.name = 'user_status';
+    input.value = 'finished';
+
+    form.appendChild(input);
+
+    document.body.appendChild(form);
+    form.method = 'post';
+    let href = window.location.href;
+    if (href.endsWith('/'))
+        form.action = href + 'finish';
+    else
+        form.action = href + '/finish';
+
+    form.submit();
+}
+
+function jumpExplain(num) {
+    let checkExercise = Number(document.getElementById('checkExercise').value);
+    let currentPage = num;
+
+    let prevButton = document.getElementById('prev_button');
+    prevButton.style.color = "#393E46";
+    prevButton.disabled = false;
+    
+    if (checkExercise <= currentPage) {
+        let nextButton = document.getElementById('next_button');
+        nextButton.style.color = "#d7d7d8";
+        nextButton.disabled = true;
+    }
+
+    let totalPage = Number(document.getElementById('total_page').innerHTML);
+    let explainWindow = document.getElementById('explain_window');
+    let exerciseWindow = document.getElementById('exercise_window');
+    let newPageNum = currentPage + 1;
+
+    if (currentPage == totalPage) {
+        swal("This is the last page.");
+        return;
+    }
+    explainWindow.src = "/views/explain" + newPageNum + ".html";
+    if (newPageNum >= 4 && newPageNum <= 7) {
+        explainWindow.style.height = "39%";
+        exerciseWindow.style.height = "60%";
+        exerciseWindow.style.display = "block";
+        exerciseWindow.src = "/views/explain_exercise" + newPageNum + ".html";
+    }
+    else {
+        let totalPage = Number(document.getElementById('total_page').innerHTML);
+        explainWindow.style.height = "100%";
+        exerciseWindow.style.display = "none";
+    }
+    document.getElementById('current_page').innerHTML = newPageNum;
 }

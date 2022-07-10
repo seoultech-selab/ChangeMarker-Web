@@ -19,10 +19,12 @@
         </style>
     </head>
     <script>
-        function init() {
+        async function init() {
             let prevButton = parent.document.getElementById('next_button');
-            prevButton.style.color = "#d7d7d8";
             prevButton.disabled = true;
+            prevButton.style.color = "#d7d7d8";
+
+            checkSession();
         }
 
         function checkStart() {

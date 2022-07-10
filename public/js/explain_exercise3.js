@@ -60,7 +60,16 @@ function exGenDelete(selectResult) {
     newCell6.appendChild(newATag);
 
     let currentPageNum = Number(window.parent.document.getElementById('current_page').innerText);
-    checkExercise.value = currentPageNum;
+    if (checkExercise.value < currentPageNum) {
+      $.ajax({
+        type: 'put',
+        url: '/survey/userInfo',
+        data: {status : 'explain' + currentPageNum},
+        dataType : 'json',
+        success: function(res) {}
+      });
+    }
+    checkExercise.value = Math.max(currentPageNum, checkExercise.value);
     let nextButton = window.parent.document.getElementById('next_button');
     nextButton.style.color = "#393E46";
     nextButton.disabled = false;

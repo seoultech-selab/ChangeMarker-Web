@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const cmwUseFilesTotalDao = require('../src/domain/cmwUseFilesTotal/dao/cmwUseFilesTotalDao')
+const cmwUseFilesTotalDao = require('../src/domain/cmwUseFilesTotal/cmwUseFilesTotalDao');
 
 function mkFileName(num) {
     if (num < 1) {
@@ -61,6 +61,7 @@ router.use('/', function(req, res, next) {
     let numExt = parseInt(fileNum.slice(6));
     // let lhs = fs.readFileSync(baseDir + '/changes/' + fileNum + '/old/' + fileList[numExt],'utf-8');
     // let rhs = fs.readFileSync(baseDir + '/changes/' + fileNum + '/new/' + fileList[numExt],'utf-8');
+
 
     cmwUseFilesTotalDao.selectOldCodeAndNewCodeByChangeId(fileNum).then(e => {
     let oldCodeAndNewCode = e;
