@@ -30,9 +30,45 @@
         <script src="/public/js/changeMarker/changeMarker.js"></script>
 
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-        
+
+        <link rel="stylesheet" href="/public/css/explain.css">
+        <script>
+           window.addEventListener('DOMContentLoaded', function(){
+                exInit();
+           });
+        </script>
     </head>
-    <body onload="exInit();">
+    
+    <!-- <body>
+        <div class="contents">
+            <h3>Delete</h3>
+            <div class="description">
+                <span class="emphasize">Delete</span> operations can be used to indicate deleted parts of the code. <br>
+                If you think a certain code fragment is deleted in the old version, 
+                so it no longer exists in the new version, you can use "Delete" operation to describe such changes.
+            </div>
+            <div class="empty_line"></div>
+            <div class="description">
+                Now let's create an edit script for the following code change by creating a delete operation.
+                <br><br><br>
+            </div>
+        </div>
+     </body> -->
+
+    <body onload="exInit();">  <!-- exInit: exercise.js에 위치함-->
+        <div class="contents">
+            <h3>Delete</h3>
+            <div class="description">
+                <span class="emphasize">Delete</span> operations can be used to indicate deleted parts of the code. <br>
+                If you think a certain code fragment is deleted in the old version, 
+                so it no longer exists in the new version, you can use "Delete" operation to describe such changes.
+            </div>
+            <div class="empty_line"></div>
+            <div class="description">
+                Now let's create an edit script for the following code change by creating a delete operation.
+                <br><br><br>
+            </div>
+        </div>
         <input type="hidden" value="tutorial4" id="current">
         <div class="container">
         <section id="section">

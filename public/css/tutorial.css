@@ -8,11 +8,7 @@ html, body {
     font-family: "Gill Sans", sans-serif;
 }
 
-iframe {
-    border: 0;
-}
-
-.iframe_container {
+.content_container {
     height: calc(100% - 80px);
 }
 
@@ -29,13 +25,14 @@ iframe {
 .explain_window {
     width: 100%;
     height: 100%;
+    overflow: auto;
 }
 
-.exercise_window {
+/* .exercise_window {
     width: 100%;
     height: 100%;
     display: none;
-}
+} */
 
 .page_button_container {
     width: 100%;
