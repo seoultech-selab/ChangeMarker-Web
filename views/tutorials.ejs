@@ -43,7 +43,7 @@
         }
     </script>
     <body onload="init()">
-        <div class="iframe_container">
+        <div class="contents_container">
             <div class="explain_window" id="explain_window">
                 <%-include('./tutorial/explain/'+  page  +'.ejs') %>
             </div>
@@ -58,12 +58,13 @@
         <div class="footer_container">
             <div class="button_container">
                 <input class="move_buttons" type="button" value="Prev" onclick="prev();">
-                <div class="blanks"></div>
-                <div class="page_button_container">
-                    <div class="page_show">
-                    <span id="current_page"><%=page %></span> / <span id="total_page">8</span></div>
-                </div>
-                <div class="blanks"></div>
+                <p class="blanks"></p>
+                     <div class="page_button_container">
+                    <!-- <div class="page_show">  -->
+                        <span id="current_page"><%=page %></span> &nbsp;/&nbsp; <span id="total_page">8</span>
+                        </div>
+                    <!-- </div> -->
+                    <p class="blanks"></p>
                 <input class="move_buttons" id="next_button" type="button" value="Next" onclick="next();">
             </div>
         </div>

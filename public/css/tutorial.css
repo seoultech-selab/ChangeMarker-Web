@@ -1,22 +1,21 @@
 html, body {
-    /* background-color: #f4f4f4; */
     margin: 0;
     border: 0;
     padding: 0;
     font-family: "Gill Sans", sans-serif;
 }
 
-.iframe_container {
+.contents_container {
     height: calc(100% - 80px);
 }
 
 .footer_container {
-    color: #EEEEEE;
-    /* background-color: #F6F6F6; */
     background-color: #393E46;
-    height: 80px;
+    height: 60px;
     width: 100%;
-    align-items: center;
+
+    display: flex;
+    justify-content: center;
 }
 
 .explain_window {
@@ -27,15 +26,16 @@ html, body {
     height: 100%;
 }
 
-.page_button_container {
-    width: 100%;
+.button_container {
+    display: flex;
     justify-content: center;
-    align-items: center;
-    padding-top: 5px;
+    /* display: inline-flex; */
 }
 
-.button_container {
-    justify-content: center;
+.page_button_container {
+    display: flex;
+    align-items: center;
+    color: #EEEEEE;
 }
 
 .blanks {
@@ -44,7 +44,7 @@ html, body {
 .move_buttons {
     width: 80px;
     box-shadow: 0px 4px 2px 0px #DFD3D3;
-    background: #EEEEEE;
+    background-color: #EEEEEE;
     border: 0;
     outline: none;
     display: block;
@@ -107,7 +107,7 @@ section {
     justify-content: center;    
 }
 
-footer {
+ footer {
     overflow-y: auto;
     vertical-align: bottom;
     height: calc(15% - 30px);
@@ -274,4 +274,4 @@ footer table {
     margin: 0;
     border: 0;
     cursor: pointer;
-  }
+  } 
