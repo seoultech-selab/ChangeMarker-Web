@@ -73,11 +73,10 @@ router.get("/tu", async function(req, res, next) {
     if (page == null || page == undefined)
         page = 1;
 
-    console.log(page);
-
     let lhsTemplate = "";
     let rhsTemplate = "";
     let diffNum = 0;
+    let currentFileName = 'tutorial00' + page;
 
     if (page >= 4 && page <= 7) {
         let change_id = 'tutorial00' + (page - 3);
@@ -95,6 +94,7 @@ router.get("/tu", async function(req, res, next) {
         rhsTemplate : rhsTemplate,
         diffNum : diffNum,
         storedScripts : "",
+        currentFileName, currentFileName
     });
 });
 

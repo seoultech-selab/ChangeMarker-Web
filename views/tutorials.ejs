@@ -22,12 +22,9 @@
         <script src="/public/js/changeMarker/highlighter/selectionHighlighter.js"></script>
         <script src="/public/js/changeMarker/changeMarker.js"></script>
 
-        <script src="/public/js/explain_exercise3.js"></script>
-        <script src="/public/js/explain_exercise4.js"></script>
-        <script src="/public/js/explain_exercise5.js"></script>
-        <script src="/public/js/explain_exercise6.js"></script>
-
-        <!-- <script src="/public/js/markerViews.js"></script> -->
+        <script src="/public/js/editScripts.js"></script>
+        <script src="/public/js/explain_exercise.js"></script>
+        <script src="/public/js/surveyAjax.js"></script>
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github.min.css">
 	    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
@@ -38,6 +35,7 @@
     <script>
         function init() {
             initChangeMarker();
+            initExplainExercise();
 
             document.querySelector('#left');
             if (document.querySelector('#left').innerText == "")
@@ -51,7 +49,7 @@
             </div>
             <div class="exercise_window" id="exercise_window">
                 <div class="container">
-                    <input type="hidden" value="tutorial" id="current">
+                    <input type="hidden" value="<%= currentFileName %>" id="current">
                     <%-include('./component/javaSourceCompare.ejs') %>
                     <%-include('./component/table/editScript.ejs') %>
                 </div>

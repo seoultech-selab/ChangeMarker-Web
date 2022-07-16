@@ -49,7 +49,9 @@ function generateDelete(e) {
 }
 
 function generateMove(e) {
+    console.log("generateMove");
     if (isTutorial()) {
+        console.log('isTutorial true');
         GenMoveLeft({
             len : oldDraggedCodeInfo.length,
             startPos : oldDraggedCodeInfo.offset,
