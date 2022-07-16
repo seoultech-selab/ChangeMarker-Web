@@ -1,13 +1,13 @@
-html, body {
+div#explain_window {
     font-family: "Gill Sans", sans-serif;
     font-weight: 90;
     font-size: 22px;
 }
-div {
+div#explain_window div {
     line-height: 30px;
 }
 
-img {
+div#explain_window img {
     width: 100%;
     max-width: 1000px;
     border: 5px solid #F6F6F6;
@@ -17,17 +17,17 @@ img {
     -webkit-border-radius: 7px;
 }
 
-h3 {
+div#explain_window h3 {
     color: #00ADB5;
     text-align: center;
     width: 100%;
 }
 
-.example_img {
+div#explain_window .example_img {
     border: 0px;
 }
 
-.contents {
+div#explain_window .contents {
     text-align: center;
     width: 100%;
     display: flex; 
@@ -35,50 +35,50 @@ h3 {
     flex-direction: column;
 }
 
-.question {
+div#explain_window .question {
     margin-bottom: 0; 
     font-weight: bold;
 }
 
-.description {
+div#explain_window .description {
     text-align: left;
     width: 50%;
 }
 
-.footnote {
+div#explain_window .footnote {
     text-align: left;
     width: 50%;
     font-size: 14pt;
     font-family:  "Gill Sans", sans-serif;
 }
 
-.empty_line {
+div#explain_window .empty_line {
     height: 10px;
     width: 100%;
 }
 
-.image_container {
+div#explain_window .image_container {
     color: #8f8f8f;
     text-align: center;
 }
 
-.emphasize {
+div#explain_window .emphasize {
     color: #1561b7;
     font-weight: bold;
 }
 
-.delete_exam {
+div#explain_window .delete_exam {
     background-color: #ffebe9;
 }
 
-.insert_exam {
+div#explain_window .insert_exam {
     background-color: #e6ffec;
 }
 
-.file_green_exam {
+div#explain_window .file_green_exam {
     background-color: #0dff47;
 }
 
-.file_red_exam {
+div#explain_window .file_red_exam {
     background-color: #fd6a78;
 }

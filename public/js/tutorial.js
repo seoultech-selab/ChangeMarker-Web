@@ -1,3 +1,22 @@
+function prev() {
+    let currentPage = Number(document.getElementById('current_page').innerHTML);
+
+    if (currentPage == 1)
+        return;
+
+    location.href = "/tu?page=" + (currentPage - 1);
+}
+
+function next() {
+    let currentPage = Number(document.getElementById('current_page').innerHTML);
+    let totalPage = Number(document.getElementById('total_page').innerHTML);
+
+    if (currentPage == totalPage)
+        return;
+
+    location.href = "/tu?page=" + (currentPage + 1);
+}
+
 function prevExplain() {
     let currentPage = Number(document.getElementById('current_page').innerHTML);
     let explainWindow = document.getElementById('explain_window');
@@ -146,4 +165,31 @@ function jumpExplain(num) {
         exerciseWindow.style.display = "none";
     }
     document.getElementById('current_page').innerHTML = newPageNum;
+}
+
+let widthRatio=0.5, heightRatio=0.85, range=0.05;
+let isEnable = 0;
+let leftDiffY = new Array();
+let rightDiffY = new Array();
+
+function move_inner(e) {
+    let left = document.getElementById("left");
+    let right = document.getElementById("right")
+    let relativeY = window.innerHeight * (heightRatio - 0.15) * 0.5;
+
+    left.scrollTo(0, leftDiffY[e] - relativeY);
+    right.scrollTo(0, rightDiffY[e] - relativeY);
+}
+
+function storeY() {
+    let diffNum = document.getElementById("diffNum").value;
+    for (let i = 0; i < diffNum; i++) {
+        let leftY = document.getElementById("left").getBoundingClientRect().top;
+        let target = document.getElementById("#l" + i).getBoundingClientRect().top;
+        leftDiffY.push(target - leftY);
+
+        let rightY = document.getElementById("right").getBoundingClientRect().top;
+        target = document.getElementById("#r" + i).getBoundingClientRect().top
+        rightDiffY.push(target - rightY);
+    }
 }

@@ -100,39 +100,8 @@
             </div>
         </header>
         <div class="container">
-        <section id="section">
-            <div id="left">
-                <pre><code class="java" id="inner_left"><%- lhsTemplate %></code></pre>                    
-            </div>
-
-            <div class="d1" id="hr1">
-                <% for (let i = 0; i < diffNum; i++) { %> 
-                    <input type="button" class="move_inner" id="#<%= i %>" value="<%= i %>" onclick="move_inner(this.value)">
-                <% } %> 
-            </div>
-
-            <div id="right">
-                <pre><code class="java" id="inner_right"><%- rhsTemplate %></code></pre>
-            </div>
-        </section>
-
-        <div class="d2" id="hr2">
-            Edit Script
-        </div>
-        
-        <footer id="footer">
-            <table id="edit_scripts">
-                <tr>
-                    <th id="es_type">Type</th>
-                    <th id="es_old">Old Code</th>
-                    <th id="es_old_line">Line#</th>
-                    <th id="es_new">New Code</th>
-                    <th id="es_new_line">Line#</th>
-                    <th id="es_opt">Option</th>
-                </tr>
-                <%- storedScripts %>
-            </table>
-        </footer>
+            <%-include('./component/javaSourceCompare.ejs') %>
+            <%-include('./component/table/editScript.ejs') %>
         </div>
     </body>
 </html>

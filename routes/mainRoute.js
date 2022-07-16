@@ -39,7 +39,7 @@ const Connection = require('mysql/lib/Connection');
 
 let baseDir = __dirname.slice(0, -7);
 
-router.use('/', function(req, res, next) {
+router.post('/', function(req, res, next) {
     let fileList = req.session.fileNames;
     let fileCnt;
 

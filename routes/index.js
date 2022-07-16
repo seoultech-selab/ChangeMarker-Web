@@ -27,9 +27,9 @@ router.use('/src', express.static(path.join(__dirname, '../src')));
 router.use('/public', express.static(path.join(__dirname, '../public')));
 router.use('/views', express.static(path.join(__dirname, '../views')));
 
-router.get('/', tutorial);
+router.use('/', tutorial);
 router.get('/v2', tutorial);
-router.post('/', main);
+router.use('/', main);
 
 const submit = require('./submitRoute');
 const deleteRoute = require('./deleteRoute');
