@@ -5,8 +5,6 @@ async function checkSession() {
         success: function(res) {
             let userInfo = res.userInfo;
 
-            console.log(userInfo);
-
             if (userInfo == undefined || userInfo == null)
                 return;
             

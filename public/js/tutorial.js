@@ -193,3 +193,13 @@ function storeY() {
         rightDiffY.push(target - rightY);
     }
 }
+
+function checkStart() {
+    let workerId = document.getElementById('workerId').value;
+    if (workerId.length == 0) {
+        swal("Please check the worker ID!");
+    }
+    else {
+        surveySubmit();
+    }
+}

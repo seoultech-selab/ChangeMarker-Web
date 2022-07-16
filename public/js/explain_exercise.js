@@ -164,7 +164,6 @@ function GenInsert(selectResult) {
   }
 
   function GenMoveLeft(selectResult, storedSelectionRight) {
-    console.log('GenMoveLeft');
     if (document.getElementById("current").value != 'tutorial006') {
         swal("This example does not allow Move script."); return;
       }
