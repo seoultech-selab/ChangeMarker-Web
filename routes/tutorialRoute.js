@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const uuid = require('uuid');
 const cmwUseFilesTotalDao = require('../src/domain/cmwUseFilesTotal/cmwUseFilesTotalDao');
+const userService = require('../src/domain/user/userService');
 const myers = require('myers-diff');
 
 router.get('/', function(req, res, next) {
@@ -88,13 +89,27 @@ router.get("/tu", async function(req, res, next) {
         [lhsTemplate, rhsTemplate, diffNum] = await highlightDiffs(lhs, rhs);
     }
 
+    let checkExercise = 1;
+    if (req.session != null && req.session.workerId != null) {
+        let user = await userService.getByWorkerId(req.session.workerId);
+        if (user != null) {
+            let status = user.status;
+            if (status == 'started' || status == 'finished')
+                checkExercise = 8;
+            else
+                checkExercise = Number(status[status.length - 1]);
+        }
+    }
+
     res.render('../views/tutorials.ejs', { 
         page : page,
         lhsTemplate : lhsTemplate,
         rhsTemplate : rhsTemplate,
         diffNum : diffNum,
         storedScripts : "",
-        currentFileName, currentFileName
+        currentFileName, currentFileName,
+        code : req.session.code,
+        checkExercise : checkExercise
     });
 });
 

@@ -36,6 +36,7 @@
         function init() {
             initChangeMarker();
             initExplainExercise();
+            initTutorial();
 
             document.querySelector('#left');
             if (document.querySelector('#left').innerText == "")
@@ -68,6 +69,6 @@
                 <input class="move_buttons" id="next_button" type="button" value="Next" onclick="next();">
             </div>
         </div>
-        <input id="checkExercise" type="hidden" value="2">
+        <input id="checkExercise" type="hidden" value="<%= checkExercise %>">
     </body>
 </html>

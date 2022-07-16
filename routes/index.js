@@ -37,18 +37,22 @@ const check = require('./checkRoute');
 const tutorialCheck = require('./tutorialCheckRoute');
 const surveySubmit = require('./surveySubmitRoute');
 const test = require('./test');
+const userRoute = require('./userRoute');
 
 router.use('/submit', submit);
 router.delete('/delete', deleteRoute);
 router.use('/check', check);
 router.use('/tutorialCheck', tutorialCheck);
 router.use('/survey', surveySubmit);
+router.use('/user', userRoute);
 
 const userService = require("../src/domain/user/userService");
+const { request } = require('http');
 
 router.use('/finish', async function(req, res, next) {
 
-    await userService.putStatusByUserCode('finished', req.session.code);
+    let user = await userService.getByWorkerId(req.session.workerId);
+    await userService.putStatusByUserCode('finished', user.code);
 
     if (req.body.user_status != 'finished') {
         res.render('../views/finish.ejs', {
@@ -57,10 +61,9 @@ router.use('/finish', async function(req, res, next) {
 
         return;
     } else {
-        let userCode = req.session.code;
         // req.session.destroy();
         res.render('../views/finish.ejs', {
-            code : userCode
+            code : user.code
         });
     }
     

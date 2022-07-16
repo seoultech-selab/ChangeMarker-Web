@@ -17,79 +17,10 @@ function next() {
     location.href = "/tu?page=" + (currentPage + 1);
 }
 
-function prevExplain() {
-    let currentPage = Number(document.getElementById('current_page').innerHTML);
-    let explainWindow = document.getElementById('explain_window');
-    let exerciseWindow = document.getElementById('exercise_window');
-    let checkExercise = Number(document.getElementById('checkExercise').value);
-    
-    if (checkExercise + 1 >= currentPage) {
-        let nextButton = document.getElementById('next_button');
-        nextButton.style.color = "#393E46";
-        nextButton.disabled = false;
-    }
-
-    if (currentPage == 2) {
-        let prevButton = document.getElementById('prev_button');
-        prevButton.style.color = "#d7d7d8";
-        prevButton.disabled = true;
-    }
-    explainWindow.src = "/views/explain" + (currentPage - 1) + ".html";
-    if ((currentPage - 1) >= 4 && (currentPage - 1) <= 7) {
-        explainWindow.style.height = "39%";
-        exerciseWindow.style.height = "60%";
-        exerciseWindow.style.display = "block";
-        exerciseWindow.src = "/views/explain_exercise" + (currentPage - 1) + ".html";
-    }
-    else {
-        explainWindow.style.height = "100%";
-        exerciseWindow.style.display = "none";
-    }
-    document.getElementById('current_page').innerHTML = currentPage - 1;
-}
-
-function nextExplain() {
-    let checkExercise = Number(document.getElementById('checkExercise').value);
-    let currentPage = Number(document.getElementById('current_page').innerHTML);
-
-    let prevButton = document.getElementById('prev_button');
-    prevButton.style.color = "#393E46";
-    prevButton.disabled = false;
-    
-    if (checkExercise <= currentPage) {
-        let nextButton = document.getElementById('next_button');
-        nextButton.style.color = "#d7d7d8";
-        nextButton.disabled = true;
-    }
-
-    let totalPage = Number(document.getElementById('total_page').innerHTML);
-    let explainWindow = document.getElementById('explain_window');
-    let exerciseWindow = document.getElementById('exercise_window');
-    let newPageNum = currentPage + 1;
-
-    if (currentPage == totalPage) {
-        swal("This is the last page.");
-        return;
-    }
-    explainWindow.src = "/views/explain" + newPageNum + ".html";
-    if (newPageNum >= 4 && newPageNum <= 7) {
-        explainWindow.style.height = "39%";
-        exerciseWindow.style.height = "60%";
-        exerciseWindow.style.display = "block";
-        exerciseWindow.src = "/views/explain_exercise" + newPageNum + ".html";
-    }
-    else {
-        let totalPage = Number(document.getElementById('total_page').innerHTML);
-        explainWindow.style.height = "100%";
-        exerciseWindow.style.display = "none";
-    }
-    document.getElementById('current_page').innerHTML = newPageNum;
-}
-
 function startProject() {
     let form = document.createElement('form');
     document.body.appendChild(form);
-    form.action = window.location.href;
+    form.action = '/';
     form.method = "post";
 
     let input = document.createElement('input');
@@ -110,61 +41,15 @@ function startProject() {
 
 function jumpFinish() {
     let form = document.createElement('form');
-    let input = document.createElement('input');
 
-    input.type = 'hidden';
-    input.name = 'user_status';
-    input.value = 'finished';
-
-    form.appendChild(input);
-
-    document.body.appendChild(form);
     form.method = 'post';
-    let href = window.location.href;
-    if (href.endsWith('/'))
-        form.action = href + 'finish';
-    else
-        form.action = href + '/finish';
-
+    form.action = '/finish';
     form.submit();
+
 }
 
 function jumpExplain(num) {
-    let checkExercise = Number(document.getElementById('checkExercise').value);
-    let currentPage = num;
-
-    let prevButton = document.getElementById('prev_button');
-    prevButton.style.color = "#393E46";
-    prevButton.disabled = false;
-    
-    if (checkExercise <= currentPage) {
-        let nextButton = document.getElementById('next_button');
-        nextButton.style.color = "#d7d7d8";
-        nextButton.disabled = true;
-    }
-
-    let totalPage = Number(document.getElementById('total_page').innerHTML);
-    let explainWindow = document.getElementById('explain_window');
-    let exerciseWindow = document.getElementById('exercise_window');
-    let newPageNum = currentPage + 1;
-
-    if (currentPage == totalPage) {
-        swal("This is the last page.");
-        return;
-    }
-    explainWindow.src = "/views/explain" + newPageNum + ".html";
-    if (newPageNum >= 4 && newPageNum <= 7) {
-        explainWindow.style.height = "39%";
-        exerciseWindow.style.height = "60%";
-        exerciseWindow.style.display = "block";
-        exerciseWindow.src = "/views/explain_exercise" + newPageNum + ".html";
-    }
-    else {
-        let totalPage = Number(document.getElementById('total_page').innerHTML);
-        explainWindow.style.height = "100%";
-        exerciseWindow.style.display = "none";
-    }
-    document.getElementById('current_page').innerHTML = newPageNum;
+    location.href = '/tu?page=' + num;
 }
 
 let widthRatio=0.5, heightRatio=0.85, range=0.05;
@@ -201,5 +86,45 @@ function checkStart() {
     }
     else {
         surveySubmit();
+    }
+}
+
+function initTutorial() {
+    let checkExercise = document.querySelector('#checkExercise')
+    let currentPage = Number(document.getElementById('current_page').innerHTML);
+
+    if (currentPage > checkExercise)
+        document.querySelector('#next_button').disabled = true;
+
+    if (currentPage == 2) {
+        $.ajax({
+            type: 'get',
+            url: '/user/surveyInfo',
+            success: function(res) {
+                initSurveyForm(res);
+            }
+        });
+    }
+}
+
+function initSurveyForm(survey) {
+    document.getElementById("workerId").value = survey.workerId;
+
+    let formJob = document.getElementById("form_job");
+    let jobInputs = formJob.getElementsByTagName("input");
+    let formJava = document.getElementById("form_java");
+    let javaInputs = formJava.getElementsByTagName("input");
+
+    for (let i = 0; i < jobInputs.length; i++) {
+        if (jobInputs[i].value == survey.job) {
+            jobInputs[i].checked = true;
+            break;
+        }
+    }
+    for (let i = 0; i < javaInputs.length; i++) {
+        if (javaInputs[i].value == survey.java) {
+            javaInputs[i].checked = true;
+            break;
+        }
     }
 }
