@@ -72,20 +72,7 @@ function exGenDelete(selectResult) {
     newCell3.innerText = selectResult.lineNum;
     newCell6.appendChild(newATag);
 
-    let currentPageNum = Number(window.parent.document.getElementById('current_page').innerText);
-    if (checkExercise.value < currentPageNum) {
-      $.ajax({
-        type: 'put',
-        url: '/survey/userInfo',
-        data: {status : 'explain' + currentPageNum},
-        dataType : 'json',
-        success: function(res) {}
-      });
-    }
-    checkExercise.value = Math.max(currentPageNum, checkExercise.value);
-    let nextButton = window.parent.document.getElementById('next_button');
-    nextButton.style.color = "#393E46";
-    nextButton.disabled = false;
+    updateCheckExercise();
 }
 
 function GenInsert(selectResult) {
@@ -146,21 +133,7 @@ function GenInsert(selectResult) {
     newCell5.innerText = selectResult.lineNum;
     newCell6.appendChild(newATag);
   
-    let checkExercise = window.parent.document.getElementById('checkExercise');
-    let currentPageNum = Number(window.parent.document.getElementById('current_page').innerText);
-    if (checkExercise.value < currentPageNum) {
-      $.ajax({
-        type: 'put',
-        url: '/survey/userInfo',
-        data: {status : 'explain' + currentPageNum},
-        dataType : 'json',
-        success: function(res) {}
-      });
-    }
-    checkExercise.value = Math.max(currentPageNum, checkExercise.value);
-    let nextButton = window.parent.document.getElementById('next_button');
-    nextButton.style.color = "#393E46";
-    nextButton.disabled = false;
+    updateCheckExercise();
   }
 
   function GenMoveLeft(selectResult, storedSelectionRight) {
@@ -257,21 +230,7 @@ function GenInsert(selectResult) {
     newCell5.innerText = storedSelectionRight.lineNum;
     newCell6.appendChild(newATag);
   
-    let checkExercise = window.parent.document.getElementById('checkExercise');
-    let currentPageNum = Number(window.parent.document.getElementById('current_page').innerText);
-    if (checkExercise.value < currentPageNum) {
-      $.ajax({
-        type: 'put',
-        url: '/survey/userInfo',
-        data: {status : 'explain' + currentPageNum},
-        dataType : 'json',
-        success: function(res) {}
-      });
-    }
-    checkExercise.value = Math.max(currentPageNum, checkExercise.value);
-    let nextButton = window.parent.document.getElementById('next_button');
-    nextButton.style.color = "#393E46";
-    nextButton.disabled = false;
+    updateCheckExercise();
   }
 
   function GenUpdateLeft(selectResult, storedSelectionRight) {
@@ -372,13 +331,17 @@ function GenInsert(selectResult) {
     newCell5.innerText = storedSelectionRight.lineNum;
     newCell6.appendChild(newATag);
   
-    let checkExercise = window.parent.document.getElementById('checkExercise');
-    let currentPageNum = Number(window.parent.document.getElementById('current_page').innerText);
+    updateCheckExercise();
+  }
+
+  function updateCheckExercise() {
+    let checkExercise = document.getElementById('checkExercise');
+    let currentPageNum = Number(document.getElementById('current_page').innerText) + 1;
     if (checkExercise.value < currentPageNum) {
       $.ajax({
         type: 'put',
         url: '/survey/userInfo',
-        data: {status : 'explain' + currentPageNum},
+        data: {status : 'tutorial00' + currentPageNum},
         dataType : 'json',
         success: function(res) {}
       });

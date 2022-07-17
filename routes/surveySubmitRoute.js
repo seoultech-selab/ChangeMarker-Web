@@ -14,7 +14,11 @@ router.post('/userInfo/workerId', async function(req, res, next) {
 });
 
 router.put('/userInfo', async function(req, res, next) {
-    await userService.putStatusByUserCode(req.body.status, req.session.code);
+    let value = await userService.getStatusByWorkerid(req.session.workerId);
+    if (value.status == 'finished') {
+        res.status(200).send(); return;
+    }
+    await userService.putStatusByWorkerId(req.body.status, req.session.workerId);
     res.status(200).send();
 });
 
@@ -35,7 +39,7 @@ router.post('/', async function(req, res, next) {
     }
     else {
         await userService.postUser(workerId, job, javaExperience);
-        ret.status = 'tutorial4';
+        ret.status = 'tutorial004';
         ret.revisit = false;
     }
 

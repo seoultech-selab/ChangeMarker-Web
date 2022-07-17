@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const cmwUseFilesTotalDao = require('../src/domain/cmwUseFilesTotal/cmwUseFilesTotalDao');
+const userService = require('../src/domain/user/userService');
 
 function mkFileName(num) {
     if (num < 1) {
@@ -33,14 +34,10 @@ function convertToHtmlText(s) {
     return s;
 }
 
-const fs = require('fs');
 const myers = require('myers-diff');
-const Connection = require('mysql/lib/Connection');
 
-let baseDir = __dirname.slice(0, -7);
 
-router.post('/', function(req, res, next) {
-    let fileList = req.session.fileNames;
+router.post('/', async function(req, res, next) {
     let fileCnt;
 
     if (req.body.fileCnt != undefined) {
@@ -55,15 +52,21 @@ router.post('/', function(req, res, next) {
     if (req.session.completed == undefined) {
         req.session.completed = [0,0,0,0,0,];
     }
-    
-    let fileNum = req.session.codeFiles[fileCnt];
 
-    let numExt = parseInt(fileNum.slice(6));
-    // let lhs = fs.readFileSync(baseDir + '/changes/' + fileNum + '/old/' + fileList[numExt],'utf-8');
-    // let rhs = fs.readFileSync(baseDir + '/changes/' + fileNum + '/new/' + fileList[numExt],'utf-8');
+    let user = await userService.getByWorkerId(req.session.workerId);
+
+    let changeId;
+    switch (fileCnt) {
+        case 0: changeId = user.changeId1; break;
+        case 1: changeId = user.changeId2; break;
+        case 2: changeId = user.changeId3; break;
+        case 3: changeId = user.changeId4; break;
+        case 4: changeId = user.changeId5; break;
+        default: changeId = user.changeId1; break;
+    }
 
 
-    cmwUseFilesTotalDao.selectOldCodeAndNewCodeByChangeId(fileNum).then(e => {
+    cmwUseFilesTotalDao.selectOldCodeAndNewCodeByChangeId(changeId).then(e => {
     let oldCodeAndNewCode = e;
 
     let lhs = oldCodeAndNewCode[0].old_code;
@@ -202,17 +205,15 @@ router.post('/', function(req, res, next) {
     
     let editScripts = new Object;
     editScripts.data = editScriptArray;
-
-    let code = req.session.code;
     
     let mysql = require('mysql');
     let config = require('../db/db_info');
     let pool = mysql.createPool(config);
 
     let query = "select `type`,`old_code`,`line_number_old`,`length_old`,`new_code`,`line_number_new`,`length_new` from scripts_web where `user_code`='";
-    query += code;
+    query += user.userCode;
     query += "' and `change_id`='";
-    query += fileNum;
+    query += changeId;
     query += "';";
 
     pool.getConnection(function(err, conn) {
@@ -251,13 +252,13 @@ router.post('/', function(req, res, next) {
                 }
             
                 res.render('../views/marker.ejs', {
-                    currentFileName : fileNum,
+                    currentFileName : changeId,
                     mkFileName : mkFileName,
                     lhsTemplate : lhsTemplate,
                     rhsTemplate : rhsTemplate,
                     editScripts : editScripts,
                     diffNum : diffNum,
-                    code : code,
+                    code : user.userCode,
                     fileCnt : fileCnt,
                     storedScripts : storedScripts,
                     completed : req.session.completed

@@ -34,6 +34,10 @@ class UserService {
         return userDao.updateStatusByUserCode(status, userCode);
     }
 
+    putStatusByWorkerId = async (status, workerId) => {
+        return userDao.updateStatusByWorkerId(status, workerId);
+    }
+
     getStatusByWorkerid = async (workerId) => {
         let rowData = await userDao.findStatusByWorkerId(workerId);
 
@@ -55,7 +59,7 @@ class UserService {
         let value = new Object();
 
         value.userCode = rowData[0].user_code;
-        value.workerId = rowData[0].workerId;
+        value.workerId = rowData[0].worker_id;
         value.job = rowData[0].job;
         value.javaExperience = rowData[0].java_experience;
         value.changeId1 = rowData[0].change_id1;

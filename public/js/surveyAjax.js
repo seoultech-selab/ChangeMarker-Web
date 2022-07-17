@@ -113,7 +113,7 @@ function linkSkipped(status) {
             startProject();
     else if (status == "finished")
             jumpFinish();
-    else if (status.startsWith('explain')) {
+    else if (status.startsWith('tutorial')) {
             jumpExplain(Number(status.slice(-1)));
     }
 }

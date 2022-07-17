@@ -3,8 +3,6 @@ const router = express.Router();
 const fs = require('fs');
 const myers = require('myers-diff');
 
-
-
 router.use('/', function(req, res, next) {
     let data = JSON.parse(req.body.data);
 

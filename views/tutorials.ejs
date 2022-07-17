@@ -37,10 +37,6 @@
             initChangeMarker();
             initExplainExercise();
             initTutorial();
-
-            document.querySelector('#left');
-            if (document.querySelector('#left').innerText == "")
-                document.querySelector('#exercise_window').style.display = "none";
         }
     </script>
     <body onload="init()">
@@ -58,7 +54,7 @@
         </div>
         <div class="footer_container">
             <div class="button_container">
-                <input class="move_buttons" type="button" value="Prev" onclick="prev();">
+                <input class="move_buttons" id="prev_button" type="button" value="Prev" onclick="prev();">
                 <p class="blanks"></p>
                      <div class="page_button_container">
                     <!-- <div class="page_show">  -->

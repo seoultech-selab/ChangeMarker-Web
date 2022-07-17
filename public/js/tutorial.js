@@ -1,20 +1,20 @@
-function prev() {
+async function prev() {
     let currentPage = Number(document.getElementById('current_page').innerHTML);
 
     if (currentPage == 1)
         return;
 
-    location.href = "/tu?page=" + (currentPage - 1);
+    location.href = "/?page=" + (currentPage - 1);
 }
 
-function next() {
+async function next() {
     let currentPage = Number(document.getElementById('current_page').innerHTML);
     let totalPage = Number(document.getElementById('total_page').innerHTML);
 
     if (currentPage == totalPage)
         return;
 
-    location.href = "/tu?page=" + (currentPage + 1);
+    location.href = "/?page=" + (currentPage + 1);
 }
 
 function startProject() {
@@ -40,16 +40,11 @@ function startProject() {
 }
 
 function jumpFinish() {
-    let form = document.createElement('form');
-
-    form.method = 'post';
-    form.action = '/finish';
-    form.submit();
-
+    location.href = '/finish';
 }
 
 function jumpExplain(num) {
-    location.href = '/tu?page=' + num;
+    location.href = '/?page='+num;
 }
 
 let widthRatio=0.5, heightRatio=0.85, range=0.05;
@@ -79,7 +74,7 @@ function storeY() {
     }
 }
 
-function checkStart() {
+function checkSurvey() {
     let workerId = document.getElementById('workerId').value;
     if (workerId.length == 0) {
         swal("Please check the worker ID!");
@@ -90,11 +85,21 @@ function checkStart() {
 }
 
 function initTutorial() {
-    let checkExercise = document.querySelector('#checkExercise')
+    let checkExercise = Number(document.querySelector('#checkExercise').value);
     let currentPage = Number(document.getElementById('current_page').innerHTML);
 
-    if (currentPage > checkExercise)
+    if (currentPage >= checkExercise) {
         document.querySelector('#next_button').disabled = true;
+    }
+
+    if (currentPage == 1) {
+        document.querySelector('#prev_button').disabled = true;
+    }
+
+    if (currentPage == 8) {
+        document.querySelector('#next_button').disabled = true;
+    }
+
 
     if (currentPage == 2) {
         $.ajax({
@@ -105,6 +110,10 @@ function initTutorial() {
             }
         });
     }
+
+    document.querySelector('#left');
+            if (document.querySelector('#left').innerText == "")
+                document.querySelector('#exercise_window').style.display = "none";
 }
 
 function initSurveyForm(survey) {

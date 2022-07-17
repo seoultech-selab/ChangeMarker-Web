@@ -4,6 +4,7 @@ const sqls = {
     findByWorkerId : "SELECT * FROM `scd_benchmark`.`cmw_participants` WHERE `worker_id` = ?",
     updateByUserCode : "UPDATE `scd_benchmark`.`cmw_participants` SET `job` = ?, `java_experience` = ? WHERE (`user_code` = ?)",
     updateStatusByUserCode : "UPDATE `scd_benchmark`.`cmw_participants` SET `status` = ? WHERE (`user_code` = ?)",
+    updateStatusByWorkerId : "UPDATE `scd_benchmark`.`cmw_participants` SET `status` = ? WHERE (`worker_id` = ?)",
     findStatusByWorkerId : "SELECT `status` FROM `scd_benchmark`.`cmw_participants` WHERE `worker_id` = ?",
     save : "INSERT INTO `scd_benchmark`.`cmw_participants` (`user_code`, `worker_id`, `job`, `java_experience`, `change_id1`, `change_id2`, `change_id3`, `change_id4`, `change_id5`, `status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
     findAllChangeIds : "SELECT `change_id1`, `change_id2`, `change_id3`, `change_id4`, `change_id5` FROM `scd_benchmark`.`cmw_participants`",
@@ -21,6 +22,10 @@ class UserDao {
 
     updateStatusByUserCode = (status, userCode) => {
         return dao.sqlHandler(sqls.updateStatusByUserCode, [status, userCode]);
+    }
+
+    updateStatusByWorkerId = (status, workerId) => {
+        return dao.sqlHandler(sqls.updateStatusByWorkerId, [status, workerId]);
     }
 
     findStatusByWorkerId = (workerId) => {
