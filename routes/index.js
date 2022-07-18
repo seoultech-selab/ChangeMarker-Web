@@ -46,7 +46,7 @@ router.use('/check', check);
 router.use('/tutorialCheck', tutorialCheck);
 router.use('/survey', surveySubmit);
 router.use('/user', userRoute);
-router.use('/finish', finishRoute);
+// router.use('/finish', finishRoute);
 
 router.use('/finish', function(req, res, next) {
     res.render('../views/finish.ejs', {
@@ -56,6 +56,6 @@ router.use('/finish', function(req, res, next) {
 
 const { request } = require('http');
 
-router.use('/test', test);
+// router.use('/test', test);
 
 module.exports = router;
