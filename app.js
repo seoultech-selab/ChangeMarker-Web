@@ -1,34 +1,18 @@
 const express= require('express');
 const http = require('http');
+const https = require('https')
 const app = express();
 
-// const fs = require('fs');
-// const options = {
-//     keys : fs.readFileSync('/ssl/key.pem'), // 개인키
-//     cert : fs.readFileSync('/ssl/crt.pem'), // 서버인증서
-//     ca : fs.readFileSync('/ssl/chain.pem'), // 루트체인
-// };
-
-// https.createServer(options, (req, res) => {
-//     res.writeHead(200);
-//     res.end('hello SecureSign Port:80\n');
-// }).listen(80);
-
-// https.createServer(options, (req, res) => {
-//     res.writeHead(200);
-//     res.end('hello SecureSign Port:443\n');
-// }).listen(443);
-
-const hostname = '0.0.0.0';
-const port = 3000;
-
-const server = http.createServer(app);
-
-server.listen(port, hostname, () => {
-    // console.log(`Server running at http://${hostname}:${port}`);
-    console.log("Server is running!");
-});
+const fs = require('fs');
+const options = {
+    key : fs.readFileSync('/ssl/private.key'), // 개인키
+    cert : fs.readFileSync('/ssl/certificate.crt'), // 서버인증서
+    ca : fs.readFileSync('/ssl/ca_bundle.crt'), // 루트체인
+};
 
 const indexRouter = require('./routes/index');
 
 app.use('/', indexRouter);
+
+http.createServer(app).listen(3000);
+https.createServer(options, app).listen(3001);
