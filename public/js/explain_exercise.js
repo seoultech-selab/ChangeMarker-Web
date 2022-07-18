@@ -2,6 +2,11 @@ let hintCnt = 0;
 
 let genControllerType = new Array();
 
+function isEditSriptExist() {
+    let values = document.querySelectorAll('table#edit_scripts tr');
+    return values.length >= 2;
+}
+
 function initExplainExercise() {
     var value = document.getElementById("current").value;
 
@@ -50,6 +55,10 @@ function exGenDelete(selectResult) {
     }
     else {
       swal("Correct!! The next button is activated.");
+    }
+
+    if (isEditSriptExist()) {
+      return;
     }
 
     let table = document.getElementById("edit_scripts");
@@ -110,6 +119,10 @@ function GenInsert(selectResult) {
     }
     else {
       swal("Correct!! The next button is activated.");
+    }
+
+    if (isEditSriptExist()) {
+      return;
     }
   
     let table = document.getElementById("edit_scripts");
@@ -207,6 +220,10 @@ function GenInsert(selectResult) {
     else {
       swal("Correct!! The next button is activated.");
     }
+
+    if (isEditSriptExist()) {
+      return;
+    }
   
     let table = document.getElementById("edit_scripts");
     let newRow = table.insertRow();
@@ -303,6 +320,10 @@ function GenInsert(selectResult) {
     }
     else {
       swal("Correct!! The next button is activated.");
+    }
+
+    if (isEditSriptExist()) {
+      return;
     }
   
     let table = document.getElementById("edit_scripts");

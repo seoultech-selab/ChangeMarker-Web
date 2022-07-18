@@ -470,6 +470,10 @@ async function deleteRow(element, e) {
 
     let lens = target.id.split('/');
 
+    if (document.getElementById("current").value.includes('tutorial')) {
+      table.deleteRow(rowNum); return;
+    }
+
     let scriptJSON = new Object();
     scriptJSON.user_code = document.getElementById("userCode").value;
     scriptJSON.type = tds[0].innerText;
