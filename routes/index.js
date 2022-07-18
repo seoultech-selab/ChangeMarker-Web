@@ -48,6 +48,12 @@ router.use('/survey', surveySubmit);
 router.use('/user', userRoute);
 router.use('/finish', finishRoute);
 
+router.use('/finish', function(req, res, next) {
+    res.render('../views/finish.ejs', {
+        code : "Thank you for participating in the test."
+    });
+});
+
 const { request } = require('http');
 
 router.use('/test', test);

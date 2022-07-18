@@ -23,28 +23,32 @@ router.use(
 
 router.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+router.use('/src', express.static(path.join(__dirname, '../src')));
 router.use('/public', express.static(path.join(__dirname, '../public')));
 router.use('/views', express.static(path.join(__dirname, '../views')));
 
-router.get('/', tutorial);
+router.use('/', tutorial);
 router.get('/v2', tutorial);
-router.post('/', main);
+router.use('/', main);
 
 const submit = require('./submitRoute');
 const deleteRoute = require('./deleteRoute');
 const check = require('./checkRoute');
 const tutorialCheck = require('./tutorialCheckRoute');
 const surveySubmit = require('./surveySubmitRoute');
+const userRoute = require('./userRoute');
 
 router.use('/submit', submit);
 router.delete('/delete', deleteRoute);
 router.use('/check', check);
 router.use('/tutorialCheck', tutorialCheck);
 router.use('/survey', surveySubmit);
+router.use('/user', userRoute);
+
+const { request } = require('http');
+
 
 router.use('/finish', function(req, res, next) {
-    let userCode = req.session.code;
-    // req.session.destroy();
     res.render('../views/finish.ejs', {
         code : "Thank you for participating in the test."
     });
