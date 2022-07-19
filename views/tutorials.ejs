@@ -47,6 +47,7 @@
             <div class="exercise_window" id="exercise_window">
                 <div class="container">
                     <input type="hidden" value="<%= currentFileName %>" id="current">
+                    <input id="diffNum" type="hidden" value="<%= diffNum %>">
                     <%-include('./component/javaSourceCompare.ejs') %>
                     <%-include('./component/table/editScript.ejs') %>
                 </div>

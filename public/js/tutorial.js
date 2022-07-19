@@ -55,7 +55,7 @@ let rightDiffY = new Array();
 function move_inner(e) {
     let left = document.getElementById("left");
     let right = document.getElementById("right")
-    let relativeY = window.innerHeight * (heightRatio - 0.15) * 0.5;
+    let relativeY = document.querySelector("section#section").clientHeight * (heightRatio - 0.15) * 0.5;
 
     left.scrollTo(0, leftDiffY[e] - relativeY);
     right.scrollTo(0, rightDiffY[e] - relativeY);
@@ -99,6 +99,8 @@ function initTutorial() {
     if (currentPage == 8) {
         document.querySelector('#next_button').disabled = true;
     }
+
+    storeY();
 
 
     if (currentPage == 2) {
