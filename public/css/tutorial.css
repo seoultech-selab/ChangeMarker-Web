@@ -3,13 +3,19 @@ html, body {
     border: 0;
     padding: 0;
     font-family: "Gill Sans", sans-serif;
+
+    height: 100%;
 }
 
 .contents_container {
-    height: calc(100% - 80px);
+    height: auto;
+    min-height: 100%;
 }
 
 .footer_container {
+    position: relative;
+    transform: translateY(-100%);
+
     background-color: #393E46;
     height: 60px;
     width: 100%;
