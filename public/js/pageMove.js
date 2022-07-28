@@ -58,5 +58,10 @@ async function movePage(val) {
 }
 
 async function moveTutorial() {
-    location.href = '/';
+    if (localStorage.getItem("page") == "mturk-page")  {
+        location.href = '/';
+    }
+    else if (localStorage.getItem("page") == "marker-page"){
+        location.href = 'marker/';
+    }
 }

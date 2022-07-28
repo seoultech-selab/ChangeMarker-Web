@@ -42,6 +42,11 @@ function startProject() {
     form.action = '/';
     form.method = "post";
 
+    /* pageMove.js > moveTutorial() 과 연관됨 */
+    let pageCheck = document.querySelector("#page").dataset.value;
+    //console.log(pageCheck);
+    localStorage.setItem("page", pageCheck);
+
     let input = document.createElement('input');
     form.appendChild(input);
     input.name = "fileNum";
