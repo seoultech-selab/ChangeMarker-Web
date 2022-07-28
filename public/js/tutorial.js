@@ -17,6 +17,25 @@ async function next() {
     location.href = "/?page=" + (currentPage + 1);
 }
 
+async function prev_email() {
+    let currentPage = Number(document.getElementById('current_page').innerHTML);
+
+    if (currentPage == 1)
+        return;
+
+    location.href = "/marker/?page=" + (currentPage - 1);
+}
+
+async function next_email() {
+    let currentPage = Number(document.getElementById('current_page').innerHTML);
+    let totalPage = Number(document.getElementById('total_page').innerHTML);
+
+    if (currentPage == totalPage)
+        return;
+
+    location.href = "/marker/?page=" + (currentPage + 1);
+}
+
 function startProject() {
     let form = document.createElement('form');
     document.body.appendChild(form);
@@ -79,6 +98,22 @@ function checkSurvey() {
     if (workerId.length == 0) {
         swal("Please check the worker ID!");
     }
+    else {
+        surveySubmit();
+    }
+}
+
+function checkSurveyEmail() {
+    let workerId = document.getElementById('workerId').value;
+    let regexEmail = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
+
+    if (workerId.length == 0) {
+        swal("Please enter your e-mail address.");
+    }
+
+    if (workerId.match(regexEmail) == null) {
+        swal("Please check the e-mail address!");
+    } 
     else {
         surveySubmit();
     }
