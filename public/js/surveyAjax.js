@@ -104,6 +104,9 @@ function surveySubmit() {
                     }
                 });
             }
+            else {
+                linkSkipped("tutorial3");
+            }
         }
     });
 }
