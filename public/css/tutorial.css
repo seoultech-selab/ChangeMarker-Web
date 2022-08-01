@@ -78,8 +78,18 @@ html, body {
     color: #EDEDED;
 }
 
+.button_layout {
+    height: 200px;
+    display: table;
+}
+
 .start_button {
     font-weight: bold;
+    text-align: center;
+    margin: auto;
+    display: table-cell;
+    vertical-align: middle;
+
 }
 .start_button:hover {
     cursor: pointer;
