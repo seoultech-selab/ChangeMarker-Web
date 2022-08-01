@@ -1,10 +1,18 @@
+function getPathname() {
+    let pathname = location.pathname;
+    if (pathname.endsWith("/")) {
+        pathname = pathname.slice(0, -1);
+    }
+    return pathname;
+}
+
 async function prev() {
     let currentPage = Number(document.getElementById('current_page').innerHTML);
 
     if (currentPage == 1)
         return;
 
-    location.href = "/?page=" + (currentPage - 1);
+    location.href = getPathname() + "/?page=" + (currentPage - 1);
 }
 
 async function next() {
@@ -14,7 +22,7 @@ async function next() {
     if (currentPage == totalPage)
         return;
 
-    location.href = "/?page=" + (currentPage + 1);
+    location.href = getPathname() + "/?page=" + (currentPage + 1);
 }
 
 async function prev_email() {
@@ -39,7 +47,7 @@ async function next_email() {
 function startProject() {
     let form = document.createElement('form');
     document.body.appendChild(form);
-    form.action = '/';
+    form.action = getPathname() + '/';
     form.method = "post";
 
     /* pageMove.js > moveTutorial() 과 연관됨 */
@@ -64,11 +72,11 @@ function startProject() {
 }
 
 function jumpFinish() {
-    location.href = '/finish';
+    location.href = getPathname() + '/finish';
 }
 
 function jumpExplain(num) {
-    location.href = '/?page='+num;
+    location.href = getPathname() + '/?page='+num;
 }
 
 let widthRatio=0.5, heightRatio=0.85, range=0.05;

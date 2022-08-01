@@ -14,7 +14,7 @@ const indexRouter = require('./routes/index');
 const emailRouter = require('./routes/indexEmail');
 
 app.use('/', indexRouter);
-// app.use('/mturk', indexRouter);
+app.use('/mturk', indexRouter);
 app.use('/marker', emailRouter);
 
 http.createServer(app).listen(3000);

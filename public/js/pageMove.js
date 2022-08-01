@@ -57,11 +57,25 @@ async function movePage(val) {
     form.submit();
 }
 
+function getPathname() {
+    let pathname = location.pathname;
+    if (pathname.endsWith("/")) {
+        pathname = pathname.slice(0, -1);
+    }
+    return pathname;
+}
+
 async function moveTutorial() {
-    if (localStorage.getItem("page") == "mturk-page")  {
-        location.href = '/';
-    }
-    else if (localStorage.getItem("page") == "marker-page"){
-        location.href = 'marker/';
-    }
+    let pathname = getPathname();
+    let names = pathname.split("/");
+
+    console.log(pathname);
+    console.log(names);
+
+    if (names.length <= 1)
+        location.href = "/";
+    else if (names[1] == "finish")
+        location.href =  "/";
+    else
+        location.href = "/" + names[1];
 }
