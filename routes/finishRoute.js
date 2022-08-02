@@ -5,8 +5,6 @@ const userService = require('../src/domain/user/userService');
 router.get('/check', async function(req, res, next) {
     let user = await userService.getByWorkerId(req.session.workerId);
 
-    console.log(user.status);
-
     if (user.status == 'started') {
         await userService.putStatusByWorkerId('finished', user.workerId);
         res.status(200).send();

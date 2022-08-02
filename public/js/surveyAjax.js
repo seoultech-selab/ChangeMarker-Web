@@ -1,7 +1,7 @@
 async function checkSession() {
     $.ajax({
         type: 'get',
-        url: '/survey/userInfo',
+        url: getPathname() + '/survey/userInfo',
         success: function(res) {
             let userInfo = res.userInfo;
 
@@ -70,7 +70,7 @@ function surveySubmit() {
 
     $.ajax({
         type: 'post',
-        url: '/survey',
+        url: getPathname() + '/survey',
         data: formData,
         dataType: 'json',
         success: function(res) {
@@ -85,6 +85,10 @@ function surveySubmit() {
             nextButton.disabled = false;
 
             if (res.revisit) {
+                if (res.status.startsWith('tutorial')) {
+                    linkSkipped(res.status);
+                }
+
                 swal("You already started your task before. Do you want to skip and directly jumps to the tasks?", {
                     buttons: {
                         cancel: "No. I want start tutorial again.",

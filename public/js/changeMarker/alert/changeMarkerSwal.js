@@ -28,6 +28,20 @@ function newDraggedCodeInfoDuplicatedSwal() {
     draggedCodeInfoInvalidSwal('You have selected an area that has already been saved. Please select the right area again.');
 }
 
+function tutorialSwal() {
+    swal({
+        title: "Tutorial",
+        text: "Which script needs explanation?",
+        buttons: {
+            delete: "Delete",
+            insert: "Insert",
+            move: "Move",
+            update: "Update",
+            OK: true
+        },
+    });
+}
+
 
 function isOldDraggedCodeInfoDuplicated() {
     return false;

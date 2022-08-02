@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 router.use('/', function(req, res, next) {
-    const query = "insert into scripts_web (`user_code`,`type`,`old_code`,`line_number_old`,`start_pos_old`,`length_old`,`new_code`,`line_number_new`,`start_pos_new`,`length_new`,`change_id`) values (?);";
+    const query = "insert into scripts_web (`user_code`,`type`,`old_code`,`line_number_old`,`start_pos_old`,`length_old`,`new_code`,`line_number_new`,`start_pos_new`,`length_new`,`change_id`, `route`) values (?);";
     let values = new Array();
 
     values.push(req.body.user_code);
@@ -16,6 +16,7 @@ router.use('/', function(req, res, next) {
     values.push(req.body.start_pos_new == undefined ? undefined : Number(req.body.start_pos_new));
     values.push(req.body.length_new == undefined ? undefined : Number(req.body.length_new));
     values.push(req.body.change_id);
+    values.push(req.body.route);
 
     
     let mysql = require('mysql');
