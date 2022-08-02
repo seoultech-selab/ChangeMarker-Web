@@ -22,6 +22,7 @@ html, body {
 
     display: flex;
     justify-content: center;
+    margin-top: 100px;
 }
 
 .explain_window {
@@ -108,7 +109,7 @@ section {
     justify-content: center;    
 }
 
- footer {
+footer {
     overflow-y: auto;
     vertical-align: bottom;
     height: calc(15% - 30px);
