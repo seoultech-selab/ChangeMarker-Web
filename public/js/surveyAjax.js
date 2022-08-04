@@ -1,5 +1,5 @@
-async function checkSession() {
-    let lastPage = 5;
+const lastPage = 5;
+async function checkSession() {    
     $.ajax({
         type: 'get',
         url: getPathname() + '/survey/userInfo',

@@ -26,10 +26,6 @@ function exGenDelete(selectResult) {
         return;
     }
 
-    if (isEditSriptExist()) {
-      return;
-    }
-
     let table = document.getElementById("edit_scripts");
     let newRow = table.insertRow();
     newRow.id = selectResult.len + "/:" + selectResult.startPos + "/";
@@ -61,10 +57,6 @@ function GenInsert(selectResult) {
     if (selectResult.len == 0) {
         swal("Please select texts.");
         return;
-    }
-
-    if (isEditSriptExist()) {
-      return;
     }
   
     let table = document.getElementById("edit_scripts");
@@ -102,10 +94,6 @@ function GenInsert(selectResult) {
         swal("Please select texts on the right side.");
         return;
     }
-    
-    if (isEditSriptExist()) {
-      return;
-    }
   
     let table = document.getElementById("edit_scripts");
     let newRow = table.insertRow();
@@ -142,10 +130,6 @@ function GenInsert(selectResult) {
     } else if (storedSelectionRight.len == 0) {
         swal("Please select texts on the right side.");
         return;
-    }
-
-    if (isEditSriptExist()) {
-      return;
     }
   
     let table = document.getElementById("edit_scripts");
