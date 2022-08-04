@@ -1,8 +1,9 @@
 async function checkSession() {
+    let lastPage = 5;
     $.ajax({
         type: 'get',
         url: '/survey/userInfo',
-        success: function(res) {
+        success: function(res) {            
             let userInfo = res.userInfo;
 
             if (userInfo == undefined || userInfo == null)
@@ -37,9 +38,9 @@ async function checkSession() {
                 checkExercise.value = userInfo.status.slice(-1);
             }
             else if (userInfo.status == 'started')
-                checkExercise.value = 8;
+                checkExercise.value = lastPage;
             else if (userInfo.status == 'finished')
-                checkExercise.value = 8;
+                checkExercise.value = lastPage;
         }
     });
 }
@@ -77,7 +78,7 @@ function surveySubmit() {
             let checkExercise = document.querySelector('#checkExercise')
 
             if (res.status == 'started' || res.status == 'finished')
-                checkExercise.value = 8;
+                checkExercise.value = lastPage;
             else
                 checkExercise.value = Number(res.status[res.status.length - 1]);
             
@@ -105,7 +106,7 @@ function surveySubmit() {
                 });
             }
             else {
-                linkSkipped("tutorial3");
+                linkSkipped("tutorial2");
             }
         }
     });

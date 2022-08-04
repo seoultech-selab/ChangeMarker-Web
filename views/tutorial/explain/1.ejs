@@ -1,20 +1,54 @@
 <div class="contents">
-    <h3>Change Marker Tutorial</h3>
+    <h3>Change Marker</h3>
+    <%-include('main_desc.ejs') %>
     <div class="description">
-        Thank you for participating our research project. <br>
-        In this project, we're studying how various code changes can be decribed using simple types of edits. <br>
-        More specifically, you are asked to describe code changes using 
-        <span class="emphasize">Delete</span>, <span class="emphasize">Insert</span>, <span class="emphasize">Move</span> and <span class="emphasize">Update</span>.
-        <br>
-        <br>
-        Your task is creating an <span class="emphasize">edit script</span> for each given code change.<br>
-        An edit script consists of <span class="emphasize">edit operations</span> indicating edit types and changed code fragment.<br>
-        With a quick tutorial, you will understand how you can create an edit script.<br>
-        <br>
+        Before start, we need your Amazon MTurk Worker ID and some basic information.<br>
+        This information is only used for our research and to resume your task if you suspend it before finish.<br><br>
+    
+        After you put all the information, click <span class="emphasize">Confirm</span>. Then you can click Next button to start the tutorial.
+    </div>
+    <div>&nbsp;</div>
+    <div class="description">
+        <p class="question">Worker ID</p>
+        <input type="text" id="workerId">            
     </div>
     <div class="description">
-        <br>
-        Click <span class="emphasize">Next</span> button when you're ready to start the tutorial.
+        <p class="question">Which of the followings describes you best?</p>
+        <form id="form_job">
+            <input type="radio" id="job1" name="job" value="cs" checked>
+            <label for="job1">CS Student</label>
+            <input type="radio" id="job2" name="job" value="non-cs">
+            <label for="job2">Non-CS Student</label>
+            <input type="radio" id="job3" name="job" value="dev">
+            <label for="job3">Software Developer</label>
+            <input type="radio" id="job4" name="job" value="researcher">
+            <label for="job4">Researcher</label>
+            <input type="radio" id="job5" name="job" value="others">
+            <label for="job4">Others</label>
+        </form>
+    </div>                
+    <div class="description">
+        <p class="question">How many years have you used Java?</p>
+        <form id="form_java">
+            <input type="radio" id="javaExp1" name="javaExp" value="~1 year" checked>
+            <label for="javaExp1">Less than a year</label>
+            <input type="radio" id="javaExp2" name="javaExp" value="1~2 years">
+            <label for="javaExp2">1~2 years</label>
+            <input type="radio" id="javaExp3" name="javaExp" value="3~5 years">
+            <label for="javaExp3">3~5 years</label>
+            <input type="radio" id="javaExp4" name="javaExp" value="6~10 years">
+            <label for="javaExp4">6~10 years</label>
+            <input type="radio" id="javaExp5" name="javaExp" value="10~ years">
+            <label for="javaExp4">More than 10 years</label>
+        </form>
+    </div>
+    <div>&nbsp;</div>
+    <div class="description">
+        <a class="start_button" onclick="checkSurvey()"><span class="emphasize">Confirm</span></a>
+    </div>
+    <div>&nbsp;</div> 
+    <div class="footnote">
+        *if you already started your task before, the tutorial will be skipped and it directly jumps to the task.
         <br><br><br><br>
     </div>
 </div>

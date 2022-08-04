@@ -10,14 +10,15 @@ router.get("/", async function(req, res, next) {
     if (page == null || page == undefined) {
         page = 1;
     }
+    let totalPage = 5;
 
     let lhsTemplate = "";
     let rhsTemplate = "";
     let diffNum = 0;
     let currentFileName = 'tutorial00' + page;
 
-    if (page >= 4 && page <= 7) {
-        let change_id = 'tutorial00' + (page - 3);
+    if (page >= 3 && page <= 4) {
+        let change_id = 'tutorial00' + (page - 2);
         let value = await cmwUseFilesTotalDao.selectOldCodeAndNewCodeByChangeId(change_id);
 
         let lhs = value[0].old_code;
@@ -26,24 +27,21 @@ router.get("/", async function(req, res, next) {
         [lhsTemplate, rhsTemplate, diffNum] = await highlightDiffs(lhs, rhs);
     }
 
-    let checkExercise = 2;
+    let checkExercise = 1;
     if (req.session != null && req.session.workerId != null) {
         let user = await userService.getByWorkerId(req.session.workerId);
         if (user != null) {
             let status = user.status;
             if (status == 'started' || status == 'finished')
-                checkExercise = 8;
+                checkExercise = 5;
             else
                 checkExercise = Number(status[status.length - 1]);
         }
     }
 
-    if (checkExercise < page) {
-        res.status(500).send(); return;
-    }
-
     res.render('../views/tutorials.ejs', { 
         page : page,
+        totalPage : totalPage,
         lhsTemplate : lhsTemplate,
         rhsTemplate : rhsTemplate,
         diffNum : diffNum,

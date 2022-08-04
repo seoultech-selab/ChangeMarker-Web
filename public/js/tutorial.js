@@ -22,6 +22,10 @@ async function next() {
     if (currentPage == totalPage)
         return;
 
+    if (page == 3 || page == 4) {
+        updateCheckExercise();
+    }
+
     location.href = getPathname() + "/?page=" + (currentPage + 1);
 }
 
@@ -136,22 +140,19 @@ function initTutorial() {
     let checkExercise = Number(document.querySelector('#checkExercise').value);
     let currentPage = Number(document.getElementById('current_page').innerHTML);
 
-    if (currentPage >= checkExercise) {
+    if (currentPage == 1) {
+        document.querySelector('#prev_button').disabled = true;
         document.querySelector('#next_button').disabled = true;
     }
 
-    if (currentPage == 1) {
-        document.querySelector('#prev_button').disabled = true;
-    }
-
-    if (currentPage == 8) {
+    if (currentPage == 5) {
         document.querySelector('#next_button').disabled = true;
     }
 
     storeY();
 
 
-    if (currentPage == 2) {
+    if (currentPage == 1) {
         $.ajax({
             type: 'get',
             url: '/user/surveyInfo',

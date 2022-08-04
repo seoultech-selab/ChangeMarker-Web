@@ -84,7 +84,7 @@ class UserService {
         let changeId3;
         let changeId4;
         let changeId5;
-        let status = "tutorial4";
+        let status = "tutorial2";
 
         [changeId1, changeId2, changeId3, changeId4, changeId5] = await cmwUseFilesTotalService.getRandomChangeIds();
 

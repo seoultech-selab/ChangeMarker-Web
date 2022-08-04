@@ -82,3 +82,11 @@ div#explain_window .file_green_exam {
 div#explain_window .file_red_exam {
     background-color: #fd6a78;
 }
+
+div#explain_window .code_example {
+    background-color: #ffffff;
+    width: 50%;
+    font-size: 12pt;
+    font-family: Lucida Console, Courier, monospace;
+    text-align:left;
+ }

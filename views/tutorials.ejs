@@ -53,14 +53,14 @@
                 </div>
             </div>
         </div>
-        <input type="text" data-value="mturk-page" id="page">   
+        <input type="hidden" data-value="mturk-page" id="page">   
         <div class="footer_container">
             <div class="button_container">
                 <input class="move_buttons" id="prev_button" type="button" value="Prev" onclick="prev();">
                 <p class="blanks"></p>
                      <div class="page_button_container">
                     <!-- <div class="page_show">  -->
-                        <span id="current_page"><%=page %></span> &nbsp;/&nbsp; <span id="total_page">8</span>
+                        <span id="current_page"><%=page %></span> &nbsp;/&nbsp; <span id="total_page"><%=totalPage %></span>
                         </div>
                     <!-- </div> -->
                     <p class="blanks"></p>
