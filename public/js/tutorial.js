@@ -15,6 +15,14 @@ async function prev() {
     location.href = getPathname() + "/?page=" + (currentPage - 1);
 }
 
+function goMturk() {
+    location.href = "/mturk";
+}
+
+function goMarker() {
+    location.href = "/marker";
+}
+
 async function next() {
     let currentPage = Number(document.getElementById('current_page').innerHTML);
     let totalPage = Number(document.getElementById('total_page').innerHTML);
@@ -68,7 +76,7 @@ function startProject() {
 
     $.ajax({
         type: 'put',
-        url: '/survey/userInfo',
+        url: getPathname() + '/survey/userInfo',
         data: {status : 'started'},
         dataType : 'json',
         success: function(res) {}
@@ -140,6 +148,13 @@ function initTutorial() {
     let checkExercise = Number(document.querySelector('#checkExercise').value);
     let currentPage = Number(document.getElementById('current_page').innerHTML);
 
+    if (currentPage == 0)
+        document.querySelector(".footer_container").style.display = 'none';
+
+    if (currentPage >= checkExercise) {
+        document.querySelector('#next_button').disabled = true;
+    }
+
     if (currentPage == 1) {
         document.querySelector('#prev_button').disabled = true;
         document.querySelector('#next_button').disabled = true;
@@ -155,7 +170,7 @@ function initTutorial() {
     if (currentPage == 1) {
         $.ajax({
             type: 'get',
-            url: '/user/surveyInfo',
+            url: getPathname() + '/user/surveyInfo',
             success: function(res) {
                 initSurveyForm(res);
             }

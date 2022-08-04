@@ -69,9 +69,6 @@ async function moveTutorial() {
     let pathname = getPathname();
     let names = pathname.split("/");
 
-    console.log(pathname);
-    console.log(names);
-
     if (names.length <= 1)
         location.href = "/";
     else if (names[1] == "finish")

@@ -3,8 +3,8 @@
     <head>
         <meta charset="UTF-8">
         <title>Change Marker</title>
-        <link rel="stylesheet" href="/public/css/marker.css">
-        <link rel="stylesheet" href="/public/css/contextMenu.css">
+        <link rel="stylesheet" href="/css/marker.css">
+        <link rel="stylesheet" href="/css/contextMenu.css">
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/rangy/1.3.0/rangy-core.js" integrity="sha512-5qAG717EHs5QEXyZGnsQphorTLrZMPEr3Soh6w+mE2+WfHDuEyBQOTOb/wlO2Hd7Ox/5iUG0bzUNu/8KELEl9g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/rangy/1.3.0/rangy-classapplier.js" integrity="sha512-kPRZf6xUyz6Kj6dmWTUZIGtdwW8AD7i7rMFpxybhMvjmlKJ/L+KspUZDj75Y1dsq73QTA/1QqFh2kW04xGGiXQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -12,30 +12,30 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/rangy/1.3.0/rangy-highlighter.js" integrity="sha512-FTpr4BiLGBjmxDvuCam722rXBOsG67oz8t7MzzV15x3GNSu6VkJDRBqdqW/uuJv7y7dWei1KMUoMcDfZ4Fmx6Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 
-        <script src="/public/js/changeMarker/alert/changeMarkerSwal.js"></script>
-        <script src="/public/js/changeMarker/codeSelection/codeSelection.js"></script>
-        <script src="/public/js/changeMarker/contextMenu/contextMenuNew.js"></script>
-        <script src="/public/js/changeMarker/contextMenu/contextMenuOld.js"></script>
-        <script src="/public/js/changeMarker/editScript/editScript.js"></script>
-        <script src="/public/js/changeMarker/highlighter/selectionHighlighter.js"></script>
-        <script src="/public/js/changeMarker/changeMarker.js"></script>
+        <script src="/js/changeMarker/alert/changeMarkerSwal.js"></script>
+        <script src="/js/changeMarker/codeSelection/codeSelection.js"></script>
+        <script src="/js/changeMarker/contextMenu/contextMenuNew.js"></script>
+        <script src="/js/changeMarker/contextMenu/contextMenuOld.js"></script>
+        <script src="/js/changeMarker/editScript/editScript.js"></script>
+        <script src="/js/changeMarker/highlighter/selectionHighlighter.js"></script>
+        <script src="/js/changeMarker/changeMarker.js"></script>
 
-        <script src="/public/js/markerViews.js"></script>
-        <script src="/public/js/contextMenu.js"></script>
-        <script src="/public/js/scriptSubmit.js"></script>
-        <script src="/public/js/submitAjax.js"></script>
-        <script src="/public/js/deleteAjax.js"></script>
-        <script src="/public/js/checkAjax.js"></script>
-        <script src="/public//js/pageMove.js"></script>
-        <script src="/public/js/editScripts.js"></script>
-        <script src="/public/js/fileCheck.js"></script>
-        <script src="/public/js/finish.js"></script>
+        <script src="/js/markerViews.js"></script>
+        <script src="/js/contextMenu.js"></script>
+        <script src="/js/scriptSubmit.js"></script>
+        <script src="/js/submitAjax.js"></script>
+        <script src="/js/deleteAjax.js"></script>
+        <script src="/js/checkAjax.js"></script>
+        <script src="/js/pageMove.js"></script>
+        <script src="/js/editScripts.js"></script>
+        <script src="/js/fileCheck.js"></script>
+        <script src="/js/finish.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github.min.css">
 	    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
 	    <script>hljs.initHighlightingOnLoad();</script>
         <script src="//cdn.jsdelivr.net/npm/highlightjs-line-numbers.js@2.8.0/dist/highlightjs-line-numbers.min.js"></script>
         <script>hljs.initLineNumbersOnLoad();</script>
-        <!-- <script src="/public/js/initial.js"></script> -->
+        <!-- <script src="/js/initial.js"></script> -->
         <script  src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
@@ -78,7 +78,8 @@
             <div class="move_container">
                 <div>&nbsp;</div>
                 <form id="move_form" action="/" method="post">
-                    <input type="button" value="<%= currentFileName %>" disabled>
+                    <input type="button" value="?" onclick="tutorialSwal()">
+                    <input style="display:none;" type="button" value="<%= currentFileName %>" disabled>
                     <input class="move_button" type="button" value="Back to Tutorial" onclick="moveTutorial();">
                     <input class="move_button" type="button" value="Prev" onclick="movePrev();">
                     <input class="move_button" type="button" value="Finish" onclick="finishAll();">

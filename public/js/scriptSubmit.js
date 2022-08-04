@@ -21,11 +21,7 @@ function scriptSubmit() {
 
             let form = document.createElement('form');
             document.body.appendChild(form);
-            let href = window.location.href;
-            if (href.endsWith('/'))
-                form.action = href + 'submit';
-            else
-                form.action = href + '/submit';
+            form.action = getPathname() + '/submit';
             form.method = "post";
 
             let input = document.createElement('input');

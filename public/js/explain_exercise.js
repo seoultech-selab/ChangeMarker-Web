@@ -183,7 +183,7 @@ function GenInsert(selectResult) {
     if (checkExercise.value < currentPageNum) {
       $.ajax({
         type: 'put',
-        url: '/survey/userInfo',
+        url: getPathname() + '/survey/userInfo',
         data: {status : 'tutorial00' + currentPageNum},
         dataType : 'json',
         success: function(res) {}

@@ -1,7 +1,7 @@
 function oneScriptSubmit(data) {
     $.ajax({
         type: 'post',
-        url: '/submit',
+        url: getPathname() + '/submit',
         data: data,
         dataType: 'json',
         success: function(res) {

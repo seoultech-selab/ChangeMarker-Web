@@ -67,6 +67,8 @@ function addDB(opType, newRow, leftSel, rightSel, delType) {
     scriptJSON.user_code = document.getElementById("userCode").value;
     scriptJSON.type = opType;
     scriptJSON.change_id = document.getElementById("current").value;
+    scriptJSON.route = location.pathname.replace(/\//g, "");
+
     oneScriptSubmit(scriptJSON);
 }
 
