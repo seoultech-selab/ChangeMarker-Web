@@ -146,9 +146,6 @@ function GenInsert(selectResult) {
         swal("This example does not allow Update script."); return;
       }
 
-    console.log(oldCodeInfo);
-    console.log(newCodeInfo);
-
     if (oldCodeInfo.len == 0) {
         swal("Please select texts on the left side.");
         return;
@@ -157,11 +154,11 @@ function GenInsert(selectResult) {
         return;
     }
 
-    if (oldCodeInfo.text.trim() != "arr[j] = arr[i+1];") {
+    if (oldCodeInfo.text.trim() != "i" || oldCodeInfo.lineNum != 8) {
         swal("Check the selection again.");
         return;
     }
-    if (newCodeInfo.text.trim() != "arr[j] = arr[j+1];") {
+    if (newCodeInfo.text.trim() != "j" || newCodeInfo.lineNum != 8) {
         swal("Check the selection again.");
         return;
     }
