@@ -23,12 +23,9 @@ router.get('/', async function(req, res, next) {
 
     if (user.status == 'finished') {
         let view = '../views/finish.ejs';
-        console.log('email');
-        console.log(user.worker_id);
         //In case worker_id is an email.
-        if(user.worker_id.includes('@')) {
+        if(user.workerId.includes('@')) {
             view = '../views/finish_email.ejs';
-            console.log('email');
         }
         res.render(view, {
             code : user.userCode
