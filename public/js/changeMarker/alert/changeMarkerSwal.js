@@ -97,7 +97,7 @@ function helpSwal() {
         '<span class="emphasize">Delete</span>: code deleted from the old version.<br>'+
         '<span class="emphasize">Insert</span>: code inserted in the new version.<br>'+
         '<span class="emphasize">Move</span>: code moved to a different location.<br>'+
-        '<span class="emphasize">Update</span>: an updated value without any structural or type changes.<br><br>'+
+        '<span class="emphasize">Update</span>: a single value change without any structural or type changes.<br><br>'+
         '<span style="font-size:12pt">*If you have any trouble or question, please <a href="mailto:seoultech.selab@gmail.com">contact us</a>.</span>';
     swal({
         content: help
