@@ -17,9 +17,10 @@
         </script>
     </head>
     <body>
-        <div id="display_user_code">
-            <p>Thank You for completing our request!</p>
-            <p>Please submit the code below to Amazon Turk.</p>
+        <div id="display_user_code" class="description">
+            <div class="emphasize">Thank you very much for your help on our research project.<br><br></div>
+            <div class="emphasize">We really appreciate your time and effort for completing the tasks.<br><br></div>
+            <div class="emphasize">Please submit the code below to Amazon Turk.<br></div>
             <div class="code_container">
                 <input id="code_number" value="<%= code %>" readonly>
                 <button class="button-28" role="button" onclick="copyCode()">Copy</button>
