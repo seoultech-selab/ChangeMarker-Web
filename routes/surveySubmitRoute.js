@@ -39,7 +39,7 @@ router.post('/', async function(req, res, next) {
     }
     else {
         await userService.postUser(workerId, job, javaExperience);
-        ret.status = 'tutorial002';
+        ret.status = 'tutorial3';
         ret.revisit = false;
     }
 
