@@ -26,6 +26,11 @@ function exGenDelete(selectResult) {
         return;
     }
 
+    if (selectResult.text.trim() != "super(settings);") {
+      swal("Check the selection again.");
+      return;
+    }
+
     let table = document.getElementById("edit_scripts");
     let newRow = table.insertRow();
     newRow.id = selectResult.len + "/:" + selectResult.startPos + "/";
@@ -46,7 +51,8 @@ function exGenDelete(selectResult) {
     newCell3.innerText = selectResult.lineNum;
     newCell6.appendChild(newATag);
 
-    updateCheckExercise();
+    if (table.querySelectorAll("tr").length == 3)
+      updateCheckExercise();
 }
 
 function GenInsert(selectResult) {
@@ -57,6 +63,11 @@ function GenInsert(selectResult) {
     if (selectResult.len == 0) {
         swal("Please select texts.");
         return;
+    }
+
+    if (selectResult.text.trim() != "set.add(indexShard.shardsRandomIt());") {
+      swal("Check the selection again.");
+      return;
     }
   
     let table = document.getElementById("edit_scripts");
@@ -79,26 +90,36 @@ function GenInsert(selectResult) {
     newCell5.innerText = selectResult.lineNum;
     newCell6.appendChild(newATag);
   
-    updateCheckExercise();
+    if (table.querySelectorAll("tr").length == 3)
+      updateCheckExercise();
   }
 
-  function GenMoveLeft(selectResult, storedSelectionRight) {
+  function GenMoveLeft(oldCodeInfo, newCodeInfo) {
     if (document.getElementById("current").value != 'tutorial004') {
         swal("This example does not allow Move script."); return;
       }
 
-    if (selectResult.len == 0) {
+    if (oldCodeInfo.len == 0) {
         swal("Please select texts on the left side.");
         return;
-    } else if (storedSelectionRight.len == 0) {
+    } else if (newCodeInfo.len == 0) {
         swal("Please select texts on the right side.");
+        return;
+    }
+
+    if (oldCodeInfo.text.trim() != "int tmp = arr[j];") {
+      swal("Check the selection again.");
+      return;
+    }
+    if (newCodeInfo.text.trim() != "int tmp = arr[j];") {
+        swal("Check the selection again.");
         return;
     }
   
     let table = document.getElementById("edit_scripts");
     let newRow = table.insertRow();
-    selectResult = storedSelectionRight;
-    newRow.id = storedSelectionRight.len + "/" + selectResult.len;
+
+    newRow.id = newCodeInfo.len + "/" + oldCodeInfo.len;
   
     let newATag = createDeleteButton(0);
 
@@ -110,38 +131,47 @@ function GenInsert(selectResult) {
     let newCell6 = newRow.insertCell(5);
   
     newCell1.innerText = 'Move';
-    newCell2.innerText = selectResult.text;
-    newCell3.innerText = selectResult.lineNum;
-    newCell4.innerText = storedSelectionRight.text;
-    newCell5.innerText = storedSelectionRight.lineNum;
+    newCell2.innerText = oldCodeInfo.text;
+    newCell3.innerText = oldCodeInfo.lineNum;
+    newCell4.innerText = newCodeInfo.text;
+    newCell5.innerText = newCodeInfo.lineNum;
     newCell6.appendChild(newATag);
   
-    updateCheckExercise();
+    if (table.querySelectorAll("tr").length == 3)
+      updateCheckExercise();
   }
 
-  function GenUpdateLeft(selectResult, storedSelectionRight) {
+  function GenUpdateLeft(oldCodeInfo, newCodeInfo) {
     if (document.getElementById("current").value != 'tutorial004') {
         swal("This example does not allow Update script."); return;
       }
 
-    if (selectResult.len == 0) {
+    console.log(oldCodeInfo);
+    console.log(newCodeInfo);
+
+    if (oldCodeInfo.len == 0) {
         swal("Please select texts on the left side.");
         return;
-    } else if (storedSelectionRight.len == 0) {
+    } else if (newCodeInfo.len == 0) {
         swal("Please select texts on the right side.");
+        return;
+    }
+
+    if (oldCodeInfo.text.trim() != "arr[j] = arr[i+1];") {
+        swal("Check the selection again.");
+        return;
+    }
+    if (newCodeInfo.text.trim() != "arr[j] = arr[j+1];") {
+        swal("Check the selection again.");
         return;
     }
   
     let table = document.getElementById("edit_scripts");
     let newRow = table.insertRow();
-    selectResult = storedSelectionRight;
-    newRow.id = storedSelectionRight.len + "/" + selectResult.len;
+
+    newRow.id = newCodeInfo.len + "/" + oldCodeInfo.len;
   
-    let newATag = document.createElement('a');
-    newATag.href = "javascript:void(0)";
-    newATag.text = "Delete";
-    newATag.className = "del_btn";
-    newATag.onclick = function() {exDeleteRow(this, 1);};
+    let newATag = createDeleteButton(0);
   
   
     let newCell1 = newRow.insertCell(0);
@@ -152,13 +182,14 @@ function GenInsert(selectResult) {
     let newCell6 = newRow.insertCell(5);
   
     newCell1.innerText = 'Update';
-    newCell2.innerText = selectResult.text;
-    newCell3.innerText = selectResult.lineNum;
-    newCell4.innerText = storedSelectionRight.text;
-    newCell5.innerText = storedSelectionRight.lineNum;
+    newCell2.innerText = oldCodeInfo.text;
+    newCell3.innerText = oldCodeInfo.lineNum;
+    newCell4.innerText = newCodeInfo.text;
+    newCell5.innerText = newCodeInfo.lineNum;
     newCell6.appendChild(newATag);
   
-    updateCheckExercise();
+    if (table.querySelectorAll("tr").length == 3)
+      updateCheckExercise();
   }
 
   function updateCheckExercise() {

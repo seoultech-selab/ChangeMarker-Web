@@ -25,7 +25,8 @@ app.get('/', async function(req, res, next){
         diffNum : 0,
         storedScripts : "",
         currentFileName: "tutorial000",
-        checkExercise : 0
+        checkExercise : 0,
+        totalPage: 0
     });
 });
 app.use('/mturk', indexRouter);
