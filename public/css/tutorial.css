@@ -8,21 +8,15 @@ html, body {
 }
 
 .contents_container {
-    height: auto;
-    min-height: 100%;
+    height: auto;    
 }
 
 .footer_container {
-    position: relative;
-    transform: translateY(-100%);
-
-    background-color: #393E46;
     height: 60px;
     width: 100%;
 
     display: flex;
     justify-content: center;
-    margin-top: 100px;
 }
 
 .explain_window {
@@ -42,7 +36,7 @@ html, body {
 .page_button_container {
     display: flex;
     align-items: center;
-    color: #EEEEEE;
+    color: #020202;
 }
 
 .blanks {

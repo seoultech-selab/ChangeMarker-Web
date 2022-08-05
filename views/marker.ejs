@@ -54,7 +54,7 @@
                 document.onmouseup = on_mouse_up;
                 document.onmousemove = on_mouse_move;
                 window.onresize = window_on_resize;
-                storeY();
+                storeY();                
 
                 // document.getElementById('left').onmousedown = restoreContentLeft;
                 // document.getElementById('right').onmousedown = restoreContentRight;
@@ -64,7 +64,7 @@
                 // document.getElementById('right').addEventListener('contextmenu', handleCreateContextMenu_right, false);
                 // document.addEventListener('click', handleClearContextMenu, false);
 
-                initChangeMarker();
+                initChangeMarker();                
             }
         </script>
     </head>
@@ -73,17 +73,16 @@
         <header id="header">
             <div class="blank"></div>
             <div class="jump_container">
-            </div>
-                
+            </div>            
             <div class="move_container">
                 <div>&nbsp;</div>
-                <form id="move_form" action="/" method="post">
-                    <input type="button" value="?" onclick="tutorialSwal()">
+                <form id="move_form" action="/" method="post">                    
                     <input style="display:none;" type="button" value="<%= currentFileName %>" disabled>
                     <input class="move_button" type="button" value="Back to Tutorial" onclick="moveTutorial();">
                     <input class="move_button" type="button" value="Prev" onclick="movePrev();">
                     <input class="move_button" type="button" value="Finish" onclick="finishAll();">
                     <input class="move_button" type="button" value="Next" onclick="moveNext();">
+                    <input class="move_button" type="button" value="Help" onclick="helpSwal()">
                     <input type="hidden" value="<%= code %>" id="userCode">
                     <input type="hidden" value="<%= currentFileName %>" id="current">
                     <input type="hidden" value="<%= fileCnt %>" id="fileCnt">
@@ -99,7 +98,7 @@
                     <% } %>
                 <% } %>
             </div>
-        </header>
+        </header>        
         <div class="container">
             <%-include('./component/javaSourceCompare.ejs') %>
             <%-include('./component/table/editScript.ejs') %>
