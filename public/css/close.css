@@ -90,3 +90,23 @@ body {
   margin-bottom: 5px;
   cursor: pointer;
 }
+
+.description {
+  font-family: "Gill Sans", sans-serif;
+  font-weight: 90;
+  font-size: 28px;
+  text-align: center;
+  display: flex; 
+  align-items: center; 
+  flex-direction: column;
+}
+
+.emphasize {
+  color: #4571f7;
+  font-weight: 500;
+}
+
+.empty_line {
+  height: 30px;
+  width: 100%;
+}
