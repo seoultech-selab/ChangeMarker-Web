@@ -1,7 +1,7 @@
 function oneScriptDelete(data) {
     $.ajax({
         type: 'delete',
-        url: '/delete',
+        url: getPathname() + '/delete',
         data: data,
         dataType: 'json',
         success: function(res) {
