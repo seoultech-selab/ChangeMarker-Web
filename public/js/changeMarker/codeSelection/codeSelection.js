@@ -17,6 +17,9 @@ let newDraggedCodeInfo = {
     offset : -1
 };
 
+let oldCodeGridOffsetSum;
+let newCodeGridOffsetSum;
+
 
 function setSelectionOld() {
     oldDraggedCodeInfo = getOldDraggedCodeInfo();
@@ -95,21 +98,17 @@ function getoffsetFromStartLine(type) {
 }
 
 function getOffset(type) {
-    const tbody = document.querySelector(type + " tbody");
-
-    let result = 0;
-    for (tr of tbody.childNodes) {
-        const td = tr.querySelector('.hljs-ln-code');
-
-        if (td.contains(selection.anchorNode) || td.contains(selection.focusNode))
-            return result + getoffsetFromStartLine(type);
-        else
-            result += td.textContent.length;
+    let startLine = getStartLine();
+    if (startLine == -1) return -1;
+    switch (type) {
+        case "#left": 
+            return oldCodeGridOffsetSum[startLine - 1] + getoffsetFromStartLine(type);
+        case "#right":
+            return newCodeGridOffsetSum[startLine - 1] + getoffsetFromStartLine(type);
     }
 
     return -1;
 }
-
 
 function getDraggedCodeInfo(type) {
     return {
@@ -128,4 +127,32 @@ function getOldDraggedCodeInfo() {
 
 function getNewDraggedCodeInfo() {
     return getDraggedCodeInfo('#right')
+}
+
+function initCodeSelection() {
+    const oldCode = document.querySelector("#left");
+    const newCode = document.querySelector("#right");
+
+    const oldTbody = oldCode.querySelector("pre code table tbody");
+    const newTbody = newCode.querySelector("pre code table tbody");
+
+    oldCodeGridOffsetSum = [0, ];
+    newCodeGridOffsetSum = [0, ];
+
+    for (var i = 0; i < oldTbody.childNodes.length; i++) {
+        const tr = oldTbody.childNodes.item(i);
+        const td = tr.querySelector('.hljs-ln-code');
+
+        oldCodeGridOffsetSum.push(oldCodeGridOffsetSum[i] + td.textContent.length);
+    }
+
+    for (var i = 0; i < newTbody.childNodes.length; i++) {
+        const tr = newTbody.childNodes.item(i);
+        const td = tr.querySelector('.hljs-ln-code');
+
+        newCodeGridOffsetSum.push(newCodeGridOffsetSum[i] + td.textContent.length);
+    }
+
+    console.log(oldCodeGridOffsetSum);
+    console.log(newCodeGridOffsetSum);
 }
