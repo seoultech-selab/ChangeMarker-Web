@@ -44,6 +44,8 @@ function getSelectionRangy(type) {
 
     if (result.sideNodes == null || result.leafNodes == null) return null;
 
+    console.log(result);
+
     return result; 
 }
 
@@ -143,7 +145,7 @@ function spliceNode(textNode, from, to) {
 function createSelectionSpan(textNode) {
     let span = document.createElement("span");
     span.className = "highlight_select";
-    span.innerText = textNode.wholeText;
+    span.innerText = textNode.wholeText == undefined ? textNode.innerText : textNode.wholeText;
     return span;
 }
 
@@ -183,6 +185,8 @@ function initTbody() {
 
     const oldTbody = oldCode.querySelector("pre code table tbody");
     const newTbody = newCode.querySelector("pre code table tbody");
+
+    if (oldTbody == null || newTbody == null) return;
 
     oldCodeTbody = document.createDocumentFragment();
     oldCodeTbody = oldTbody.cloneNode(true);

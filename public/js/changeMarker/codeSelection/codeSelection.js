@@ -136,6 +136,8 @@ function initCodeSelection() {
     const oldTbody = oldCode.querySelector("pre code table tbody");
     const newTbody = newCode.querySelector("pre code table tbody");
 
+    if (oldTbody == null || newTbody == null) return;
+
     oldCodeGridOffsetSum = [0, ];
     newCodeGridOffsetSum = [0, ];
 

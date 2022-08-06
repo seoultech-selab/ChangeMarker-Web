@@ -242,6 +242,8 @@ footer table {
 
 .highlight_select {
     background-color: #A0D0FF;
+    border-top: 1px solid #A0D0FF;
+    border-bottom: 1px solid #A0D0FF;
 }
 
 ::selection {
