@@ -152,7 +152,4 @@ function initCodeSelection() {
 
         newCodeGridOffsetSum.push(newCodeGridOffsetSum[i] + td.textContent.length);
     }
-
-    console.log(oldCodeGridOffsetSum);
-    console.log(newCodeGridOffsetSum);
 }

@@ -189,9 +189,6 @@ function initTbody() {
 
     newCodeTbody = document.createDocumentFragment();
     newCodeTbody = newTbody.cloneNode(true);
-
-    console.log(oldCodeTbody);
-    console.log(newCodeTbody);
 }
 
 function highlightSelectionOld() {
