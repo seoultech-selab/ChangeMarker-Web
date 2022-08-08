@@ -44,8 +44,6 @@ function getSelectionRangy(type) {
 
     if (result.sideNodes == null || result.leafNodes == null) return null;
 
-    console.log(result);
-
     return result; 
 }
 
