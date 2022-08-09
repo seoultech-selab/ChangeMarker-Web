@@ -57,20 +57,34 @@ function getSideNodes(type) {
     const tbody = document.querySelector(type + ' tbody');
     const td = tbody.childNodes.item(startLine - 1).querySelector('.hljs-ln-code');
 
+    const anchorNode = selection.anchorNode;
+    const anchorOffset = selection.anchorOffset;
+    const focusNode  = selection.focusNode;
+    const focusOffset = selection.focusOffset;
+
+    if (anchorNode == focusNode) {
+        nodes.startNode = anchorNode;
+        nodes.startOffset = Math.min(anchorOffset, focusOffset);
+        nodes.endNode = anchorNode;
+        nodes.endOffset = Math.max(anchorOffset, focusOffset);
+
+        return nodes;
+    }
+
     for (var child of td.childNodes) {
-        if (child.contains(selection.anchorNode)) {
-            nodes.startNode = selection.anchorNode;
-            nodes.startOffset = selection.anchorOffset;
-            nodes.endNode = selection.focusNode;
-            nodes.endOffset = selection.focusOffset;
+        if (child.contains(anchorNode)) {
+            nodes.startNode = anchorNode;
+            nodes.startOffset = anchorOffset;
+            nodes.endNode = focusNode;
+            nodes.endOffset = focusOffset;
 
             return nodes;
         }
-        else if (child.contains(selection.focusNode)) {
-            nodes.endNode = selection.anchorNode;
-            nodes.endOffset = selection.anchorOffset;
-            nodes.startNode = selection.focusNode;
-            nodes.startOffset = selection.focusOffset;
+        else if (child.contains(focusNode)) {
+            nodes.endNode = anchorNode;
+            nodes.endOffset = anchorOffset;
+            nodes.startNode = focusNode;
+            nodes.startOffset = focusOffset;
 
             return nodes;
         }
