@@ -71,8 +71,14 @@ function getSideNodes(type) {
         return nodes;
     }
 
-    for (var child of td.childNodes) {
-        if (child.contains(anchorNode)) {
+    return getSideNodesDFS(td, anchorNode, anchorOffset, focusNode, focusOffset);
+}
+
+function getSideNodesDFS(node, anchorNode, anchorOffset, focusNode, focusOffset) {
+    let nodes = new Object();
+
+    if (node.childNodes.length == 0) {
+        if (node.contains(anchorNode)) {
             nodes.startNode = anchorNode;
             nodes.startOffset = anchorOffset;
             nodes.endNode = focusNode;
@@ -80,7 +86,7 @@ function getSideNodes(type) {
 
             return nodes;
         }
-        else if (child.contains(focusNode)) {
+        else if (node.contains(focusNode)) {
             nodes.endNode = anchorNode;
             nodes.endOffset = anchorOffset;
             nodes.startNode = focusNode;
@@ -88,10 +94,15 @@ function getSideNodes(type) {
 
             return nodes;
         }
-        else
-            continue;
+        else 
+            return null;
     }
-    
+
+    for (var child of node.childNodes) {
+        let nodes = getSideNodesDFS(child, anchorNode, anchorOffset, focusNode, focusOffset);
+        if (nodes != null) return nodes;
+    }
+
     return null;
 }
 
