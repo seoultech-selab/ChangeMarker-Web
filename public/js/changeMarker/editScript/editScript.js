@@ -68,6 +68,7 @@ function addDB(opType, newRow, leftSel, rightSel, delType) {
     scriptJSON.type = opType;
     scriptJSON.change_id = document.getElementById("current").value;
     scriptJSON.route = location.pathname.replace(/\//g, "");
+    scriptJSON.created_at = Date.now();
 
     oneScriptSubmit(scriptJSON);
 }

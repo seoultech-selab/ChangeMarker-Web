@@ -46,12 +46,13 @@ router.use('/check', check);
 router.use('/tutorialCheck', tutorialCheck);
 router.use('/survey', surveySubmit);
 router.use('/user', userRoute);
+router.use('/finish', finishRoute);
 
-router.use('/finish', function(req, res, next) {
-    res.render('../views/finish_email.ejs', {
-        code : "   "
-    });
-});
+// router.use('/finish', function(req, res, next) {
+//     res.render('../views/finish_email.ejs', {
+//         code : "   "
+//     });
+// });
 
 const { request } = require('http');
 
