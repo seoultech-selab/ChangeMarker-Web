@@ -70,7 +70,7 @@ function addDB(opType, newRow, leftSel, rightSel, delType) {
     scriptJSON.route = location.pathname.replace(/\//g, "");
     scriptJSON.created_at = Date.now();
 
-    oneScriptSubmit(scriptJSON);
+    oneScriptSubmit(scriptJSON, newRow);
 }
 
 const DBText = [
