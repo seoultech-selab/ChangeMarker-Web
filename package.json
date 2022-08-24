@@ -30,8 +30,10 @@
     "express": "^4.17.2",
     "express-mysql-session": "^2.1.7",
     "express-session": "^1.17.2",
+    "morgan": "^1.10.0",
     "myers-diff": "^2.0.1",
     "mysql": "^2.18.1",
+    "pm2": "^5.2.0",
     "uuid": "^3.4.0"
   },
   "devDependencies": {

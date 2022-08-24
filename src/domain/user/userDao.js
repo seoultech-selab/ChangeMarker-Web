@@ -24,8 +24,6 @@ class UserDao {
     }
 
     updateStatusByWorkerId = (status, workerId) => {
-        console.log(status);
-
         if (status == "started")
             return this.updateTutorialCompleteStatusByWorkerId(status, workerId);
         else if (status == "finished")

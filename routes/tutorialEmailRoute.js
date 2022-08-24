@@ -6,10 +6,12 @@ const userService = require('../src/domain/user/userService');
 const myers = require('myers-diff');
 
 router.get("/", async function(req, res, next) {
-    let page = req.query.page;
-    if (page == null || page == undefined) {
+    let page = Number(req.query.page);
+
+    if (page == null || page == undefined || isNaN(page)) {
         page = 1;
     }
+
     let totalPage = 5;
 
     let lhsTemplate = "";
