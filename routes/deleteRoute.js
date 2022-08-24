@@ -17,7 +17,7 @@ router.use('/', function(req, res, next) {
 
             if (!req.body.user_code) {
                 res.status(500).send();
-                conn.release();
+                if (conn) conn.release();
                 return;
             }
 
@@ -26,7 +26,7 @@ router.use('/', function(req, res, next) {
 
             if (!req.body.type) {
                 res.status(500).send();
-                conn.release();
+                if (conn) conn.release();
                 return;
             }
 
@@ -51,7 +51,7 @@ router.use('/', function(req, res, next) {
 
             if (!req.body.change_id) {
                 res.status(500).send();
-                conn.release();
+                if (conn) conn.release();
                 return;
             }
             query += req.body.change_id;
