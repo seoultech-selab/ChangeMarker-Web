@@ -3,6 +3,7 @@ const http = require('http');
 const https = require('https')
 const app = express();
 var path = require('path');
+var logger = require('morgan');
 
 const fs = require('fs');
 const options = {
@@ -14,6 +15,7 @@ const options = {
 const indexRouter = require('./routes/index');
 const emailRouter = require('./routes/indexEmail');
 
+app.use(logger('common'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // app.use('/', indexRouter);
