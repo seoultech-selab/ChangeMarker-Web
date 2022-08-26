@@ -50,6 +50,10 @@ function surveySubmit() {
 
     formData.workerId = document.getElementById("workerId").value;
 
+    if (formData.workerId.length > 45) {
+        swal("Invalid Worker ID."); return;
+    }
+
     let formJob = document.getElementById("form_job");
     let jobInputs = formJob.getElementsByTagName("input");
     let formJava = document.getElementById("form_java");
