@@ -172,7 +172,7 @@ router.use('/', function(req, res, next) {
                 }
             })
         }
-        // conn.release();
+        if (conn) conn.release();
     });
 });
 
