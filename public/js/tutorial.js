@@ -12,7 +12,12 @@ async function prev() {
     if (currentPage == 1)
         return;
 
-    location.href = getPathname() + "/?page=" + (currentPage - 1);
+    if (isNaN(currentPage)) {
+        swal("Unexpected error has occurred.");
+        location.href = getPathname() + "/?page=" + 1;
+    }
+    else
+        location.href = getPathname() + "/?page=" + (currentPage - 1);
 }
 
 function goMturk() {
@@ -32,6 +37,11 @@ async function next() {
 
     if (page == 3 || page == 4) {
         updateCheckExercise();
+    }
+
+    if (isNaN(currentPage)) {
+        swal("Unexpected error has occurred.");
+        location.href = getPathname() + "/?page=" + 1;
     }
 
     location.href = getPathname() + "/?page=" + (currentPage + 1);
