@@ -253,7 +253,6 @@ router.post('/', async function(req, res, next) {
             
                 res.render('../views/marker.ejs', {
                     currentFileName : changeId,
-                    mkFileName : mkFileName,
                     lhsTemplate : lhsTemplate,
                     rhsTemplate : rhsTemplate,
                     editScripts : editScripts,
@@ -265,7 +264,7 @@ router.post('/', async function(req, res, next) {
                 });
             });
         }
-        conn.release();
+        if (conn) conn.release();
     });
     });
 });
