@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const cmwUseFilesTotalDao = require('../src/domain/cmwUseFilesTotal/cmwUseFilesTotalDao');
 const userService = require('../src/domain/user/userService');
+const db = require('../src/global/db/dbPoolCreator');
 
 function mkFileName(num) {
     if (num < 1) {
@@ -39,6 +40,7 @@ const myers = require('myers-diff');
 
 router.post('/', async function(req, res, next) {
     let fileCnt;
+    let pool = await db.getPool();
 
     if (req.body.fileCnt != undefined) {
         fileCnt = Number(req.body.fileCnt);
@@ -205,10 +207,6 @@ router.post('/', async function(req, res, next) {
     
     let editScripts = new Object;
     editScripts.data = editScriptArray;
-    
-    let mysql = require('mysql');
-    let config = require('../db/db_info');
-    let pool = mysql.createPool(config);
 
     let query = "select `type`,`old_code`,`line_number_old`,`length_old`,`new_code`,`line_number_new`,`length_new` from scripts_web where `user_code`='";
     query += user.userCode;
@@ -219,6 +217,7 @@ router.post('/', async function(req, res, next) {
     pool.getConnection(function(err, conn) {
         if (!err) {
             conn.query(query, function(err, results, field) {
+                if (conn) conn.release();
                 let storedScripts = ``;
                 for (let idx in results) {
                     let trId = "";
@@ -264,7 +263,9 @@ router.post('/', async function(req, res, next) {
                 });
             });
         }
-        if (conn) conn.release();
+        else {
+            if (conn) conn.release();
+        }
     });
     });
 });

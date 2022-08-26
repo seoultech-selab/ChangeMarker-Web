@@ -1,7 +1,8 @@
 let express = require('express');
 let router = express.Router();
+const db = require('../src/global/db/dbPoolCreator');
 
-router.use('/', function(req, res, next) {
+router.use('/', async function(req, res, next) {
     let scripts = JSON.parse(req.body.scripts);
 
     const query = "insert into scripts_web (`user_code`,`type`,`old_code`,`line_number_old`,`new_code`,`line_number_new`,`change_id`) values ?;";
@@ -23,11 +24,12 @@ router.use('/', function(req, res, next) {
     } else {
         let mysql = require('mysql');
         let config = require('../db/db_info');
-        let pool = mysql.createPool(config);
+        let pool = await db.getPool();
 
         pool.getConnection(function(err, conn) {
             if (!err) {
                 conn.query(query, [values], (err, result) => {
+                    if (conn) conn.release();
                     if (err) {
                         console.log(err);
                     } else {
@@ -35,7 +37,9 @@ router.use('/', function(req, res, next) {
                     }
                 })
             }
-            if (conn) conn.release();
+            else {
+                if (conn) conn.release();
+            }
         });
     }
 })

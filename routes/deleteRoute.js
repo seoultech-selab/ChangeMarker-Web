@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
+const db = require('../src/global/db/dbPoolCreator');
 
-router.use('/', function(req, res, next) {
+router.use('/', async function(req, res, next) {
     let mysql = require('mysql');
     let config = require('../db/db_info');
-    let pool = mysql.createPool(config);
+    let pool = await db.getPool();
 
     if (!req.body) {
         res.status(500).send();
@@ -57,6 +58,7 @@ router.use('/', function(req, res, next) {
             query += req.body.change_id;
             query += "';"
             conn.query(query, (err, result) => {
+                if (conn) conn.release();
                 if (err) {
                     res.status(500).send(err);
                 } else {
@@ -64,7 +66,9 @@ router.use('/', function(req, res, next) {
                 }
             })
         }
-        if (conn) conn.release();
+        else {
+            if (conn) conn.release();
+        }
     });
 });
 

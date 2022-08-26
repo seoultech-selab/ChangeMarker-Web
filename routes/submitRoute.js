@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
+const db = require('../src/global/db/dbPoolCreator');
 
 function isNullOrUndefined(o) {
     return o == null || o == undefined;
 }
 
-router.use('/', function(req, res, next) {
+router.use('/', async  function(req, res, next) {
     const query = "insert into scripts_web (`user_code`,`type`,`old_code`,`line_number_old`,`start_pos_old`,`length_old`,`new_code`,`line_number_new`,`start_pos_new`,`length_new`,`change_id`, `route`, `created_at`) values (?);";
     let values = new Array();
 
@@ -48,11 +49,12 @@ router.use('/', function(req, res, next) {
     
     let mysql = require('mysql');
     let config = require('../db/db_info');
-    let pool = mysql.createPool(config);
+    let pool = await db.getPool();
 
     pool.getConnection(function(err, conn) {
         if (!err) {
             conn.query(query, [values], (err, result) => {
+                if (conn) conn.release();
                 if (err) {
                     res.status(500).send(err);
                 } else {
@@ -60,7 +62,9 @@ router.use('/', function(req, res, next) {
                 }
             })
         }
-        if (conn) conn.release();
+        else {
+            if (conn) conn.release();
+        }
     });
 });
 

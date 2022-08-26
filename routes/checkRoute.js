@@ -2,8 +2,9 @@ const express = require('express');
 const router = express.Router();
 const fs = require('fs');
 const myers = require('myers-diff');
+const db = require('../src/global/db/dbPoolCreator');
 
-router.use('/', function(req, res, next) {
+router.use('/', async function(req, res, next) {
     let data = JSON.parse(req.body.data);
 
     const currentFile = data.diffNum;
@@ -12,7 +13,7 @@ router.use('/', function(req, res, next) {
     let mysql = require('mysql');
     let config = require('../db/db_info');
 
-    let pool = mysql.createPool(config);
+    let pool = await db.getPool();
     pool.getConnection(function(err, conn) {
         if (!err) {
             let query = "select `old_code`,`line_number_old`,`start_pos_old`,`length_old`,`new_code`,`line_number_new`,`start_pos_new`,`length_new` from scripts_web where `user_code`='";
@@ -22,6 +23,7 @@ router.use('/', function(req, res, next) {
             query += "' ;";
 
             conn.query(query, (err, results, field) => {
+                if (conn) conn.release();
                 if (err) {
                     console.log(err);
                 } else {
@@ -172,7 +174,9 @@ router.use('/', function(req, res, next) {
                 }
             })
         }
-        if (conn) conn.release();
+        else {
+            if (conn) conn.release();
+        }
     });
 });
 
