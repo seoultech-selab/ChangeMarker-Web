@@ -1,11 +1,13 @@
 class Selection {
-  startPos = -1;
-  len = 0;
+
+  // startPos;
+  // len;
 
   constructor(text, lineNum, startPos=-1, len=0) {
     this.text = text;
     this.lineNum = lineNum;
     this.startPos = startPos;
+    this.len = len;
   }
 
   update(text, lineNum, startPos, len) {

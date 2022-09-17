@@ -6,7 +6,8 @@ function oneScriptSubmit(data, newRow) {
         dataType: 'json',
         error: function (req, error) {
             swal("Unexpected error has occurred. Please try again.");
-            newRow?.parentNode.removeChild(newRow);
+            if (newRow.parentNode)
+                newRow.parentNode.removeChild(newRow);
         },
         success: function(res) {
             // confirmScript();

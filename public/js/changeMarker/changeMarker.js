@@ -110,8 +110,16 @@ function isRightClicked(e) {
     return null;
 }
 
+function isValidCodeSelectionArea(event) {
+    let node = event.target;
+        while (node.tagName != "TABLE" && node.tagName != "DIV")
+            node = node.parentNode;
+        return node.tagName == "TABLE" ? true : false;
+}
+
 function initLeftDivEvent() {
     document.querySelector('#left').addEventListener('mousedown', (e) => {
+        if (!isValidCodeSelectionArea(e)) return;
         if (!isRightClicked(e)) {
             removeAllHighlightsOld();
         } else {
@@ -119,6 +127,7 @@ function initLeftDivEvent() {
         }
     });
     document.querySelector('#left').addEventListener('mouseup', (e) => {
+        if (!isValidCodeSelectionArea(e)) return;
         if (!isRightClicked(e)) {
             setSelectionsOld()
             highlightSelectionOld();
@@ -130,6 +139,7 @@ function initLeftDivEvent() {
 
 function initRightDivEvent() {
     document.querySelector('#right').addEventListener('mousedown', (e) => {
+        if (!isValidCodeSelectionArea(e)) return;
         if (!isRightClicked(e)) {
             removeAllHighlightsNew();
         } else {
@@ -137,6 +147,7 @@ function initRightDivEvent() {
         }
     });
     document.querySelector('#right').addEventListener('mouseup', (e) => {
+        if (!isValidCodeSelectionArea(e)) return;
         if (!isRightClicked(e)) {
             setSelectionsNew();
             highlightSelectionNew();

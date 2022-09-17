@@ -17,8 +17,8 @@ let newDraggedCodeInfo = {
     offset : -1
 };
 
-let oldCodeGridOffsetSum;
-let newCodeGridOffsetSum;
+let oldCodeGridOffsetSum = [0, ];
+let newCodeGridOffsetSum = [0, ];
 
 
 function setSelectionOld() {

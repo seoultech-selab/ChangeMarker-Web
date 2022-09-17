@@ -1,18 +1,13 @@
 const selectionHighlightClassName = "highlight_select";
 
-let selectionCssApplier;
-
-let highlighterOld;
-let highlighterNew;
-
-let selectionRangyOld;
-let selectionRangyNew;
+let selectionRangyOld = new Object();
+let selectionRangyNew = new Object();
 
 let oldCodeTbody;
 let newCodeTbody;
 
-let oldCodeInfo;
-let newCodeInfo
+let oldCodeInfo = new Object();
+let newCodeInfo = new Object();
 
 function initSelectionHighlighter() {
     initTbody();
@@ -203,19 +198,36 @@ function isValidCodeSelectionArea(event) {
 }
 
 function initTbody() {
-    const oldCode = document.querySelector("#left");
-    const newCode = document.querySelector("#right");
+    const callback = (mutationList, observer) => {
+        let codes = document.querySelectorAll("pre code");
+        for (var code of codes)
+            if (code.querySelector("tbody") == null) return;
 
-    const oldTbody = oldCode.querySelector("pre code table tbody");
-    const newTbody = newCode.querySelector("pre code table tbody");
+            const oldCode = document.querySelector("#left");
+            const newCode = document.querySelector("#right");
 
-    if (oldTbody == null || newTbody == null) return;
+            const oldTbody = oldCode.querySelector("pre code table tbody");
+            const newTbody = newCode.querySelector("pre code table tbody");
 
-    oldCodeTbody = document.createDocumentFragment();
-    oldCodeTbody = oldTbody.cloneNode(true);
+            if (oldTbody == null || newTbody == null) return;
 
-    newCodeTbody = document.createDocumentFragment();
-    newCodeTbody = newTbody.cloneNode(true);
+            oldCodeTbody = document.createDocumentFragment();
+            oldCodeTbody = oldTbody.cloneNode(true);
+
+            newCodeTbody = document.createDocumentFragment();
+            newCodeTbody = newTbody.cloneNode(true);
+
+            observer.disconnect();
+        }
+
+    const targets = document.querySelectorAll("section#section");
+    const config = { attributes: true, childList: true, subtree: true };
+
+    const observer = new MutationObserver(callback);
+    targets.forEach((target) => {observer.observe(target, config)});
+}
+
+function initSourceCodeObserver() {
 }
 
 function highlightSelectionOld() {
@@ -269,7 +281,7 @@ function highlightCodeSelection(codeNodeInfo) {
     }
 
     codeNodeInfo.leafNodes = afterLeafNodes;
-    selection.removeRange(selection.getRangeAt(0));
+    selection.removeAllRanges();
 }
 
 function removeAllHighlightsOld() {
