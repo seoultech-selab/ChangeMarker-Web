@@ -246,6 +246,8 @@ function initTbody() {
 
     newCodeTbody = document.createDocumentFragment();
     newCodeTbody = newTbody.cloneNode(true);
+
+    initCodeSelection();
 }
 
 function initSourceCodeObserver() {
