@@ -198,33 +198,54 @@ function isValidCodeSelectionArea(event) {
 }
 
 function initTbody() {
-    const callback = (mutationList, observer) => {
-        let codes = document.querySelectorAll("pre code");
-        for (var code of codes)
-            if (code.querySelector("tbody") == null) return;
+    let codes = document.querySelectorAll("pre code");
+    for (var code of codes)
+        if (code.querySelector("tbody") == null) {
+            const callback = (mutationList, observer) => {
+                let codes = document.querySelectorAll("pre code");
+                for (var code of codes)
+                    if (code.querySelector("tbody") == null) return;
+        
+                const oldCode = document.querySelector("#left");
+                const newCode = document.querySelector("#right");
+        
+                const oldTbody = oldCode.querySelector("pre code table tbody");
+                const newTbody = newCode.querySelector("pre code table tbody");
+        
+                if (oldTbody == null || newTbody == null) return;
+        
+                oldCodeTbody = document.createDocumentFragment();
+                oldCodeTbody = oldTbody.cloneNode(true);
+        
+                newCodeTbody = document.createDocumentFragment();
+                newCodeTbody = newTbody.cloneNode(true);
 
-            const oldCode = document.querySelector("#left");
-            const newCode = document.querySelector("#right");
-
-            const oldTbody = oldCode.querySelector("pre code table tbody");
-            const newTbody = newCode.querySelector("pre code table tbody");
-
-            if (oldTbody == null || newTbody == null) return;
-
-            oldCodeTbody = document.createDocumentFragment();
-            oldCodeTbody = oldTbody.cloneNode(true);
-
-            newCodeTbody = document.createDocumentFragment();
-            newCodeTbody = newTbody.cloneNode(true);
-
-            observer.disconnect();
+                initCodeSelection();
+        
+                observer.disconnect();
+            }
+        
+            const targets = document.querySelectorAll("section#section");
+            const config = { attributes: true, childList: true, subtree: true };
+        
+            const observer = new MutationObserver(callback);
+            targets.forEach((target) => {observer.observe(target, config)});
+            return;
         }
 
-    const targets = document.querySelectorAll("section#section");
-    const config = { attributes: true, childList: true, subtree: true };
+    const oldCode = document.querySelector("#left");
+    const newCode = document.querySelector("#right");
 
-    const observer = new MutationObserver(callback);
-    targets.forEach((target) => {observer.observe(target, config)});
+    const oldTbody = oldCode.querySelector("pre code table tbody");
+    const newTbody = newCode.querySelector("pre code table tbody");
+
+    if (oldTbody == null || newTbody == null) return;
+
+    oldCodeTbody = document.createDocumentFragment();
+    oldCodeTbody = oldTbody.cloneNode(true);
+
+    newCodeTbody = document.createDocumentFragment();
+    newCodeTbody = newTbody.cloneNode(true);
 }
 
 function initSourceCodeObserver() {

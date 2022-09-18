@@ -159,7 +159,7 @@ function initRightDivEvent() {
 
 function initChangeMarker() {
     initSelectionHighlighter();
-    initCodeSelection();
+    // initCodeSelection();
 
     initContextMenuLeft();
     initContextMenuRight();

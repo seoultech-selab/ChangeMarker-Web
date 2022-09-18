@@ -16,7 +16,7 @@ const indexRouter = require('./routes/index');
 const emailRouter = require('./routes/indexEmail');
 
 app.use(logger('common'));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '/')));
 
 // app.use('/', indexRouter);
 app.get('/', async function(req, res, next){
