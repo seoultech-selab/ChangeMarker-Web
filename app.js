@@ -7,9 +7,12 @@ var logger = require('morgan');
 
 const fs = require('fs');
 const options = {
-    key : fs.readFileSync('./ssl/private.key'), // 개인키
-    cert : fs.readFileSync('./ssl/certificate.crt'), // 서버인증서
-    ca : fs.readFileSync('./ssl/ca_bundle.crt'), // 루트체인
+   // key : fs.readFileSync('./ssl/private.key'), // 개인키
+   // cert : fs.readFileSync('./ssl/certificate.crt'), // 서버인증서
+   // ca : fs.readFileSync('./ssl/ca_bundle.crt'), // 루트체인
+     key: fs.readFileSync("/etc/letsencrypt/live/cm.seoultech.ac.kr/privkey.pem"),
+     cert: fs.readFileSync("/etc/letsencrypt/live/cm.seoultech.ac.kr/cert.pem"),
+     ca : fs.readFileSync("/etc/letsencrypt/live/cm.seoultech.ac.kr/chain.pem")
 };
 
 const indexRouter = require('./routes/index');
